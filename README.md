@@ -17,7 +17,7 @@ Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio
   
 ## Mecánicas 
 
-Las posibilidades comienzan en la selección de personaje, ya que hay dos equipos con 3 habilidades compartidas y otras 2 propias de cada uno, de las cuales se podrán escoger 3 en total. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta.
+Las posibilidades comienzan en la selección de personaje, ya que hay dos equipos con 3 habilidades compartidas y otras 2 propias de cada uno, de las cuales se podrán escoger 3 en total. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta. Cada pregunta acertada concede puntos y cuando acaben ganará el que más tenga.
 
 ![](https://i.ytimg.com/vi/E1wNFj1l7kk/maxresdefault.jpg)  
 
