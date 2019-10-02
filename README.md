@@ -14,6 +14,12 @@ Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio
   
 ![](https://cdn.wallpapersafari.com/9/44/to1XbJ.jpg)
 ![](https://art.ngfiles.com/images/654000/654628_frybrix_dark-graveyard.jpg?f1540491044)
+  
+## Mecánicas 
+
+Las posibilidades comienzan en la selección de personaje, ya que hay dos equipos con 3 habilidades compartidas y otras 2 propias de cada uno. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta.
+
+![](https://i.ytimg.com/vi/E1wNFj1l7kk/maxresdefault.jpg)  
 
 ## Flujo 
 
