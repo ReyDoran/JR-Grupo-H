@@ -11,6 +11,8 @@ El juego está pensado para jugar en grupo y para toda la familia, ya que pese a
 ## Temática
 
 Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio de una casa encantada, con tumbas y cipreses. 
+![](https://cdn.wallpapersafari.com/9/44/to1XbJ.jpg)
+![](https://art.ngfiles.com/images/654000/654628_frybrix_dark-graveyard.jpg?f1540491044)
 
 ## Flujo 
 
