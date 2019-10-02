@@ -25,4 +25,9 @@ Las posibilidades comienzan en la selección de personaje, ya que hay dos equipo
 
 Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos bando y personaje, con sus respectivas posibles habilidades, habiendo tres comunes y dos únicas de cada equipo. Al acabar la selección, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza.  
   
-![](https://imgur.com/n2GgkOC.png)
+![](https://imgur.com/n2GgkOC.png)  
+
+Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
+Tomás Pérez Martínez - tomas22tomas@gmail.com - t.perez.2016@alumnos.urjc.es - Tovilu  
+Manuel Pérez Ramil - manetoscopio@gmail.com - m.perezra.2016@alumnos.urjc.es - ReyDoran  
+Alberto García García - phonos26@gmail.com - a.garciagar.2016@alumnos.urjc.es - Alpuerro  
