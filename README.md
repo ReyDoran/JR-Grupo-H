@@ -12,7 +12,7 @@ El juego está pensado para jugar en grupo y para toda la familia, ya que pese a
 
 Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio de una casa encantada, con tumbas y cipreses. 
 
-![prueba](C:/Usuarios/a.garciagar.2016/Escritorio/luigi_s_mansion__dark_moon_ghosts_by_ratchetmario-d60dsv2)
+![prueba](https://wallpaper.mascuk.com/luigis-mansion-dark-moon-wallpaper/)
 
 ## Flujo 
 
