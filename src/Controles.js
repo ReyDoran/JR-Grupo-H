@@ -4,20 +4,20 @@ class Controles extends Phaser.Scene {
     {
         super({key:"Controles"});
     }
-    
+
 
     preload()
     {
-        
+
     }
 
     create()
     {
-    
+
     }
 
     update()
     {
-        
+
     }
 }

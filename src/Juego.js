@@ -46,7 +46,7 @@ var ganador;
 var ralen1;
 var ralen2;
 
-class Juego extends Phaser.Scene 
+class Juego extends Phaser.Scene
 {
     constructor(){
         super({key:"Juego"});
@@ -66,7 +66,7 @@ class Juego extends Phaser.Scene
     {
         //Tiempo se inicializa a cero
         time = 1500;
-        
+
         //se asignan las teclas a variables
         w = this.input.keyboard.addKey('W');
         s = this.input.keyboard.addKey('S');
@@ -84,12 +84,16 @@ class Juego extends Phaser.Scene
         base2 = this.physics.add.image(ancho*(3/4),alto*(2/3),'base');
         base3 = this.physics.add.image(ancho*(1/2),alto*(1/4),'base');
 
-        //Se asigan basebuena a la casilla correcta
+        //se asigan basebuena a la casilla correcta
         basebuena = base1;
 
-        //jugadores 
+        //jugadores
         jugador1 = this.physics.add.image(ancho*(1/2)+100,alto*(1/2),'jugador1');
         jugador2 = this.physics.add.image(ancho*(1/2)-100,alto*(1/2),'jugador2');
+
+         //límites del mapa
+        jugador1.setCollideWorldBounds(true);
+        jugador2.setCollideWorldBounds(true);
 
         //texto tiempo que queda
         tiempo = this.add.text(ancho*(1/6), alto*(1/5), time/100, { font: '64px Courier', fill: '#ffffff' });
@@ -110,7 +114,7 @@ class Juego extends Phaser.Scene
         {
             ralen1 = 1/2;
             setTimeout(function(){ralen1=1}, 5000);
-        }        
+        }
     }
 
     ligero(num)
@@ -124,7 +128,7 @@ class Juego extends Phaser.Scene
         {
             ralen1 = 2;
             setTimeout(function(){ralen1=1}, 5000);
-        }        
+        }
     }
 
     confusion(num)
@@ -140,7 +144,7 @@ class Juego extends Phaser.Scene
             console.log("hola2");
             ralen1 = -1;
             //setTimeout(function(){ralen1=1}, 5000);
-        }        
+        }
     }
 
     habilidad(habil,num)
@@ -274,7 +278,7 @@ class Juego extends Phaser.Scene
         jugador1.setVelocityY(0);
         jugador2.setVelocityX(0);
         jugador2.setVelocityY(0);
-        
+
         //Si el tiempo llega a 0 se acaba y si no el tiempo sigue bajando
         if(time>0)
         {
@@ -282,7 +286,7 @@ class Juego extends Phaser.Scene
 
             //pinta el timempo
             tiempo.setText(Math.trunc(time/100)+1);
-        
+
             //movimiento jugador1
             this.moverse1();
 
