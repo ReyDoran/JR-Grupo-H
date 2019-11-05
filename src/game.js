@@ -1,20 +1,24 @@
 'use strict'
 var config = {
     type: Phaser.AUTO,
-    width: 1200,
-    height: 675,
+    width: 1280,
+    height: 720,
     physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0, x: 0 },
+        default: 'matter',
+        matter: {
+            gravity: { x: 0, y: 0 },
             debug: false
         }
     },
     //Orden de escenas
-    scene: [Menu,Controles,Video,Juego]
+    scene: [Menu,Juego,Controles,Cinematica]
 };
 
 var game = new Phaser.Game(config);
+
+//Array para almacenar la puntuación de los jugadores
+var points = [0, 0];
+var count = 0;
 
 function preload ()
 {
@@ -28,5 +32,5 @@ function create ()
 
 function update ()
 {
-    
+
 }

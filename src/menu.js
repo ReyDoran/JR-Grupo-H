@@ -4,12 +4,12 @@ class Menu extends Phaser.Scene {
     constructor(){
         super({key:"Menu"});
     }
-     
+
     preload()
     {
-        this.load.image('title','Imagenes/titulo.png');
-        this.load.image('jugar','Imagenes/start.png');
-        this.load.image('controles','Imagenes/Play.png');
+        this.load.image('title','assets/menu/titulo.png');
+        this.load.image('jugar','assets/menu/start.png');
+        this.load.image('controles','assets/menu/Play.png');
     }
 
     create()
@@ -22,13 +22,13 @@ class Menu extends Phaser.Scene {
         var controles = this.add.image(ancho*(1/2),alto*(45/60),'controles').setInteractive();
 
         //boton de jugar
-        jugar.on('pointerdown', function (pointer) 
+        jugar.on('pointerdown', function (pointer)
         {
-            this.scene.start("Juego");
+            this.scene.start("Cinematica");
         }, this);
 
         //boton de controles
-        controles.on('pointerdown', function (pointer) 
+        controles.on('pointerdown', function (pointer)
         {
             this.scene.start("Controles");
         }, this);
