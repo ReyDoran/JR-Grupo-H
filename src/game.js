@@ -11,7 +11,7 @@ var config = {
         }
     },
     //Orden de escenas
-    scene: [Menu,Juego,Controles,Cinematica]
+    scene: [Menu,Video,Juego,Controles]
 };
 
 var game = new Phaser.Game(config);
@@ -19,6 +19,10 @@ var game = new Phaser.Game(config);
 //Array para almacenar la puntuación de los jugadores
 var points = [0, 0];
 var count = 0;
+//Guarda 1) el sprite y 2)3)4) las habilidades
+var player1Config = [0, 0, 0, 0];
+var player2Config = [0, 0, 0, 0];
+var round = 0;
 
 function preload ()
 {
@@ -32,5 +36,5 @@ function create ()
 
 function update ()
 {
-
+    
 }
