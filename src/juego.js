@@ -13,6 +13,8 @@ class Juego extends Phaser.Scene
         this.load.image('but', 'assets/personajes/play.png');
         this.load.spritesheet('ghostbuster1', 'assets/personajes/cazafantasmasCenital.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
         this.load.spritesheet('ghostbuster2', 'assets/personajes/cazafantasmasCenital.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
+        this.load.spritesheet('ghostlateral1', 'assets/personajes/fantasmaAzulCenital.png',{ frameWidth: 1024/4, frameHeight: 1422/6 }); //rojo 1428
+        this.load.spritesheet('ghostlateral2', 'assets/personajes/fantasmaRojoCenital.png',{ frameWidth: 1024/4, frameHeight: 1428/6 });
 
         //2 Escenario
         //2.1 Tumbas
@@ -34,16 +36,16 @@ class Juego extends Phaser.Scene
         }
         else if(player1Config[0]==1)
         {
-            this.player1 = this.matter.add.image(100, 300, 'but').setScale(0.8);
+            this.player1 = this.matter.add.sprite(100, 300, 'ghostlateral1').setScale(0.8);
         }
 
         if(player2Config[0]==0)
         {
-            this.player2 = this.matter.add.sprite(400, 300, 'ghostbuster1').setScale(0.8);
+            this.player2 = this.matter.add.sprite(400, 300, 'ghostbuster2').setScale(0.8);
         }
         else if(player2Config[0]==1)
         {
-            this.player2 = this.matter.add.image(400, 300, 'but').setScale(0.8);
+            this.player2 = this.matter.add.sprite(400, 300, 'ghostlateral2').setScale(0.8);
         }
 
         //Añadir colisión circular
@@ -60,8 +62,8 @@ class Juego extends Phaser.Scene
         this.player2.setBounce(0.9);
         this.player1.setFriction(0);
         this.player2.setFriction(0);
-        this.player1.setFrictionAir(0.1);
-        this.player2.setFrictionAir(0.1);
+        this.player1.setFrictionAir(0.05);
+        this.player2.setFrictionAir(0.05);
 
 
         //2 Iniciar escenario
@@ -136,7 +138,8 @@ class Juego extends Phaser.Scene
     }
 
 
-    create() {
+    create()
+    {
         //1 Inicialización de variables
         //1.1 Variables configurables
         this.roundDuration = 20;  //En segundos
@@ -167,6 +170,22 @@ class Juego extends Phaser.Scene
             this.player1.anims.play('ghostbuster1');
             this.ghostbuster1anim.pause();
         }
+        if(player1Config[0]==1)
+        {
+            if (this.ghost1anim == null)
+            {
+                this.ghost1anim = this.anims.create({
+                    key: 'ghostlateral1',
+                    frames: this.anims.generateFrameNumbers('ghostlateral1', { start: 0, end: 23
+                    }),
+                    frameRate: 24,
+                    repeat: -1
+                })
+            }
+
+            this.player1.anims.play('ghostlateral1');
+            this.ghost1anim.pause();
+        }
 
         if(player2Config[0]==0)
         {
@@ -184,6 +203,23 @@ class Juego extends Phaser.Scene
             this.player2.anims.play('ghostbuster2');
             this.ghostbuster2anim.pause();
         }
+        if(player2Config[0]==1)
+        {
+            if (this.ghost2anim == null)
+            {
+                this.ghost2anim = this.anims.create({
+                    key: 'ghostlateral2',
+                    frames: this.anims.generateFrameNumbers('ghostlateral2', { start: 0, end: 23
+                    }),
+                    frameRate: 24,
+                    repeat: -1
+                })
+            }
+
+            this.player2.anims.play('ghostlateral2');
+            this.ghost2anim.pause();
+        }
+
 
 
         //Estructura que contiene booleanos que indican si las teclas están siendo pulsadas
@@ -205,16 +241,16 @@ class Juego extends Phaser.Scene
         this.add.text(this.ancho*(7/8), this.alto*(1/16), 'j1=' + points[0] + ' j2=' + points[1], { font: '24px Courier', fill: '#ffffff' });
 
         //que habilidades tiene cada jugador    1-ralentizar  2-peso ligero  3-confusion
-        this.habilidad1 = 3;
-        this.habilidad2 = 3;
+        this.habilidad1 = player1Config[round];
+        this.habilidad2 = player2Config[round];
 
         //efecto de la habilidad del j1 y j2
         this.efect1 = 1;
         this.efect2 = 1;
 
         //timer para medir el tiempo que duran las habilidades
-        this.hability1Duration = 3;
-        this.hability2Duration = 3;
+        this.hability1Duration = 5;
+        this.hability2Duration = 5;
 
         //boolean que dice si la habilidad ha sido usada o no
         this.h1=true;
@@ -226,15 +262,14 @@ class Juego extends Phaser.Scene
 
     restartefect1()
     {
-
         this.efect2 = 1;
+        this.player2.setBounce(0.9);
     }
 
     restartefect2()
     {
-
         this.efect1 = 1;
-
+        this.player1.setBounce(0.9);
     }
 
     ralentizar(j)
@@ -281,23 +316,23 @@ class Juego extends Phaser.Scene
 
     habilidad(habil,j,player)
     {
-        if(habil == 1)
+        if(habil == 0)
         {
             this.ralentizar(j);
         }
-        else if(habil == 2)
+        else if(habil == 1)
         {
             this.ligero(player);
         }
-        else if(habil == 3)
+        else if(habil == 2)
         {
             this.confusion(j);
         }
-        else if(habil == 4)
+        else if(habil == 3)
         {
             this.susto(j);
         }
-        else if(habil == 5)
+        else if(habil == 4)
         {
             this.confusion(j);
         }
@@ -313,26 +348,48 @@ class Juego extends Phaser.Scene
         }
     }
 
-    calculateRotation(player, vector2D){
-      //let h = Math.sqrt((Math.pow(vector2D[0], 2),Math.pow(vector2D[1], 2)))+0.0001;
-      let angulo = 0;
-      if (vector2D[0]>=0){
-        angulo = Math.atan(vector2D[1]/(vector2D[0]+0.0001));
-        angulo = (angulo*180)/Math.PI+90;
-        //console.log(angulo);
-          player.setAngle(angulo);
-      } else {
-        angulo = Math.atan(vector2D[1]/(vector2D[0]+0.0001));
-        angulo = (angulo*180)/Math.PI+90;
-        //console.log(angulo);
-        player.setAngle(-angulo);
-      }
+    calculateRotation(player, vector2D)
+    {
+        let angulo = 0;
+        if (vector2D[0]>0 && vector2D[1]>0)
+        {
+            angulo = 135;
+        }
+        else if(vector2D[0]<0 && vector2D[1]>0)
+        {
+            angulo = -135;
+        }
+        else if(vector2D[0]>0 && vector2D[1]<0)
+        {
+            angulo = 45;
+        }
+        else if(vector2D[0]<0 && vector2D[1]<0)
+        {
+            angulo = -45;
+        }
+        else if(vector2D[0]>0 && vector2D[1]==0)
+        {
+            angulo = 90;
+        }
+        else if(vector2D[0]<0 && vector2D[1]==0)
+        {
+            angulo = -90;
+        }
+        else if(vector2D[0]==0 && vector2D[1]>0)
+        {
+            angulo = 180;
+        }
+        else if(vector2D[0]==0 && vector2D[1]<0)
+        {
+            angulo = 0;
+        }
+        player.setAngle(angulo);
     }
 
     calculateForces(player, keyUp, keyLeft, keyDown, keyRight, efect, dist)
     {
         let angle;
-        let force = 0.005;
+        let force = 0.0025;
         let acceleration = [efect*(force * keyRight.isDown - force * keyLeft.isDown), efect*(force * keyDown.isDown - force * keyUp.isDown)];
         this.calculateRotation(player, acceleration);
         if(efect == 5)
@@ -342,7 +399,6 @@ class Juego extends Phaser.Scene
         }
         let accelerationVec = new Phaser.Math.Vector2(acceleration[0], acceleration[1]);
         player.applyForce(accelerationVec);
-        //player.setAngle(Math.acos(angle));
     }
 
     /*
@@ -413,7 +469,7 @@ class Juego extends Phaser.Scene
             else {
                 msg = 'Ha habido un empate';
             }
-            this.add.text(200, this.alto/2, msg, { font: '100px Courier', fill: '#ffffff' });
+            this.add.text(50, this.alto/2, msg, { font: '100px Courier', fill: '#ffffff' });
             this.time.addEvent({delay:4000, callback: this.restart, callbackScope: this});
         }
         else {
@@ -462,44 +518,23 @@ class Juego extends Phaser.Scene
         }
 
         //Control de animación
-        if (!this.ghostbuster1anim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-            this.ghostbuster1anim.resume();
-        }
-        if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-            this.ghostbuster1anim.pause();
-        }
-        this.player1.setAngularVelocity(0);
-        this.player2.setAngularVelocity(0);
-        /* version 0.1
-        //Control de animación
-        if (!this.ghostbuster1anim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-            this.ghostbuster1anim.resume();
-        }
-        if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-            this.ghostbuster1anim.pause();
-        }
-        this.player1.setAngularVelocity(0);
-        //Control de dirección
-        if (this.moveKeys.w.isDown)
+        if(player1Config[0]==0)
         {
-            console.log('w');
-            this.player1.setAngle(0);
+            if (!this.ghostbuster1anim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+                this.ghostbuster1anim.resume();
+            }
+            if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+                this.ghostbuster1anim.pause();
+            }
         }
-        if (this.moveKeys.a.isDown)
+        if(player2Config[0]==0)
         {
-            console.log('a');
-            this.player1.setAngle(270);
+            if (!this.ghostbuster2anim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+                this.ghostbuster2anim.resume();
+            }
+            if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+                this.ghostbuster2anim.pause();
+            }
         }
-        if (this.moveKeys.s.isDown)
-        {
-            console.log('s');
-            this.player1.setAngle(180);
-        }
-        if (this.moveKeys.d.isDown)
-        {
-            console.log('d');
-            this.player1.setAngle(90);
-        }
-        */
     }
 }

@@ -67,15 +67,21 @@ class Menu extends Phaser.Scene {
         this.tutorial.scaleY = 0.071;
 
         //------TUTORIAL
-        this.tutorial1 = this.add.image(this.ancho/2, this.alto/2, 'tutorial1').setScale(1.22);
+        this.tutorial1 = this.add.image(this.ancho/2, this.alto/2, 'tutorial1');
+        this.tutorial1.scaleX = 1.22;
+        this.tutorial1.scaleY = 1.26;
         this.tutorial1.setAlpha(0);
         this.tutorial2 = this.add.image(this.ancho/2, this.alto/2, 'tutorial2');
+        this.tutorial2.scaleX = 1.22;
+        this.tutorial2.scaleY = 1.26;
         this.tutorial2.setAlpha(0);
         this.tutorial3 = this.add.image(this.ancho/2, this.alto/2, 'tutorial3');
+        this.tutorial3.scaleX = 1.22;
+        this.tutorial3.scaleY = 1.26;
         this.tutorial3.setAlpha(0);
-        this.siguienteTuto = this.add.image(0, 0, 'siguienteTuto').setOrigin(0);
+        this.siguienteTuto = this.add.image(this.ancho-245, this.alto-125, 'siguienteTuto').setScale(0.1);
         this.siguienteTuto.setAlpha(0);
-        this.volverMenu = this.add.image(0, 0, 'volverMenu').setOrigin(0.2);
+        this.volverMenu = this.add.image(this.ancho/2, this.alto-125, 'volverMenu').setScale(0.1);
         this.volverMenu.setAlpha(0);
 
         //------SELECCIÓN DE PERSONAJE
@@ -324,11 +330,12 @@ class Menu extends Phaser.Scene {
           this.volverMenu.setAlpha(1);
           this.volverMenu.setInteractive();
         }
-      });
-      this.siguienteTuto.on('pointerdown', function (pointer)
+      }, this);
+      this.volverMenu.on('pointerdown', function (pointer)
       {
-
-      });
+        this.disableTutorial();
+        this.showMainMenu();
+      }, this);
     }
 
     disableTutorial(){
