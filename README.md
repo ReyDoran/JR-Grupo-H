@@ -33,25 +33,28 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 
 ![](https://imgur.com/gPbqT3C.jpeg)
 
-Menu principal en el que se puede escoger entre jugar o leer el manual
+Menu principal en el que se puede escoger entre jugar o leer el manual.
 
 ![](https://imgur.com/QmrAiac.jpeg)
 
-En el manual se puede ver el funcionamiento y las mecanicas del juego 
+En el manual se puede ver el funcionamiento y las mecanicas del juego. 
 
 ![](https://imgur.com/YIodtMt.jpeg)
 
-Si escogemos jugar deberemos primero elegir personaje
+Si escogemos jugar deberemos primero elegir personaje.
 
 ![](https://imgur.com/R3s066c.jpeg)
 
-Tambien deberemos elegir las habilidades que tendra este
+Tambien deberemos elegir las habilidades que tendra este.
 
 ![](https://imgur.com/7tlzCjm.jpeg)
 
-
+Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque no harán una pregunta.
 
 ![](https://imgur.com/iCOjhpE.jpeg)
+
+Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrá formulado intentando a su vez que el otro jugador no lo consiga.
+
 ![](https://imgur.com/rmsEi1W.png)
 
 Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
