@@ -32,8 +32,15 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 # ----------------------------- Fase 2 -----------------------------
 
 ![](https://imgur.com/gPbqT3C.jpeg)
+
+Menu principal en el que se puede escoger entre jugar o leer el manual
+
 ![](https://imgur.com/QmrAiac.jpeg)
+
+En el manual se puede ver el funcionamiento y las mecanicas del juego 
+
 ![](https://imgur.com/YIodtMt.jpeg)
+
 ![](https://imgur.com/R3s066c.jpeg)
 ![](https://imgur.com/7tlzCjm.jpeg)
 ![](https://imgur.com/iCOjhpE.jpeg)
