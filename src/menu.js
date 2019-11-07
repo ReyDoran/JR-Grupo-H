@@ -17,6 +17,11 @@ class Menu extends Phaser.Scene {
         this.load.image('titulo', 'assets/botones/titulo.png');
         this.load.image('jugar', 'assets/jugar.png');
         this.load.image('tutorial', 'assets/botones/tutorial.png');
+        this.load.image('tutorial1', 'assets/background/tutorial1.png');
+        this.load.image('tutorial2', 'assets/background/tutorial2.png');
+        this.load.image('tutorial3', 'assets/background/tutorial3.png');
+        this.load.image('siguienteTuto', 'assets/botones/siguienteTuto.png');
+        this.load.image('volverMenu', 'assets/botones/volver.png')
         this.load.image('bt_cazafantasmas', 'assets/botones/cazafantasmas.png');
         this.load.image('bt_fantasmas', 'assets/botones/fantasma.png');
         this.load.image('bt_jugar', 'assets/botones/jugar.png');
@@ -25,10 +30,9 @@ class Menu extends Phaser.Scene {
         this.load.image('bt_seleccion_personaje', 'assets/botones/selecciona_bando.png');
         this.load.image('bt_seleccion_habilidades', 'assets/botones/selecciona_habilidades.png');
         this.load.image('bt_volver', 'assets/botones/volver.png');
-        this.load.image('cd_asustar', 'assets/cartas/asustar.png');
-        this.load.image('cd_ralentizar', 'assets/cartas/.png');
-        this.load.image('cd_invertir', 'assets/cartas/.png');
-        this.load.image('cd_empujar', 'assets/cartas/.png');
+        this.load.image('cd_empujar', 'assets/cartas/empuja.png');
+        this.load.image('cd_invertir', 'assets/cartas/invierte.png');
+        this.load.image('cd_ralentizar', 'assets/cartas/ralentiza.png');
     }
 
     create()
@@ -36,10 +40,6 @@ class Menu extends Phaser.Scene {
         //creación de las imágenes
         this.ancho = this.game.canvas.width;
         this.alto = this.game.canvas.height;
-
-        let background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'cementerio');
-        background.scaleX = 0.26;
-        background.scaleY = 0.26;
 
         //Variable auxiliar
         this.turn = player1Config;
@@ -52,6 +52,10 @@ class Menu extends Phaser.Scene {
         this.ayuda = 0;//DEBug
 
         //-----MENU PRINCIPAL
+        this.background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'cementerio');
+        this.background.scaleX = 0.26;
+        this.background.scaleY = 0.26;
+
         this.title = this.add.image(this.ancho/2,this.alto*15/20,'titulo').setScale(0.3);
 
         this.jugar = this.add.image(this.ancho/5,this.alto/3,'bt_jugar').setInteractive();
@@ -61,6 +65,18 @@ class Menu extends Phaser.Scene {
         this.tutorial = this.add.image(this.ancho*4/5,this.alto/3,'tutorial').setInteractive();
         this.tutorial.scaleX = 0.071;
         this.tutorial.scaleY = 0.071;
+
+        //------TUTORIAL
+        this.tutorial1 = this.add.image(this.ancho/2, this.alto/2, 'tutorial1').setScale(1.22);
+        this.tutorial1.setAlpha(0);
+        this.tutorial2 = this.add.image(this.ancho/2, this.alto/2, 'tutorial2');
+        this.tutorial2.setAlpha(0);
+        this.tutorial3 = this.add.image(this.ancho/2, this.alto/2, 'tutorial3');
+        this.tutorial3.setAlpha(0);
+        this.siguienteTuto = this.add.image(0, 0, 'siguienteTuto').setOrigin(0);
+        this.siguienteTuto.setAlpha(0);
+        this.volverMenu = this.add.image(0, 0, 'volverMenu').setOrigin(0.2);
+        this.volverMenu.setAlpha(0);
 
         //------SELECCIÓN DE PERSONAJE
         this.characterSelect = this.add.image(this.ancho*(2/4),this.alto*(20/60),'bt_seleccion_personaje').setScale(0.071);
@@ -91,14 +107,14 @@ class Menu extends Phaser.Scene {
         this.character2.disableInteractive();
 
         //---------SELECCION DE ABILIDADES
-        this.offset = [45, 60];
-        this.abilitySelect = this.add.image(this.ancho*(2/4),this.alto*(20/60),'bt_seleccion_habilidades').setScale(0.071);
-        this.ability0 = this.add.image(this.ancho*(1/7), this.alto*(35/60), 'cd_asustar').setScale(0.6).setOrigin(0.5);
-        this.ability0.text = this.add.text(this.ancho*(1/7)-this.offset[0], this.alto*(35/60)-this.offset[1], this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-        this.ability1 = this.add.image(this.ancho*(2/7), this.alto*(35/60), 'cd_asustar').setScale(0.6).setOrigin(0.5);
-        this.ability1.text = this.add.text(this.ancho*(2/7)-this.offset[0], this.alto*(35/60)-this.offset[1], this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-        this.ability2 = this.add.image(this.ancho*(3/7), this.alto*(35/60), 'cd_asustar').setScale(0.6).setOrigin(0.5);
-        this.ability2.text = this.add.text(this.ancho*(3/7)-this.offset[0], this.alto*(35/60)-this.offset[1], this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+        this.offset = 10;
+        this.abilitySelect = this.add.image(this.ancho*(2/4),this.alto*(16/60),'bt_seleccion_habilidades').setScale(0.071);
+        this.ability0 = this.add.image(this.ancho/4, this.alto*(35/60), 'cd_ralentizar').setScale(1).setOrigin(0.5);
+        this.ability0.text = this.add.text(this.ancho/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+        this.ability1 = this.add.image(this.ancho*2/4, this.alto*(35/60), 'cd_empujar').setScale(1).setOrigin(0.5);
+        this.ability1.text = this.add.text(this.ancho*2/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+        this.ability2 = this.add.image(this.ancho*3/4, this.alto*(35/60), 'cd_invertir').setScale(1).setOrigin(0.5);
+        this.ability2.text = this.add.text(this.ancho*3/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
         this.ready = this.add.image(this.ancho*(7/8), this.alto*(6/7), 'bt_listo').setScale(0.045);
         this.ready.setAlpha(0);
         this.abilitySelect.setAlpha(0);
@@ -212,16 +228,17 @@ class Menu extends Phaser.Scene {
       this.jugar.setInteractive();
       this.tutorial.setInteractive();
       //boton de jugar
-      this.jugar.on('pointerup', function (pointer)
+      this.jugar.on('pointerdown', function (pointer)
       {
         this.disableMainMenu();
         this.showCharSelectMenu(0);
       }, this);
 
       //boton de tutorial
-      this.tutorial.on('pointerup', function (pointer)
+      this.tutorial.on('pointerdown', function (pointer)
       {
-
+        this.disableMainMenu();
+        this.showTutorial();
       }, this);
     }
 
@@ -286,6 +303,42 @@ class Menu extends Phaser.Scene {
       this.ability1.disableInteractive();
       this.ability2.disableInteractive();
       this.ready.disableInteractive();
+    }
+
+    showTutorial(){
+      this.contador = 1;
+      this.tutorial1.setAlpha(1);
+      this.siguienteTuto.setAlpha(1);
+      this.siguienteTuto.setInteractive();
+      this.siguienteTuto.on('pointerdown', function (pointer)
+      {
+        if (this.contador==1){
+          this.tutorial1.setAlpha(0);
+          this.tutorial2.setAlpha(1);
+          this.contador++;
+        } else if (this.contador==2){
+          this.tutorial2.setAlpha(0);
+          this.siguienteTuto.setAlpha(0);
+          this.siguienteTuto.disableInteractive();
+          this.tutorial3.setAlpha(1);
+          this.volverMenu.setAlpha(1);
+          this.volverMenu.setInteractive();
+        }
+      });
+      this.siguienteTuto.on('pointerdown', function (pointer)
+      {
+
+      });
+    }
+
+    disableTutorial(){
+      this.tutorial1.setAlpha(0);
+      this.tutorial2.setAlpha(0);
+      this.tutorial3.setAlpha(0);
+      this.siguienteTuto.setAlpha(0);
+      this.siguienteTuto.disableInteractive();
+      this.volverMenu.setAlpha(0);
+      this.volverMenu.disableInteractive();
     }
 
     update()

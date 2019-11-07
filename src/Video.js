@@ -10,12 +10,13 @@ class Video extends Phaser.Scene {
       this.load.spritesheet('ghost2', 'assets/personajes/fantasmaRojoLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
       this.load.spritesheet('ghostbuster1Lateral', 'assets/personajes/cazafantasmas.png',{ frameWidth: 3460/4, frameHeight: 5910/8});
     	//Pasillo
-      this.load.image('interior', 'assets/bg_interior.png');
-      this.load.image('frame', 'assets/bg_frame.png');
+      this.load.image('interior', 'assets/background/bg_interior.png');
+      this.load.image('frame', 'assets/background/bg_frame.png');
     }
 
     create() {
     	//Añadimos background
+      round++;
       let background = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'interior').setOrigin(0.5);
       background.scaleX = 1.07;
       background.scaleY = 1.07;
@@ -24,7 +25,7 @@ class Video extends Phaser.Scene {
       frame.scaleY = 1.07;
       frame.setDepth(1);
       //Array de los sprites
-      this.ghosts = [];
+      this.actors = [];
 
       //QUÉ HACE
       let msg = 'Ronda ' + (round);
@@ -55,11 +56,12 @@ class Video extends Phaser.Scene {
       })
 
       //VARIABLES CONFIGURABLES
-      this.velocities = [5, 7, 10];
-    	this.dif = 7;	               //la dificultad: minimo de fantasmas que saldran
+      this.velocities = [4, 6, 8];
+      this.ghostbusterVelocities = [3, 4, 5];
+    	this.dif = 5;	               //la dificultad: minimo de fantasmas que saldran
       this.maximumActors = 10      //máximo de actores posibles que saldrán ademas de la base
       this.start_pos = [-40, 1320];
-      this.names = ['booger0', 'brains0', 'purple0'];   //Guarda los nombres de los identificadores de imagenes (cambiara para sprites)
+      this.names = ['ghost1', 'ghost2', 'ghostbuster1Lateral'];   //Guarda los nombres de los identificadores de imagenes (cambiara para sprites)
       //Duracion del desfile, delay de pregunta y delay de cambio de escena
     	this.paradeDuration = 15000;
       this.questionDelay = 2000;
@@ -69,7 +71,7 @@ class Video extends Phaser.Scene {
       /*
       Las preguntas coinciden con el índice de answers que lleva su cuenta (actualizado en schedulePlaner())
       */
-      this.questions = ["¿Cuántas mochilas había?", "¿Qué número de fantasmas azules pasaron?", "¿Cuántos fantasmas enfadados había?", "¿Cuántos cazafantasmas pasaron?"];
+      this.questions = ["¿Cuántos fantasmas azules pasaron?", "¿Cuántos fantasmas rojos pasaron?", "¿Cuántos cazafantasmas pasaron?", "¿Cuántos personajes pasaron en total?"];
       this.questionIndex = Math.trunc(Math.random() * 4);
       this.answers = [0, 0, 0, 0];
 
@@ -86,7 +88,7 @@ class Video extends Phaser.Scene {
 
     //Enseña la pregunta
     showQuestion() {
-        this.add.text(this.game.canvas.width/2, this.game.canvas.height/2, this.questions[this.questionIndex], { font: '32px Courier', fill: '#ffffff' });
+        this.add.text(this.game.canvas.width/5, this.game.canvas.height/2, this.questions[this.questionIndex], { font: '40px Courier', fill: '#ffffff' });
         console.log(this.answers[this.questionIndex]);
     }
 
@@ -111,18 +113,35 @@ class Video extends Phaser.Scene {
     randomCharGen() {
     	let s_pos = Math.floor(Math.random()*2);
     	let velocity = this.velocities[Math.floor(Math.random()*3)]
-        let imageIndex = Math.floor(Math.random()*3);
-        let flipX = false;
-        this.answers[imageIndex]++;
-        this.answers[3]++;
+      let imageIndex = Math.floor(Math.random()*3);
+      let flipX = false;
+      this.answers[imageIndex]++;
+      this.answers[3]++;
     	if (s_pos == 1)
     	{
-    		velocity *= -1;
+    		 velocity *= -1;
     	   flipX = true;
-        }
-        let actor = this.matter.add.sprite(this.start_pos[s_pos], 300, 'fantasmaRojoLateral').setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
+      }
+      if (imageIndex == 2) {
+        velocity = this.ghostbusterVelocities[Math.floor(Math.random()*3)];
+      }
+      let actor = this.matter.add.sprite(this.start_pos[s_pos], 400, this.names[imageIndex]).setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
+      if (imageIndex == 0)
+      {
+        actor.play('ghost1');
+        this.actors.push(actor);
+      }
+      else if (imageIndex == 1)
+      {
         actor.play('ghost2');
-        this.ghosts.push(actor);
+        this.actors.push(actor);
+      }
+      else if (imageIndex == 2)
+      {
+        actor.play('ghostbuster');
+        this.actors.push(actor);
+      }
+
     }
 
     update()
