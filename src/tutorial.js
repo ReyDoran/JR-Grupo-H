@@ -1,8 +1,8 @@
 //Controles
-class Controles extends Phaser.Scene {
+class Tutorial extends Phaser.Scene {
     constructor()
     {
-        super({key:"Controles"});
+        super({key:"Tutorial"});
     }
 
 

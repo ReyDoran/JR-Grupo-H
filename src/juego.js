@@ -16,7 +16,7 @@ class Juego extends Phaser.Scene
 
         //2 Escenario
         //2.1 Tumbas
-        this.load.image('tombstone', 'assets/background/sp_tombstone.png');
+        this.load.image('tombstone', 'assets/props/sp_tombstone.png');
         //2.2 Fondo
         this.load.image('cemetery', 'assets/background/bg_cemetery.png');
     }

@@ -12,10 +12,11 @@ class Menu extends Phaser.Scene {
         this.load.image('char2','assets/personajes/play2.png');
         this.load.image('ability','assets/botones/jugar.png');
         //assets
-        this.load.image('interior', 'assets/background/bg_interior.png');
+        this.load.image('cementerio', 'assets/background/bg_cemetery.png');
         this.load.image('frame', 'assets/background/bg_frame.png');
-        this.load.image('goo', 'assets/props/sp_goo.png');
+        this.load.image('titulo', 'assets/botones/titulo.png');
         this.load.image('jugar', 'assets/jugar.png');
+        this.load.image('tutorial', 'assets/botones/tutorial.png');
         this.load.image('bt_cazafantasmas', 'assets/botones/cazafantasmas.png');
         this.load.image('bt_fantasmas', 'assets/botones/fantasma.png');
         this.load.image('bt_jugar', 'assets/botones/jugar.png');
@@ -36,13 +37,9 @@ class Menu extends Phaser.Scene {
         this.ancho = this.game.canvas.width;
         this.alto = this.game.canvas.height;
 
-        let background = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'interior').setOrigin(0.5);
-        background.scaleX = 1.07;
-        background.scaleY = 1.07;
-        let frame = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'frame').setOrigin(0.5);
-        frame.scaleX = 1.07;
-        frame.scaleY = 1.07;
-        frame.setDepth(1);
+        let background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'cementerio');
+        background.scaleX = 0.26;
+        background.scaleY = 0.26;
 
         //Variable auxiliar
         this.turn = player1Config;
@@ -55,17 +52,15 @@ class Menu extends Phaser.Scene {
         this.ayuda = 0;//DEBug
 
         //-----MENU PRINCIPAL
-        this.title = this.add.image(this.ancho*(2/4),this.alto*(20/60),'goo').setScale(0.071);
-        this.title.text = this.add.text(this.ancho*(2/4)-20,this.alto*(20/60)-20, 'TE ACUERDAS DE', { font: '32px Courier', fill: '#ffffff' });
+        this.title = this.add.image(this.ancho/2,this.alto*15/20,'titulo').setScale(0.3);
 
-        this.jugar = this.add.image(this.ancho*(1.1/4),this.alto*(40/60),'bt_jugar').setInteractive();
+        this.jugar = this.add.image(this.ancho/5,this.alto/3,'bt_jugar').setInteractive();
         this.jugar.scaleX = 0.071;
         this.jugar.scaleY = 0.071;
 
-        this.controles = this.add.image(this.ancho*(2.9/4),this.alto*(40/60),'goo').setInteractive();
-        this.controles.text = this.add.text(this.ancho*(2.9/4)-20,this.alto*(40/60)-20, 'OPCIONES', { font: '32px Courier', fill: '#ffffff' });
-        this.controles.scaleX = 0.071;
-        this.controles.scaleY = 0.071;
+        this.tutorial = this.add.image(this.ancho*4/5,this.alto/3,'tutorial').setInteractive();
+        this.tutorial.scaleX = 0.071;
+        this.tutorial.scaleY = 0.071;
 
         //------SELECCIÓN DE PERSONAJE
         this.characterSelect = this.add.image(this.ancho*(2/4),this.alto*(20/60),'bt_seleccion_personaje').setScale(0.071);
@@ -212,12 +207,10 @@ class Menu extends Phaser.Scene {
 
     showMainMenu() {
       this.title.setAlpha(1);
-      this.title.text.setAlpha(1);
       this.jugar.setAlpha(1);
-      this.controles.setAlpha(1);
-      this.controles.text.setAlpha(1);
+      this.tutorial.setAlpha(1);
       this.jugar.setInteractive();
-      this.controles.setInteractive();
+      this.tutorial.setInteractive();
       //boton de jugar
       this.jugar.on('pointerup', function (pointer)
       {
@@ -225,8 +218,8 @@ class Menu extends Phaser.Scene {
         this.showCharSelectMenu(0);
       }, this);
 
-      //boton de controles
-      this.controles.on('pointerup', function (pointer)
+      //boton de tutorial
+      this.tutorial.on('pointerup', function (pointer)
       {
 
       }, this);
@@ -235,12 +228,10 @@ class Menu extends Phaser.Scene {
     disableMainMenu() {
       //Desactivar otros botones
       this.title.setAlpha(0);
-      this.title.text.setAlpha(0);
       this.jugar.disableInteractive();
       this.jugar.setAlpha(0);
-      this.controles.disableInteractive();
-      this.controles.setAlpha(0);
-      this.controles.text.setAlpha(0);
+      this.tutorial.disableInteractive();
+      this.tutorial.setAlpha(0);
     }
 
     showCharSelectMenu(iter) {
