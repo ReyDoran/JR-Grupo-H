@@ -41,8 +41,16 @@ En el manual se puede ver el funcionamiento y las mecanicas del juego
 
 ![](https://imgur.com/YIodtMt.jpeg)
 
+Si escogemos jugar deberemos primero elegir personaje
+
 ![](https://imgur.com/R3s066c.jpeg)
+
+Tambien deberemos elegir las habilidades que tendra este
+
 ![](https://imgur.com/7tlzCjm.jpeg)
+
+
+
 ![](https://imgur.com/iCOjhpE.jpeg)
 ![](https://imgur.com/rmsEi1W.png)
 
