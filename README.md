@@ -31,6 +31,8 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 
 # ----------------------------- Fase 2 -----------------------------
 
+![](https://imgur.com/rmsEi1W)
+
 Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
 Tomás Pérez Martínez - tomas22tomas@gmail.com - t.perez.2016@alumnos.urjc.es - Tovilu  
 Manuel Pérez Ramil - manetoscopio@gmail.com - m.perezra.2016@alumnos.urjc.es - ReyDoran  
