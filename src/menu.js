@@ -25,9 +25,9 @@ class Menu extends Phaser.Scene {
         this.load.image('bt_seleccion_habilidades', 'assets/botones/selecciona_habilidades.png');
         this.load.image('bt_volver', 'assets/botones/volver.png');
         this.load.image('cd_asustar', 'assets/cartas/asustar.png');
-        this.loag.image('cd_ralentizar', 'assets/cartas/.png');
-        this.loag.image('cd_invertir', 'assets/cartas/.png');
-        this.loag.image('cd_empujar', 'assets/cartas/.png');
+        this.load.image('cd_ralentizar', 'assets/cartas/.png');
+        this.load.image('cd_invertir', 'assets/cartas/.png');
+        this.load.image('cd_empujar', 'assets/cartas/.png');
     }
 
     create()
