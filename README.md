@@ -31,6 +31,12 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 
 # ----------------------------- Fase 2 -----------------------------
 
+![](https://imgur.com/gPbqT3C.jpeg)
+![](https://imgur.com/QmrAiac.jpeg)
+![](https://imgur.com/YIodtMt.jpeg)
+![](https://imgur.com/7tlzCjm.jpeg)
+![](https://imgur.com/R3s066c.jpeg)
+![](https://imgur.com/iCOjhpE.jpeg)
 ![](https://imgur.com/rmsEi1W.png)
 
 Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
