@@ -1,128 +1,171 @@
-//Menu principal
 'use strict'
+
+/*
+Escena menú principal.
+En esta escena se puede acceder a una partida y al bt_tutorial.
+Si seleccionas bt_play una partida te lleva por diferentes submenús para configurar la partida.
+Cuando ya se ha configurado todo, se llama a la escena cutscene
+*/
 class Menu extends Phaser.Scene {
-    constructor(){
-        super({key:"Menu"});
+    constructor() {
+        super({key:"menu"});
     }
 
-    preload()
-    {
-        //PLACEHOLDERS
-        this.load.image('char1','assets/personajes/play.png');
-        this.load.image('char2','assets/personajes/play2.png');
-        this.load.image('ability','assets/botones/jugar.png');
-        //assets
-        this.load.image('cementerio', 'assets/background/bg_cemetery.png');
-        this.load.image('frame', 'assets/background/bg_frame.png');
-        this.load.image('titulo', 'assets/botones/titulo.png');
-        this.load.image('jugar', 'assets/jugar.png');
-        this.load.image('tutorial', 'assets/botones/tutorial.png');
-        this.load.image('tutorial1', 'assets/background/tutorial1.png');
-        this.load.image('tutorial2', 'assets/background/tutorial2.png');
-        this.load.image('tutorial3', 'assets/background/tutorial3.png');
-        this.load.image('siguienteTuto', 'assets/botones/siguienteTuto.png');
-        this.load.image('volverMenu', 'assets/botones/volver.png')
-        this.load.image('bt_cazafantasmas', 'assets/botones/cazafantasmas.png');
-        this.load.image('bt_fantasmas', 'assets/botones/fantasma.png');
-        this.load.image('bt_jugar', 'assets/botones/jugar.png');
-        this.load.image('bt_listo', 'assets/botones/listo.png');
-        this.load.image('bt_salir', 'assets/botones/salir.png');
-        this.load.image('bt_seleccion_personaje', 'assets/botones/selecciona_bando.png');
-        this.load.image('bt_seleccion_habilidades', 'assets/botones/selecciona_habilidades.png');
-        this.load.image('bt_volver', 'assets/botones/volver.png');
-        this.load.image('cd_empujar', 'assets/cartas/empuja.png');
-        this.load.image('cd_invertir', 'assets/cartas/invierte.png');
-        this.load.image('cd_ralentizar', 'assets/cartas/ralentiza.png');
+    preload() {
+        //Background
+        this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
+        this.load.image('bg_frame', 'assets/background/bg_bg_frame.png');
+        //Imagenes
+        this.load.image('img_title', 'assets/images/img_title.png');
+        //Botones
+        this.load.image('bt_play', 'assets/buttons/bt_play.png');
+        this.load.image('bt_tutorial', 'assets/buttons/bt_tutorial.png');
+        this.load.image('bt_next', 'assets/buttons/bt_next.png');
+        this.load.image('bt_return', 'assets/buttons/bt_return.png')
+        this.load.image('bt_ghostbusters', 'assets/buttons/bt_ghostbusters.png');
+        this.load.image('bt_ghosts', 'assets/buttons/bt_ghosts.png');
+        this.load.image('bt_ready', 'assets/buttons/bt_ready.png');
+        this.load.image('bt_exit', 'assets/buttons/bt_exit.png');
+        this.load.image('img_teamSelect', 'assets/images/img_teamSelect.png');
+        this.load.image('img_abilitiesSelect', 'assets/images/img_abilitiesSelect.png');
+        this.load.image('bt_return', 'assets/buttons/bt_return.png');
+        //Cartas de habilidades
+        this.load.image('cd_force', 'assets/cards/cd_force.png');
+        this.load.image('cd_reverse', 'assets/cards/cd_reverse.png');
+        this.load.image('cd_slow', 'assets/cards/cd_slow.png');
+        //Imagenes bt_tutorial
+        this.load.image('img_tutorial1', 'assets/images/img_tutorial1.png');
+        this.load.image('img_tutorial2', 'assets/images/img_tutorial2.png');
+        this.load.image('img_tutorial3', 'assets/images/img_tutorial3.png');
     }
 
-    create()
-    {
-        //creación de las imágenes
-        this.ancho = this.game.canvas.width;
-        this.alto = this.game.canvas.height;
-
-        //Variable auxiliar
-        this.turn = player1Config;
-        this.play = false;
-        this.abilities = [false, false, false];
-        this.abilitiesIndex = [0, 0, 0];
-        this.abilitiesSelected = 0;
-        this.abilitiesMenu = false;
-        this.iter = 0;
-        this.ayuda = 0;//DEBug
-
-        //-----MENU PRINCIPAL
-        this.background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'cementerio');
+    /*
+    Crea todos los menús pero desabilita y pone alpha a 0 a todos menos al principal.
+    Cada menú se encarga de deshabilitarse y habilitar el siguiente cuando sea el momento.
+    */
+    create() {
+        //Pintamos el fondo
+        this.background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'bg_cemetery');
         this.background.scaleX = 0.26;
         this.background.scaleY = 0.26;
 
-        this.title = this.add.image(this.ancho/2,this.alto*15/20,'titulo').setScale(0.3);
 
-        this.jugar = this.add.image(this.ancho/5,this.alto/3,'bt_jugar').setInteractive();
-        this.jugar.scaleX = 0.071;
-        this.jugar.scaleY = 0.071;
+        //Variables auxiliares del menú de habilidades
+        this.abilities = [false, false, false]; //Guarda si una carta está seleccionada (indice coincide con posición en pantalla)
+        /*
+        Este array guarda las habilidades seleccionadas en orden de ronda.
+        El índice de abilitiesIndex representa la ronda en la que se va a usar (ya que se copia directo a las posiciones 1, 2 y 3 de playerXConfig)
+        El valor que contiene representa el índice por el que se le representa a esa habilidad en battle.js (0 slow, 1 force, 2 reverse)
+        */
+        this.abilitiesIndex = [0, 0, 0];
+        this.abilitiesSelected = 0; //Almacena el número de abilidades seleccionadas (3 el máximo)
+        this.abilitiesMenu = false; //Permite que se pueda pintar el botón de listo en 2 tonos de alpha (para cuando es posible clicarlo o no)
+        this.iter = 0;  //Almacena en que iteración de la configuración de partida estamos para asignar la configuracion a player1Config o player2Config
 
-        this.tutorial = this.add.image(this.ancho*4/5,this.alto/3,'tutorial').setInteractive();
-        this.tutorial.scaleX = 0.071;
-        this.tutorial.scaleY = 0.071;
 
-        //------TUTORIAL
-        this.tutorial1 = this.add.image(this.ancho/2, this.alto/2, 'tutorial1');
-        this.tutorial1.scaleX = 1.22;
-        this.tutorial1.scaleY = 1.26;
-        this.tutorial1.setAlpha(0);
-        this.tutorial2 = this.add.image(this.ancho/2, this.alto/2, 'tutorial2');
-        this.tutorial2.scaleX = 1.22;
-        this.tutorial2.scaleY = 1.26;
-        this.tutorial2.setAlpha(0);
-        this.tutorial3 = this.add.image(this.ancho/2, this.alto/2, 'tutorial3');
-        this.tutorial3.scaleX = 1.22;
-        this.tutorial3.scaleY = 1.26;
-        this.tutorial3.setAlpha(0);
-        this.siguienteTuto = this.add.image(this.ancho-245, this.alto-125, 'siguienteTuto').setScale(0.1);
-        this.siguienteTuto.setAlpha(0);
-        this.volverMenu = this.add.image(this.ancho/2, this.alto-125, 'volverMenu').setScale(0.1);
+        //MENU PRINCIPAL
+        this.title = this.add.image(gameWidth/2,gameHeight*15/20,'img_title').setScale(0.3);
+
+        this.bt_play = this.add.image(gameWidth/5,gameHeight/3,'bt_play').setInteractive();
+        this.bt_play.scaleX = 0.071;
+        this.bt_play.scaleY = 0.071;
+
+        this.bt_tutorial = this.add.image(gameWidth*4/5,gameHeight/3,'bt_tutorial').setInteractive();
+        this.bt_tutorial.scaleX = 0.071;
+        this.bt_tutorial.scaleY = 0.071;
+
+              //Boton de jugar
+      this.bt_play.on('pointerdown', function (pointer)
+      {
+        this.disableMainMenu();
+        this.showCharSelectMenu(0);
+      }, this);
+
+      //Boton de tutorial
+      this.bt_tutorial.on('pointerdown', function (pointer)
+      {
+        this.disableMainMenu();
+        this.showTutorial();
+      }, this);
+
+      this.bt_play.disableInteractive();
+      this.bt_tutorial.disableInteractive();
+
+
+        //TUTORIAL
+        this.bt_tutorial1 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial1');
+        this.bt_tutorial1.scaleX = 1.22;
+        this.bt_tutorial1.scaleY = 1.26;
+        this.bt_tutorial1.setAlpha(0);
+        this.bt_tutorial2 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial2');
+        this.bt_tutorial2.scaleX = 1.22;
+        this.bt_tutorial2.scaleY = 1.26;
+        this.bt_tutorial2.setAlpha(0);
+        this.bt_tutorial3 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial3');
+        this.bt_tutorial3.scaleX = 1.22;
+        this.bt_tutorial3.scaleY = 1.26;
+        this.bt_tutorial3.setAlpha(0);
+
+        this.next = this.add.image(gameWidth-245, gameHeight-125, 'bt_next').setScale(0.1);
+        this.next.setAlpha(0);
+
+        this.volverMenu = this.add.image(gameWidth/2, gameHeight-125, 'bt_return').setScale(0.1);
         this.volverMenu.setAlpha(0);
 
-        //------SELECCIÓN DE PERSONAJE
-        this.characterSelect = this.add.image(this.ancho*(2/4),this.alto*(20/60),'bt_seleccion_personaje').setScale(0.071);
-        this.characterSelect.setAlpha(0);
 
-        this.character1 = this.add.image(this.ancho*(1.1/4),this.alto*(40/60),'bt_cazafantasmas').setScale(0.071);
-        this.character1.setAlpha(0);
+        //SELECCIÓN DE EQUIPO
+        this.teamSelect = this.add.image(gameWidth*(2/4),gameHeight*(20/60),'img_teamSelect').setScale(0.071);
+        this.teamSelect.setAlpha(0);
 
-        this.character2 = this.add.image(this.ancho*(2.9/4),this.alto*(40/60),'bt_fantasmas').setScale(0.071);
-        this.character2.setAlpha(0);
-        this.character1.setInteractive();
-        this.character2.setInteractive();
-        this.character1.on('pointerdown', function (pointer)
+        this.ghostbusters = this.add.image(gameWidth*(1.1/4),gameHeight*(40/60),'bt_ghostbusters').setScale(0.071);
+        this.ghostbusters.setAlpha(0);
+        this.ghosts = this.add.image(gameWidth*(2.9/4),gameHeight*(40/60),'bt_ghosts').setScale(0.071);
+        this.ghosts.setAlpha(0);
+        this.ghostbusters.setInteractive();
+        this.ghosts.setInteractive();
+
+        /*
+        Al pulsarse cada uno de los dos botones, dependiendo de la iteración de la configuración de partida se actualiza:
+        El primer parámetro de playerXConfig a 0 o 1 dependiendo de la elección.
+        */
+        this.ghostbusters.on('pointerdown', function (pointer)
         {
           if (this.iter == 0) player1Config[0] = 0;
           if (this.iter == 0) player2Config[0] = 0;
           this.disableCharSelectMenu();
           this.showAbilitiesSelectMenu();
         }, this);
-        this.character2.on('pointerdown', function (pointer)
+        this.ghosts.on('pointerdown', function (pointer)
         {
           if (this.iter == 0) player1Config[0] = 1;
           if (this.iter == 1) player2Config[0] = 1;
           this.disableCharSelectMenu();
           this.showAbilitiesSelectMenu();
         }, this);
-        this.character1.disableInteractive();
-        this.character2.disableInteractive();
+        this.ghostbusters.disableInteractive();
+        this.ghosts.disableInteractive();
 
-        //---------SELECCION DE ABILIDADES
+
+        //SELECCION DE JABILIDADES
+        /*
+        Este menú tiene una característica especial. Tiene un texto encima de cada carta con un número.
+        El número representa la ronda en la que será usada.
+        Este texto se habilita, deshabilita y actualiza según sea necesario.
+        */
         this.offset = 10;
-        this.abilitySelect = this.add.image(this.ancho*(2/4),this.alto*(16/60),'bt_seleccion_habilidades').setScale(0.071);
-        this.ability0 = this.add.image(this.ancho/4, this.alto*(35/60), 'cd_ralentizar').setScale(1).setOrigin(0.5);
-        this.ability0.text = this.add.text(this.ancho/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-        this.ability1 = this.add.image(this.ancho*2/4, this.alto*(35/60), 'cd_empujar').setScale(1).setOrigin(0.5);
-        this.ability1.text = this.add.text(this.ancho*2/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-        this.ability2 = this.add.image(this.ancho*3/4, this.alto*(35/60), 'cd_invertir').setScale(1).setOrigin(0.5);
-        this.ability2.text = this.add.text(this.ancho*3/4-this.offset, this.alto*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-        this.ready = this.add.image(this.ancho*(7/8), this.alto*(6/7), 'bt_listo').setScale(0.045);
+
+        this.abilitySelect = this.add.image(gameWidth*(2/4),gameHeight*(16/60),'img_abilitiesSelect').setScale(0.071);
+
+        this.ability0 = this.add.image(gameWidth/4, gameHeight*(35/60), 'cd_slow').setScale(1).setOrigin(0.5);
+        this.ability0.text = this.add.text(gameWidth/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+        this.ability1 = this.add.image(gameWidth*2/4, gameHeight*(35/60), 'cd_force').setScale(1).setOrigin(0.5);
+        this.ability1.text = this.add.text(gameWidth*2/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+        this.ability2 = this.add.image(gameWidth*3/4, gameHeight*(35/60), 'cd_reverse').setScale(1).setOrigin(0.5);
+        this.ability2.text = this.add.text(gameWidth*3/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
+
+        this.ready = this.add.image(gameWidth*(7/8), gameHeight*(6/7), 'bt_ready').setScale(0.045);
         this.ready.setAlpha(0);
+
         this.abilitySelect.setAlpha(0);
         this.ability0.setAlpha(0);
         this.ability0.text.setAlpha(0);
@@ -131,9 +174,16 @@ class Menu extends Phaser.Scene {
         this.ability2.setAlpha(0);
         this.ability2.text.setAlpha(0);
 
+        //Para cada carta se ejecuta el siguiente código al pulsarla
         this.ability0.on('pointerdown', function (pointer)
         {
+          //Si está activa en abilities[x]
           if (this.abilities[0] == true) {
+            /*
+            Se desactivan todas las cartas seleccionadas.
+            Se pone a 0 el contador de habilidades seleccionadas.
+            Se oculta el texto de número de habilidad.
+            */
             this.abilitiesSelected = 0;
             this.abilities[1] = false;
             this.abilities[2] = false;
@@ -141,14 +191,23 @@ class Menu extends Phaser.Scene {
             this.ability1.text.setAlpha(0);
             this.ability2.text.setAlpha(0);
           }
+          //Si no está activa en abilities[x]
           else {
+            /*
+            Se guarda en abilitiesIndex, en la posición correspondiente a la ronda que se está eligiendo ahora el índice de habilidad 
+            por el que se le reconoce en la escena battle.
+            Se aumenta el número de habilidades seleccionadas.
+            Se actualiza el número de la carta y se muestra.
+            */
             this.abilitiesIndex[this.abilitiesSelected] = 0;
             this.abilitiesSelected++;
             this.ability0.text.setText(this.abilitiesSelected);
             this.ability0.text.setAlpha(1);
           }
+          //Cambiamos el estado de la selección de la carta
           this.abilities[0] = !this.abilities[0];
         }, this);
+
         this.ability1.on('pointerdown', function (pointer)
         {
           if (this.abilities[1] == true) {
@@ -167,6 +226,7 @@ class Menu extends Phaser.Scene {
           }
           this.abilities[1] = !this.abilities[1];
         }, this);
+
         this.ability2.on('pointerdown', function (pointer)
         {
           if (this.abilities[2] == true) {
@@ -185,12 +245,16 @@ class Menu extends Phaser.Scene {
           }
           this.abilities[2] = !this.abilities[2];
         }, this);
+
+        //Botón de continuar a la siguiente selección o de empezar juego
         this.ready.on('pointerdown', function (pointer)
         {
+          //Sólo funciona si se han seleccionado 3 habilidades
           if (this.abilitiesSelected == 3)
           {
+            //Impide que este botón se pinte
             this.abilitiesMenu = false;
-            //Actualizar las abilidades del jugador
+            //Actualizar las abilidades del jugador dependiendo de la iteración del menú
             if (this.iter == 0) {
               player1Config[1] = this.abilitiesIndex[0];
               player1Config[2] = this.abilitiesIndex[1];
@@ -201,100 +265,75 @@ class Menu extends Phaser.Scene {
               player2Config[2] = this.abilitiesIndex[1];
               player2Config[3] = this.abilitiesIndex[2];
             }
-            //Empezar partida si es la segunda iteracion
-            console.log('P1 ' + player1Config);
-            console.log('P2 ' + player2Config);
+            //Imprime por pantalla la configuración de cada jugador DEBUG
+            //console.log('P1 ' + player1Config);
+            //console.log('P2 ' + player2Config);
 
             this.disableAbilitiesSelectMenu();
+
+            //Si es la segunda iteración, comienza la partida. Si no vuelve al menú de selección de equipo (actualizando iter)
             if (this.iter == 1) {
-              this.scene.start("Video");
+              this.scene.start('cutscene');
             }
-            this.iter++;
-            this.showCharSelectMenu();
+            else {
+              this.showCharSelectMenu();  
+              this.iter++;
+            }
           }
         }, this);
+
+        //Llamamos a que se muestre el Main menú, ya que todos están deshabilitados.
         this.showMainMenu();
-    }
-
-
-    //Devuelve el n true de un array
-    getTrueIndex(ar, n) {
-      for (let i = 0; i < ar.length; i++)
-      {
-        if (ar[i] = true) n--;
-        if (n == 0) return i;
-      }
-      return -1;
     }
 
     showMainMenu() {
       this.title.setAlpha(1);
-      this.jugar.setAlpha(1);
-      this.tutorial.setAlpha(1);
-      this.jugar.setInteractive();
-      this.tutorial.setInteractive();
-      //boton de jugar
-      this.jugar.on('pointerdown', function (pointer)
-      {
-        this.disableMainMenu();
-        this.showCharSelectMenu(0);
-      }, this);
-
-      //boton de tutorial
-      this.tutorial.on('pointerdown', function (pointer)
-      {
-        this.disableMainMenu();
-        this.showTutorial();
-      }, this);
+      this.bt_play.setAlpha(1);
+      this.bt_tutorial.setAlpha(1);
+      this.bt_play.setInteractive();
+      this.bt_tutorial.setInteractive();
     }
 
     disableMainMenu() {
-      //Desactivar otros botones
       this.title.setAlpha(0);
-      this.jugar.disableInteractive();
-      this.jugar.setAlpha(0);
-      this.tutorial.disableInteractive();
-      this.tutorial.setAlpha(0);
+      this.bt_play.disableInteractive();
+      this.bt_play.setAlpha(0);
+      this.bt_tutorial.disableInteractive();
+      this.bt_tutorial.setAlpha(0);
     }
 
-    showCharSelectMenu(iter) {
-      //Crear el menu de seleccion de personaje
-      this.characterSelect.setAlpha(1);
-      this.characterSelect.setAlpha(1);
-      this.character1.setAlpha(1);
-      this.character2.setAlpha(1);
-      this.character1.setInteractive();
-      this.character2.setInteractive();
+    showCharSelectMenu() {
+      this.teamSelect.setAlpha(1);
+      this.teamSelect.setAlpha(1);
+      this.ghostbusters.setAlpha(1);
+      this.ghosts.setAlpha(1);
+      this.ghostbusters.setInteractive();
+      this.ghosts.setInteractive();
     }
 
     disableCharSelectMenu() {
-      //Desactivar otros botones
-      this.characterSelect.setAlpha(0);
-      this.character1.disableInteractive();
-      this.character1.setAlpha(0);
-      this.character2.disableInteractive();
-      this.character2.setAlpha(0);
+      this.teamSelect.setAlpha(0);
+      this.ghostbusters.disableInteractive();
+      this.ghostbusters.setAlpha(0);
+      this.ghosts.disableInteractive();
+      this.ghosts.setAlpha(0);
     }
 
     showAbilitiesSelectMenu() {
+      //Reinicia las variables auxiliares
       this.abilitiesSelected = 0;
       this.abilities = [false, false, false];
       this.abilitiesMenu = true;
-      //Activar el siguiente menú
+      //Habilita el menú
       this.abilitySelect.setAlpha(1);
       this.ability0.setAlpha(1);
       this.ability1.setAlpha(1);
       this.ability2.setAlpha(1);
-      //this.ability0text.setAlpha(1);
-      //this.ability1text.setAlpha(1);
-      //this.ability2text.setAlpha(1);
       this.ready.setAlpha(0.4);
       this.ability0.setInteractive();
       this.ability1.setInteractive();
       this.ability2.setInteractive();
       this.ready.setInteractive();
-
-      this.ayuda++;
     }
 
     disableAbilitiesSelectMenu() {
@@ -311,22 +350,22 @@ class Menu extends Phaser.Scene {
       this.ready.disableInteractive();
     }
 
-    showTutorial(){
+    showTutorial() {
       this.contador = 1;
-      this.tutorial1.setAlpha(1);
-      this.siguienteTuto.setAlpha(1);
-      this.siguienteTuto.setInteractive();
-      this.siguienteTuto.on('pointerdown', function (pointer)
+      this.bt_tutorial1.setAlpha(1);
+      this.next.setAlpha(1);
+      this.next.setInteractive();
+      this.next.on('pointerdown', function (pointer)
       {
         if (this.contador==1){
-          this.tutorial1.setAlpha(0);
-          this.tutorial2.setAlpha(1);
+          this.bt_tutorial1.setAlpha(0);
+          this.bt_tutorial2.setAlpha(1);
           this.contador++;
         } else if (this.contador==2){
-          this.tutorial2.setAlpha(0);
-          this.siguienteTuto.setAlpha(0);
-          this.siguienteTuto.disableInteractive();
-          this.tutorial3.setAlpha(1);
+          this.bt_tutorial2.setAlpha(0);
+          this.next.setAlpha(0);
+          this.next.disableInteractive();
+          this.bt_tutorial3.setAlpha(1);
           this.volverMenu.setAlpha(1);
           this.volverMenu.setInteractive();
         }
@@ -339,24 +378,25 @@ class Menu extends Phaser.Scene {
     }
 
     disableTutorial(){
-      this.tutorial1.setAlpha(0);
-      this.tutorial2.setAlpha(0);
-      this.tutorial3.setAlpha(0);
-      this.siguienteTuto.setAlpha(0);
-      this.siguienteTuto.disableInteractive();
+      this.bt_tutorial1.setAlpha(0);
+      this.bt_tutorial2.setAlpha(0);
+      this.bt_tutorial3.setAlpha(0);
+      this.next.setAlpha(0);
+      this.next.disableInteractive();
       this.volverMenu.setAlpha(0);
       this.volverMenu.disableInteractive();
     }
 
     update()
     {
+      //Cuando está seleccionada, una carta se tiñe de rojo
       if (this.abilities[0] == true) this.ability0.setTint(0xCD0000);
       else this.ability0.clearTint();
       if (this.abilities[1] == true) this.ability1.setTint(0xCD0000);
       else this.ability1.clearTint();
       if (this.abilities[2] == true) this.ability2.setTint(0xCD0000);
       else this.ability2.clearTint();
-
+      //Pone el alpha a 1 cuando se han seleccionado 3 cartas y a 0.4 cuando no, siempre que sea el momento de pintarlo (abilitiesMenu == true)
       if (this.abilitiesMenu == true && this.abilitiesSelected == 3) this.ready.setAlpha(1);
       else if (this.abilitiesMenu == true && this.abilitiesSelected != 3) this.ready.setAlpha(0.4);
       else this.ready.setAlpha(0);
