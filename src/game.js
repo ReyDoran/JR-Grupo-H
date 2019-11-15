@@ -1,12 +1,9 @@
 'use strict'
 
-var gameHeight = 720;
-var gameWidth = 1280;
-
 var config = {
     type: Phaser.AUTO,
-    width: gameWidth,
-    height: gameHeight,
+    width: 1280,
+    height: 720,
     physics: {
         default: 'matter',
         matter: {
@@ -27,7 +24,7 @@ var answer = 0;  //Almacena la respuesta del vídeo
 Las dos siguientes variables guardan el peronsaje y las habilidades escogidas por cada jugador.
 [0] = personaje; [1][2][3] = tres habilidades (en orden)
 */
-var player1Config = [0, 0, 0, 0];   
+var player1Config = [0, 0, 0, 0];
 var player2Config = [0, 0, 0, 0];
 var round = 0;  //Almacena el número de ronda
 
