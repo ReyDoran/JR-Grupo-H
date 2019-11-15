@@ -50,7 +50,7 @@ class Menu extends Phaser.Scene {
         this.bt_play.on('pointerdown', function (pointer)
         {
           this.disableMainMenu();
-          this.showCharSelectMenu(0);
+          this.showCharSelectMenu();
         }, this);
 
         //Boton de tutorial
@@ -69,9 +69,13 @@ class Menu extends Phaser.Scene {
         this.img_tutorial.scaleY = 1.26;
         this.img_tutorial.setAlpha(0);
 
-        this.return = this.add.image(gameWidth-100, gameHeight-100, 'bt_return').setScale(0.5);
-        this.return.setAlpha(0);
-
+        //Son return to ___
+        this.returnChar = this.add.image(gameWidth-100, gameHeight-100, 'bt_return').setScale(0.5);
+        this.returnChar.setAlpha(0);
+        this.returnAbi = this.add.image(gameWidth-100, gameHeight-100, 'bt_return').setScale(0.5);
+        this.returnAbi.setAlpha(0);
+        this.returnMenu = this.add.image(gameWidth-100, gameHeight-100, 'bt_return').setScale(0.5);
+        this.returnMenu.setAlpha(0);
 
         //SELECCIÓN DE EQUIPO
         this.teamSelect = this.add.image(gameWidth*(2/4),gameHeight*(20/60),'img_teamSelect').setScale(0.071);
@@ -91,7 +95,7 @@ class Menu extends Phaser.Scene {
         this.ghostbusters.on('pointerdown', function (pointer)
         {
           if (this.iter == 0) player1Config[0] = 0;
-          if (this.iter == 0) player2Config[0] = 0;
+          if (this.iter == 1) player2Config[0] = 0;
           this.disableCharSelectMenu();
           this.showAbilitiesSelectMenu();
         }, this);
@@ -102,9 +106,29 @@ class Menu extends Phaser.Scene {
           this.disableCharSelectMenu();
           this.showAbilitiesSelectMenu();
         }, this);
+        //Son return to ___
+        this.returnChar.on('pointerdown', function (pointer)
+        {
+          this.disableAbilitiesSelectMenu();
+          this.showCharSelectMenu();
+        }, this);
+        this.returnAbi.on('pointerdown', function (pointer)
+        {
+          this.iter--;
+          this.disableCharSelectMenu();
+          this.showAbilitiesSelectMenu();
+        }, this);
+        this.returnMenu.on('pointerdown', function (pointer)
+        {
+          this.disableTutorial();
+          this.disableCharSelectMenu();
+          this.showMainMenu();
+        }, this);
         this.ghostbusters.disableInteractive();
         this.ghosts.disableInteractive();
-
+        this.returnChar.disableInteractive();
+        this.returnAbi.disableInteractive();
+        this.returnMenu.disableInteractive();
 
         //SELECCION DE HABILIDADES
         /*
@@ -236,8 +260,8 @@ class Menu extends Phaser.Scene {
               this.scene.start('cutscene');
             }
             else {
-              this.showCharSelectMenu();
               this.iter++;
+              this.showCharSelectMenu();  
             }
           }
         }, this);
@@ -247,6 +271,8 @@ class Menu extends Phaser.Scene {
     }
 
     showMainMenu() {
+      console.log("Estoy en el menu");
+      console.log(this.iter);
       this.title.setAlpha(1);
       this.bt_play.setAlpha(1);
       this.bt_tutorial.setAlpha(1);
@@ -255,6 +281,8 @@ class Menu extends Phaser.Scene {
     }
 
     disableMainMenu() {
+      console.log("Salgo de menu");
+      console.log(this.iter);
       this.title.setAlpha(0);
       this.bt_play.disableInteractive();
       this.bt_play.setAlpha(0);
@@ -263,31 +291,39 @@ class Menu extends Phaser.Scene {
     }
 
     showCharSelectMenu() {
+      console.log("Estoy en equipos");
+      console.log(this.iter);
       this.teamSelect.setAlpha(1);
       this.ghostbusters.setAlpha(1);
       this.ghostbusters.setInteractive();
       this.ghosts.setAlpha(1);
       this.ghosts.setInteractive();
-      this.return.setAlpha(1);
-      this.return.setInteractive();
-      this.return.on('pointerdown', function (pointer)
-      {
-        this.disableCharSelectMenu();
-        this.showMainMenu();
-      }, this);
+      if (this.iter == 0){
+        this.returnMenu.setAlpha(1);
+        this.returnMenu.setInteractive();
+      } else {
+        this.returnAbi.setAlpha(1);
+        this.returnAbi.setInteractive();
+      }
     }
 
     disableCharSelectMenu() {
+      console.log("Salgo de equipos");
+      console.log(this.iter);
       this.teamSelect.setAlpha(0);
       this.ghostbusters.setAlpha(0);
       this.ghostbusters.disableInteractive();
       this.ghosts.setAlpha(0);
       this.ghosts.disableInteractive();
-      this.return.setAlpha(0);
-      this.return.disableInteractive();
+      this.returnMenu.setAlpha(0);
+      this.returnMenu.disableInteractive();
+      this.returnAbi.setAlpha(0);
+      this.returnAbi.disableInteractive();
     }
 
     showAbilitiesSelectMenu() {
+      console.log("Entro en habilidades");
+      console.log(this.iter);
       //Reinicia las variables auxiliares
       this.abilitiesSelected = 0;
       this.abilities = [false, false, false];
@@ -302,16 +338,14 @@ class Menu extends Phaser.Scene {
       this.ability2.setInteractive();
       this.ready.setAlpha(0.4);
       this.ready.setInteractive();
-      this.return.setAlpha(1);
-      this.return.setInteractive();
-      this.return.on('pointerdown', function (pointer)
-      {
-        this.disableAbilitiesSelectMenu();
-        this.showCharSelectMenu();
-      }, this);
+      this.returnChar.setAlpha(1);
+      this.returnChar.setInteractive();
     }
 
     disableAbilitiesSelectMenu() {
+      console.log("Salgo de habilidades");
+      console.log(this.iter);
+      this.abilitiesMenu = false;
       this.abilitySelect.setAlpha(0);
       this.ability0.setAlpha(0);
       this.ability0.text.setAlpha(0);
@@ -322,24 +356,22 @@ class Menu extends Phaser.Scene {
       this.ability0.disableInteractive();
       this.ability1.disableInteractive();
       this.ability2.disableInteractive();
+      this.ready.setAlpha(0);
       this.ready.disableInteractive();
+      this.returnChar.setAlpha(0);
+      this.returnChar.disableInteractive();
     }
 
     showTutorial() {
       this.img_tutorial.setAlpha(1);
-      this.return.setAlpha(1);
-      this.return.setInteractive();
-      this.return.on('pointerdown', function (pointer)
-      {
-        this.disableTutorial();
-        this.showMainMenu();
-      }, this);
+      this.returnMenu.setAlpha(1);
+      this.returnMenu.setInteractive();
     }
 
     disableTutorial(){
       this.img_tutorial.setAlpha(0);
-      this.return.setAlpha(0);
-      this.return.disableInteractive();
+      this.returnMenu.setAlpha(0);
+      this.returnMenu.disableInteractive();
     }
 
     update()
