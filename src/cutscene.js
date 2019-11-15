@@ -8,15 +8,7 @@ class Cutscene extends Phaser.Scene {
         super({key:"cutscene"});
     }
 
-    preload() {
-      //Actors
-      this.load.spritesheet('ch_blueGhostL', 'assets/characters/ch_blueGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-      this.load.spritesheet('ch_redGhostL', 'assets/characters/ch_redGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-      this.load.spritesheet('ch_ghostbusterL', 'assets/characters/ch_ghostbusterLateral.png',{ frameWidth: 3460/4, frameHeight: 5910/8});
-    	//Background
-      this.load.image('interior', 'assets/background/bg_interior.png');
-      this.load.image('frame', 'assets/background/bg_frame.png');
-    }
+    preload() {}
 
     create() {
       round++;  //Actualizamos la variable global de ronda
@@ -75,7 +67,7 @@ class Cutscene extends Phaser.Scene {
       //Timers para enseñar la pregunta y cambiar de escena.
       this.time.addEvent({ delay: this.paradeDuration + this.questionDelay, callback: this.showQuestion, callbackScope: this});
     	this.time.addEvent({ delay: this.paradeDuration + this.questionDelay + this.questionTime, callback: this.changeScene, callbackScope: this});
-      
+
       //Enseña la ronda que es (y lo quita en unos segundos)
       let msg = 'Ronda ' + (round);
       this.roundText = this.add.text(200, 200, msg, { font: '64px Courier', fill: '#ffffff' })

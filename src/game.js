@@ -1,9 +1,12 @@
 'use strict'
 
+var gameWidth = 1280;
+var gameHeight = 720;
+
 var config = {
     type: Phaser.AUTO,
-    width: 1280,
-    height: 720,
+    width: gameWidth,
+    height: gameHeight,
     physics: {
         default: 'matter',
         matter: {
@@ -12,7 +15,7 @@ var config = {
         }
     },
     //Orden de escenas
-    scene: [Menu,Cutscene,Battle]
+    scene: [Carga,Menu,Cutscene,Battle]
 };
 
 var game = new Phaser.Game(config);

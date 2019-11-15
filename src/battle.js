@@ -11,21 +11,7 @@ class Battle extends Phaser.Scene
 
     }
 
-    preload() {
-        //Personajes
-        this.load.spritesheet('ch_ghostbuster1', 'assets/characters/ch_ghostbuster.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-        this.load.spritesheet('ch_ghostbuster2', 'assets/characters/ch_ghostbuster.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });    //A cambiar por el nuevo sprite?
-        this.load.spritesheet('ch_blueGhost', 'assets/characters/ch_blueGhost.png',{ frameWidth: 1024/4, frameHeight: 1422/6 }); //rojo 1428
-        this.load.spritesheet('ch_redGhost', 'assets/characters/ch_redGhost.png',{ frameWidth: 1024/4, frameHeight: 1428/6 });
-
-        //2 Escenario
-        this.load.image('sp_tombstone', 'assets/props/sp_tombstone.png');
-        this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
-
-        //Debug
-        this.load.image('db_char1', 'assets/characters/db_char1.png');
-        this.load.image('db_char2', 'assets/characters/db_char2.png');
-    }
+    preload() {}
 
     /*
     Función que configura los jugadores y el mapa para usando físicas matter.js
@@ -81,7 +67,7 @@ class Battle extends Phaser.Scene
         this.tombstones = [this.add.image(gameWidth*(1/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
                             this.add.image(gameWidth*(3/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
                             this.add.image(gameWidth*(1/2),gameHeight*(1/4),'sp_tombstone').setOrigin(0.5).setScale(0.05)];
-        
+
         //Creamos el texto de cada tumba
         /*
         Creo un array con 2 números dentro de un rango diferentes a la respuesta (y entre sí)
@@ -248,7 +234,7 @@ class Battle extends Phaser.Scene
         //4 Temporizadores
         //Llama a una función al terminarse el tiempo de ronda
         this.timer = this.time.addEvent({ delay: 1000 * this.roundDuration, callback: this.endFunc, callbackScope: this});
-        
+
 
         //5 Interfaz: texto tiempo que queda y puntos
         this.tiempo = this.add.text(gameWidth*(1/15), gameHeight*(1/16), this.timer.getElapsed()/100, { font: '32px Courier', fill: '#ffffff' });
@@ -405,7 +391,7 @@ class Battle extends Phaser.Scene
         player.applyForce(accelerationVec); //Aplica la fuerza al personaje
     }
 
-    //Esta función devuelve si el jugador pasado como parámetro está dentro de la base pasada como parámetro en booleano    
+    //Esta función devuelve si el jugador pasado como parámetro está dentro de la base pasada como parámetro en booleano
     checkPosition(player, base)
     {
         let ret = false;
@@ -508,7 +494,7 @@ class Battle extends Phaser.Scene
             if(this.used1==true && this.moveKeys.esp.isDown)    //Si no ha sido usada la habilidad del j1 y se pulsa la tecla
             {
                 //Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
-                this.ability(this.ability1, 1, this.player1); 
+                this.ability(this.ability1, 1, this.player1);
                 this.used1=false;   //Actualiza la variable que almacena si la habilidad ha sido usada
             }
             if(this.used2==true && this.moveKeys.p.isDown)

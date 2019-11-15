@@ -11,33 +11,7 @@ class Menu extends Phaser.Scene {
         super({key:"menu"});
     }
 
-    preload() {
-        //Background
-        this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
-        this.load.image('bg_frame', 'assets/background/bg_bg_frame.png');
-        //Imagenes
-        this.load.image('img_title', 'assets/images/img_title.png');
-        //Botones
-        this.load.image('bt_play', 'assets/buttons/bt_play.png');
-        this.load.image('bt_tutorial', 'assets/buttons/bt_tutorial.png');
-        this.load.image('bt_next', 'assets/buttons/bt_next.png');
-        this.load.image('bt_return', 'assets/buttons/bt_return.png')
-        this.load.image('bt_ghostbusters', 'assets/buttons/bt_ghostbusters.png');
-        this.load.image('bt_ghosts', 'assets/buttons/bt_ghosts.png');
-        this.load.image('bt_ready', 'assets/buttons/bt_ready.png');
-        this.load.image('bt_exit', 'assets/buttons/bt_exit.png');
-        this.load.image('img_teamSelect', 'assets/images/img_teamSelect.png');
-        this.load.image('img_abilitiesSelect', 'assets/images/img_abilitiesSelect.png');
-        this.load.image('bt_return', 'assets/buttons/bt_return.png');
-        //Cartas de habilidades
-        this.load.image('cd_force', 'assets/cards/cd_force.png');
-        this.load.image('cd_reverse', 'assets/cards/cd_reverse.png');
-        this.load.image('cd_slow', 'assets/cards/cd_slow.png');
-        //Imagenes bt_tutorial
-        this.load.image('img_tutorial1', 'assets/images/img_tutorial1.png');
-        this.load.image('img_tutorial2', 'assets/images/img_tutorial2.png');
-        this.load.image('img_tutorial3', 'assets/images/img_tutorial3.png');
-    }
+    preload() {}
 
     /*
     Crea todos los menús pero desabilita y pone alpha a 0 a todos menos al principal.
@@ -48,7 +22,6 @@ class Menu extends Phaser.Scene {
         this.background = this.add.image(this.game.canvas.width/2+7, this.game.canvas.height/2, 'bg_cemetery');
         this.background.scaleX = 0.26;
         this.background.scaleY = 0.26;
-
 
         //Variables auxiliares del menú de habilidades
         this.abilities = [false, false, false]; //Guarda si una carta está seleccionada (indice coincide con posición en pantalla)
@@ -62,7 +35,6 @@ class Menu extends Phaser.Scene {
         this.abilitiesMenu = false; //Permite que se pueda pintar el botón de listo en 2 tonos de alpha (para cuando es posible clicarlo o no)
         this.iter = 0;  //Almacena en que iteración de la configuración de partida estamos para asignar la configuracion a player1Config o player2Config
 
-
         //MENU PRINCIPAL
         this.title = this.add.image(gameWidth/2,gameHeight*15/20,'img_title').setScale(0.3);
 
@@ -74,40 +46,28 @@ class Menu extends Phaser.Scene {
         this.bt_tutorial.scaleX = 0.071;
         this.bt_tutorial.scaleY = 0.071;
 
-              //Boton de jugar
-      this.bt_play.on('pointerdown', function (pointer)
-      {
-        this.disableMainMenu();
-        this.showCharSelectMenu(0);
-      }, this);
+        //Boton de jugar
+        this.bt_play.on('pointerdown', function (pointer)
+        {
+          this.disableMainMenu();
+          this.showCharSelectMenu(0);
+        }, this);
 
-      //Boton de tutorial
-      this.bt_tutorial.on('pointerdown', function (pointer)
-      {
-        this.disableMainMenu();
-        this.showTutorial();
-      }, this);
+        //Boton de tutorial
+        this.bt_tutorial.on('pointerdown', function (pointer)
+        {
+          this.disableMainMenu();
+          this.showTutorial();
+        }, this);
 
-      this.bt_play.disableInteractive();
-      this.bt_tutorial.disableInteractive();
-
+        this.bt_play.disableInteractive();
+        this.bt_tutorial.disableInteractive();
 
         //TUTORIAL
-        this.bt_tutorial1 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial1');
-        this.bt_tutorial1.scaleX = 1.22;
-        this.bt_tutorial1.scaleY = 1.26;
-        this.bt_tutorial1.setAlpha(0);
-        this.bt_tutorial2 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial2');
-        this.bt_tutorial2.scaleX = 1.22;
-        this.bt_tutorial2.scaleY = 1.26;
-        this.bt_tutorial2.setAlpha(0);
-        this.bt_tutorial3 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial3');
-        this.bt_tutorial3.scaleX = 1.22;
-        this.bt_tutorial3.scaleY = 1.26;
-        this.bt_tutorial3.setAlpha(0);
-
-        this.next = this.add.image(gameWidth-245, gameHeight-125, 'bt_next').setScale(0.1);
-        this.next.setAlpha(0);
+        this.img_tutorial = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial');
+        this.img_tutorial.scaleX = 1.22;
+        this.img_tutorial.scaleY = 1.26;
+        this.img_tutorial.setAlpha(0);
 
         this.volverMenu = this.add.image(gameWidth/2, gameHeight-125, 'bt_return').setScale(0.1);
         this.volverMenu.setAlpha(0);
@@ -146,7 +106,7 @@ class Menu extends Phaser.Scene {
         this.ghosts.disableInteractive();
 
 
-        //SELECCION DE JABILIDADES
+        //SELECCION DE HABILIDADES
         /*
         Este menú tiene una característica especial. Tiene un texto encima de cada carta con un número.
         El número representa la ronda en la que será usada.
@@ -194,7 +154,7 @@ class Menu extends Phaser.Scene {
           //Si no está activa en abilities[x]
           else {
             /*
-            Se guarda en abilitiesIndex, en la posición correspondiente a la ronda que se está eligiendo ahora el índice de habilidad 
+            Se guarda en abilitiesIndex, en la posición correspondiente a la ronda que se está eligiendo ahora el índice de habilidad
             por el que se le reconoce en la escena battle.
             Se aumenta el número de habilidades seleccionadas.
             Se actualiza el número de la carta y se muestra.
@@ -276,7 +236,7 @@ class Menu extends Phaser.Scene {
               this.scene.start('cutscene');
             }
             else {
-              this.showCharSelectMenu();  
+              this.showCharSelectMenu();
               this.iter++;
             }
           }
@@ -351,25 +311,9 @@ class Menu extends Phaser.Scene {
     }
 
     showTutorial() {
-      this.contador = 1;
-      this.bt_tutorial1.setAlpha(1);
-      this.next.setAlpha(1);
-      this.next.setInteractive();
-      this.next.on('pointerdown', function (pointer)
-      {
-        if (this.contador==1){
-          this.bt_tutorial1.setAlpha(0);
-          this.bt_tutorial2.setAlpha(1);
-          this.contador++;
-        } else if (this.contador==2){
-          this.bt_tutorial2.setAlpha(0);
-          this.next.setAlpha(0);
-          this.next.disableInteractive();
-          this.bt_tutorial3.setAlpha(1);
-          this.volverMenu.setAlpha(1);
-          this.volverMenu.setInteractive();
-        }
-      }, this);
+      this.img_tutorial.setAlpha(1);
+      this.volverMenu.setAlpha(1);
+      this.volverMenu.setInteractive();
       this.volverMenu.on('pointerdown', function (pointer)
       {
         this.disableTutorial();
@@ -378,11 +322,7 @@ class Menu extends Phaser.Scene {
     }
 
     disableTutorial(){
-      this.bt_tutorial1.setAlpha(0);
-      this.bt_tutorial2.setAlpha(0);
-      this.bt_tutorial3.setAlpha(0);
-      this.next.setAlpha(0);
-      this.next.disableInteractive();
+      this.img_tutorial.setAlpha(0);
       this.volverMenu.setAlpha(0);
       this.volverMenu.disableInteractive();
     }
