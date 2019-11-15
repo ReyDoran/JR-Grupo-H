@@ -14,7 +14,8 @@ class Carga extends Phaser.Scene {
       //Botones
       this.load.image('bt_play', 'assets/buttons/bt_play.png');
       this.load.image('bt_tutorial', 'assets/buttons/bt_tutorial.png');
-      this.load.image('bt_return', 'assets/buttons/bt_return.png')
+      this.load.image('bt_returnmenu', 'assets/buttons/bt_returnmenu.png');
+      this.load.image('bt_return', 'assets/buttons/bt_return.png');
       this.load.image('bt_ghostbusters', 'assets/buttons/bt_ghostbusters.png');
       this.load.image('bt_ghosts', 'assets/buttons/bt_ghosts.png');
       this.load.image('bt_ready', 'assets/buttons/bt_ready.png');

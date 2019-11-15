@@ -69,8 +69,8 @@ class Menu extends Phaser.Scene {
         this.img_tutorial.scaleY = 1.26;
         this.img_tutorial.setAlpha(0);
 
-        this.volverMenu = this.add.image(gameWidth/2, gameHeight-125, 'bt_return').setScale(0.1);
-        this.volverMenu.setAlpha(0);
+        this.return = this.add.image(gameWidth-100, gameHeight-100, 'bt_return').setScale(0.5);
+        this.return.setAlpha(0);
 
 
         //SELECCIÓN DE EQUIPO
@@ -123,7 +123,7 @@ class Menu extends Phaser.Scene {
         this.ability2 = this.add.image(gameWidth*3/4, gameHeight*(35/60), 'cd_reverse').setScale(1).setOrigin(0.5);
         this.ability2.text = this.add.text(gameWidth*3/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
 
-        this.ready = this.add.image(gameWidth*(7/8), gameHeight*(6/7), 'bt_ready').setScale(0.045);
+        this.ready = this.add.image(gameWidth/2, gameHeight*(6/7), 'bt_ready').setScale(0.045);
         this.ready.setAlpha(0);
 
         this.abilitySelect.setAlpha(0);
@@ -264,19 +264,27 @@ class Menu extends Phaser.Scene {
 
     showCharSelectMenu() {
       this.teamSelect.setAlpha(1);
-      this.teamSelect.setAlpha(1);
       this.ghostbusters.setAlpha(1);
-      this.ghosts.setAlpha(1);
       this.ghostbusters.setInteractive();
+      this.ghosts.setAlpha(1);
       this.ghosts.setInteractive();
+      this.return.setAlpha(1);
+      this.return.setInteractive();
+      this.return.on('pointerdown', function (pointer)
+      {
+        this.disableCharSelectMenu();
+        this.showMainMenu();
+      }, this);
     }
 
     disableCharSelectMenu() {
       this.teamSelect.setAlpha(0);
-      this.ghostbusters.disableInteractive();
       this.ghostbusters.setAlpha(0);
-      this.ghosts.disableInteractive();
+      this.ghostbusters.disableInteractive();
       this.ghosts.setAlpha(0);
+      this.ghosts.disableInteractive();
+      this.return.setAlpha(0);
+      this.return.disableInteractive();
     }
 
     showAbilitiesSelectMenu() {
@@ -287,13 +295,20 @@ class Menu extends Phaser.Scene {
       //Habilita el menú
       this.abilitySelect.setAlpha(1);
       this.ability0.setAlpha(1);
-      this.ability1.setAlpha(1);
-      this.ability2.setAlpha(1);
-      this.ready.setAlpha(0.4);
       this.ability0.setInteractive();
+      this.ability1.setAlpha(1);
       this.ability1.setInteractive();
+      this.ability2.setAlpha(1);
       this.ability2.setInteractive();
+      this.ready.setAlpha(0.4);
       this.ready.setInteractive();
+      this.return.setAlpha(1);
+      this.return.setInteractive();
+      this.return.on('pointerdown', function (pointer)
+      {
+        this.disableAbilitiesSelectMenu();
+        this.showCharSelectMenu();
+      }, this);
     }
 
     disableAbilitiesSelectMenu() {
@@ -312,9 +327,9 @@ class Menu extends Phaser.Scene {
 
     showTutorial() {
       this.img_tutorial.setAlpha(1);
-      this.volverMenu.setAlpha(1);
-      this.volverMenu.setInteractive();
-      this.volverMenu.on('pointerdown', function (pointer)
+      this.return.setAlpha(1);
+      this.return.setInteractive();
+      this.return.on('pointerdown', function (pointer)
       {
         this.disableTutorial();
         this.showMainMenu();
@@ -323,8 +338,8 @@ class Menu extends Phaser.Scene {
 
     disableTutorial(){
       this.img_tutorial.setAlpha(0);
-      this.volverMenu.setAlpha(0);
-      this.volverMenu.disableInteractive();
+      this.return.setAlpha(0);
+      this.return.disableInteractive();
     }
 
     update()
