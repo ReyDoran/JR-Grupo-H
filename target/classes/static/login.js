@@ -1,8 +1,8 @@
 'use strict'
 
-class Carga extends Phaser.Scene {
+class Login extends Phaser.Scene {
   constructor() {
-    super({key:"carga"});
+    super({key:"login"});
   }
   preload(){
     //MENU
@@ -39,7 +39,7 @@ class Carga extends Phaser.Scene {
     //BATTLE
       //Personajes
       this.load.spritesheet('ch_ghostbuster1', 'assets/characters/ch_ghostbuster.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-      this.load.spritesheet('ch_ghostbuster2', 'assets/characters/ch_ghostbuster.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });    //A cambiar por el nuevo sprite?
+      this.load.spritesheet('ch_ghostbuster2', 'assets/characters/ch_ghostbuster.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });    
       this.load.spritesheet('ch_blueGhost', 'assets/characters/ch_blueGhost.png',{ frameWidth: 1024/4, frameHeight: 1422/6 }); //rojo 1428
       this.load.spritesheet('ch_redGhost', 'assets/characters/ch_redGhost.png',{ frameWidth: 1024/4, frameHeight: 1428/6 });
       //2 Escenario
@@ -50,7 +50,9 @@ class Carga extends Phaser.Scene {
       this.load.image('db_char2', 'assets/characters/db_char2.png');
   }
 
-  create(){}
+  create(){
+	  
+  }
 
   update(){
     this.scene.start('menu');

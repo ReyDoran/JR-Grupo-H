@@ -268,11 +268,19 @@ class Menu extends Phaser.Scene {
 
         //Llamamos a que se muestre el Main menú, ya que todos están deshabilitados.
         this.showMainMenu();
+        
+        //Para prueba con el servidor. A sustiuír por botones de phaser.
+        this.serverTest = {
+            q:      this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            w:      this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            e:      this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
+            r:      this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
+        };
     }
 
     showMainMenu() {
-      console.log("Estoy en el menu");
-      console.log(this.iter);
+      //console.log("Estoy en el menu");
+      //console.log(this.iter);
       this.title.setAlpha(1);
       this.bt_play.setAlpha(1);
       this.bt_tutorial.setAlpha(1);
@@ -387,5 +395,63 @@ class Menu extends Phaser.Scene {
       if (this.abilitiesMenu == true && this.abilitiesSelected == 3) this.ready.setAlpha(1);
       else if (this.abilitiesMenu == true && this.abilitiesSelected != 3) this.ready.setAlpha(0.4);
       else this.ready.setAlpha(0);
+      
+      //Para probar el servidor. A sustituír por botones
+      if (this.serverTest.q.isDown) {
+    	  $.post({
+    		 //method: "POST",
+    		 url:"http://localhost:8080/users",
+    		 data: JSON.stringify({ "name": "ReyDoran" }),
+    		 //data: JSON.stringify({ "description": "prueba", "checked": true }),
+    		 processData: false,
+    		 headers: {
+    		 "Content-type":"application/json"
+    		 }
+    		 }).done(function() {
+    		 console.log("añadido");
+    		 }).fail(function(){
+    		 console.log("no añadido");
+    		 });
+      }
+      if (this.serverTest.w.isDown) {
+    	  $.ajax({
+    		 method: "POST",
+    		 url:"http://localhost:8080/users",
+    		 data: JSON.stringify({ "name": "DJainx" }),
+    		 processData: false,
+    		 headers: {
+    		 "Content-type":"application/json"
+    		 }
+    		 }).done(function() {
+    		 console.log("añadido");
+    		 }).fail(function(){
+    		 console.log("no añadido");
+    		 });
+      }
+      if (this.serverTest.e.isDown) {
+    	  //El ajax devuelve el JSON en un String
+    	  let JSONString = $.ajax({
+    		 method: "GET",
+    		 url:"http://localhost:8080/users",
+    		 processData: false,
+    		 headers: {
+    		 "Content-type":"application/json"
+    		 }
+    		 }).done(function(data) {
+    		 console.log(data);
+    		 }).fail(function(){
+    		 console.log("no añadido");
+    		 });
+    	  
+    	  //Pasa el String a objeto JSON
+    	  let JSONParsed = JSON.parse(JSONString);
+    	  
+    	  //Imprime los objetos users
+    	  console.log(JSONParsed);
+    	  //Lo siguiente no funciona, pero por ahí can los tiros 
+    	  console.log(Object.keys(JSONParsed).length);
+      }
     }
+    
+    
 }
