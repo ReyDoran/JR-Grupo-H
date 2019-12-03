@@ -1,0 +1,31 @@
+package es.urjc.code.juegosenred;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Rest {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Rest.class, args);
+	}
+}
+
+/*
+package es.urjc.code.juegosenred;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class RestEjer1ConUiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(RestEjer1ConUiApplication.class, args);
+	}
+}
+*/
