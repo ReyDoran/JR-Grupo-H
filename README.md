@@ -47,7 +47,7 @@ Si escogemos jugar deberemos primero elegir personaje.
 
 Tambien deberemos elegir las habilidades que tendra este.
 
-![](https://imgur.com/7tlzCjm.jpeg)
+![](https://imgur.com/0Tv4DHE)
 
 Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque no harán una pregunta.
 
