@@ -1,11 +1,14 @@
 package es.urjc.code.juegosenred;
 
+import java.util.Date;
+
 public class User {
 
 	private long id;
 	private String name;
 	private String pass;
 	private int score;
+	private Date lastOnline;
 
 	public User() {
 	}
@@ -17,11 +20,11 @@ public class User {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -29,7 +32,7 @@ public class User {
 	public void setPass(String pass) {
 		this.pass = pass;
 	}
-	
+
 	public String getPass() {
 		return pass;
 	}
@@ -37,25 +40,21 @@ public class User {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public int getScore() {
 		return score;
 	}
-	@Override
-	public String toString() {
-		return "User [id:" + id + ", name:" + name + ", score:" + score + "]";
+	
+	public Date getLastOnline() {
+		return lastOnline;
 	}
 
-	/**
-	 * M�todo para comprobar si son iguales
-	 */
-	@Override
-	public boolean equals(Object user) {
-		if (name.equals(((User)user).getName())) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	public void setLastOnline(Date lastOnline) {
+		this.lastOnline = lastOnline;
+	}
+	
+	public String toString() {
+		//return "User [id:" + id + ", name:" + name + ", score:" + score + ", date:" + online + "]";
+		return name;
 	}
 }

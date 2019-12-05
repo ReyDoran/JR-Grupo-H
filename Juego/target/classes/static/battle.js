@@ -16,25 +16,26 @@ class Battle extends Phaser.Scene
     /*
     Función que configura los jugadores y el mapa para usando físicas matter.js
     */
-    initMatterPhysics()
-    {
+    initMatterPhysics(){
         //Iniciar jugadores
         //Crear imagenes dependiendo de la configuración elegida
-        if(player1Config[0]==0)
-        {
-            this.player1 = this.matter.add.sprite(100, 300, 'ch_ghostbuster1').setScale(0.8);
-        }
-        else if(player1Config[0]==1)
-        {
+        if(player1Config[0]==0){
+            this.player1 = this.matter.add.sprite(100, 300, 'ch_ghostbusterM').setScale(0.8);
+        } else if(player1Config[0]==1){
+            this.player1 = this.matter.add.sprite(100, 300, 'ch_ghostbusterW').setScale(0.8);
+        } else if(player1Config[0]==2){
             this.player1 = this.matter.add.sprite(100, 300, 'ch_blueGhost').setScale(0.8);
+        } else if(player1Config[0]==3) {
+            this.player1 = this.matter.add.sprite(100, 300, 'ch_redGhost').setScale(0.8);
         }
 
-        if(player2Config[0]==0)
-        {
-            this.player2 = this.matter.add.sprite(400, 300, 'ch_ghostbuster2').setScale(0.8);
-        }
-        else if(player2Config[0]==1)
-        {
+        if(player2Config[0]==0){
+            this.player2 = this.matter.add.sprite(400, 300, 'ch_ghostbusterM').setScale(0.8);
+        } else if(player2Config[0]==1){
+            this.player2 = this.matter.add.sprite(400, 300, 'ch_ghostbusterW').setScale(0.8);
+        } else if(player2Config[0]==2){
+            this.player2 = this.matter.add.sprite(400, 300, 'ch_blueGhost').setScale(0.8);
+        } else if(player2Config[0]==3){
             this.player2 = this.matter.add.sprite(400, 300, 'ch_redGhost').setScale(0.8);
         }
 
@@ -62,12 +63,10 @@ class Battle extends Phaser.Scene
     /*
     Función que añade al mapa  tumbas con numeros diferentes, asignando la correcta a basebuena
     */
-    initTombstones()
-    {
+    initTombstones(){
         this.tombstones = [this.add.image(gameWidth*(1/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
                             this.add.image(gameWidth*(3/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
                             this.add.image(gameWidth*(1/2),gameHeight*(1/4),'sp_tombstone').setOrigin(0.5).setScale(0.05)];
-
         //Creamos el texto de cada tumba
         /*
         Creo un array con 2 números dentro de un rango diferentes a la respuesta (y entre sí)
@@ -75,14 +74,12 @@ class Battle extends Phaser.Scene
         */
         let numbers = [answer, 0, 0];
         let rand = numbers[0];
-        while (rand == numbers[0] || rand < 0)  //Mientras ya se encuentre en el array, genera otro
-        {
+        while (rand == numbers[0] || rand < 0){ //Mientras ya se encuentre en el array, genera otro
             rand = answer + Math.trunc(Math.random()*(this.answerVariation+1)) - Math.trunc(Math.random()*(this.answerVariation+1));
         }
         numbers[1] = rand;
         rand = numbers[0];
-        while (rand == numbers[0] || rand == numbers[1] || rand < 0)
-        {
+        while (rand == numbers[0] || rand == numbers[1] || rand < 0){
             rand = answer + Math.trunc(Math.random()*(this.answerVariation+1)) - Math.trunc(Math.random()*(this.answerVariation+1));
         }
         numbers[2] = rand;
@@ -90,30 +87,25 @@ class Battle extends Phaser.Scene
         //Añade le texto a la tumba escogiendo aleatoriamente los numeros del array en las tumbas.
         let aux;
         aux = Math.trunc(Math.random()*numbers.length);
-        if (numbers[aux] == answer)
-        {
+        if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[0];
         }
-        this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '16px Courier', fill: '#ffffff' });
+        this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
         numbers.splice(aux, 1); //Elimina del array para no volver a escogerlo
         aux = Math.trunc(Math.random()*numbers.length);
-        if (numbers[aux] == answer)
-        {
+        if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[1];
         }
-        this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '16px Courier', fill: '#ffffff' });
+        this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
         numbers.splice(aux, 1);
         aux = Math.trunc(Math.random()*numbers.length);
-        if (numbers[aux] == answer)
-        {
+        if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[2];
         }
-        this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '16px Courier', fill: '#ffffff' });
+        this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
     }
 
-
-    create()
-    {
+    create(){
         //1 Inicialización de variables
         //1.1 Variables configurables
         this.roundDuration = 20;  //En segundos
@@ -150,69 +142,69 @@ class Battle extends Phaser.Scene
         this.initMatterPhysics();
 
         //2.2 Animaciones
-        if(player1Config[0]==0)
-        {
-            if (this.ghostbuster1anim == null)
-            {
-                this.ghostbuster1anim = this.anims.create({
-                    key: 'ch_ghostbuster1',
-                    frames: this.anims.generateFrameNumbers('ch_ghostbuster1', { start: 0, end: 23
-                    }),
+        if(player1Config[0]==0 || player2Config[0]==0){
+            if (this.ghostbusterManim == null){
+                this.ghostbusterManim = this.anims.create({
+                    key: 'ch_ghostbusterM',
+                    frames: this.anims.generateFrameNumbers('ch_ghostbusterM'),
                     frameRate: 24,
                     repeat: -1
                 })
             }
-            this.player1.anims.play('ch_ghostbuster1');
-            this.ghostbuster1anim.pause();
+            if(player1Config[0]==0){
+              this.player1.play('ch_ghostbusterM');
+            } else {
+              this.player2.play('ch_ghostbusterM');
+            }
+            this.ghostbusterManim.pause();
         }
-        if(player1Config[0]==1)
-        {
-            if (this.ghost1anim == null)
-            {
-                this.ghost1anim = this.anims.create({
+        if(player1Config[0]==1 || player2Config[0]==1){
+            if (this.ghostbusterWanim == null){
+                this.ghostbusterWanim = this.anims.create({
+                    key: 'ch_ghostbusterW',
+                    frames: this.anims.generateFrameNumbers('ch_ghostbusterW'),
+                    frameRate: 24,
+                    repeat: -1
+                })
+            }
+            if(player1Config[0]==1){
+              this.player1.play('ch_ghostbusterW');
+            } else {
+              this.player2.play('ch_ghostbusterW');
+            }
+            this.ghostbusterWanim.pause();
+        }
+        if(player1Config[0]==2 || player2Config[0]==2){
+            if (this.blueGhostanim == null){
+                this.blueGhostanim = this.anims.create({
                     key: 'ch_blueGhost',
-                    frames: this.anims.generateFrameNumbers('ch_blueGhost', { start: 0, end: 23
-                    }),
+                    frames: this.anims.generateFrameNumbers('ch_blueGhost', { start: 0, end: 23}),
                     frameRate: 24,
                     repeat: -1
                 })
             }
-
-            this.player1.anims.play('ch_blueGhost');
-            this.ghost1anim.pause();
-        }
-
-        if(player2Config[0]==0)
-        {
-            if (this.ghostbuster2anim == null)
-            {
-                this.ghostbuster2anim = this.anims.create({
-                    key: 'ch_ghostbuster2',
-                    frames: this.anims.generateFrameNumbers('ch_ghostbuster2', { start: 0, end: 23
-                    }),
-                    frameRate: 24,
-                    repeat: -1
-                })
+            if(player1Config[0]==2){
+              this.player1.play('ch_blueGhost');
+            } else {
+              this.player2.play('ch_blueGhost');
             }
-
-            this.player2.anims.play('ch_ghostbuster2');
-            this.ghostbuster2anim.pause();
+            this.blueGhostanim.pause();
         }
-        if(player2Config[0]==1)
-        {
-            if (this.ghost2anim == null)
-            {
-                this.ghost2anim = this.anims.create({
+        if(player1Config[0]==3 || player2Config[0]==3){
+            if (this.redGhostanim == null){
+                this.redGhostanim = this.anims.create({
                     key: 'ch_redGhost',
-                    frames: this.anims.generateFrameNumbers('ch_redGhost', { start: 0, end: 23
-                    }),
+                    frames: this.anims.generateFrameNumbers('ch_redGhost', { start: 0, end: 23}),
                     frameRate: 24,
                     repeat: -1
                 })
             }
-
-            this.player2.anims.play('ch_redGhost');
-            this.ghost2anim.pause();
+            if(player1Config[0]==3){
+              this.player1.play('ch_redGhost');
+            } else {
+              this.player2.play('ch_redGhost');
+            }
+            this.redGhostanim.pause();
         }
 
 
@@ -237,152 +229,105 @@ class Battle extends Phaser.Scene
 
 
         //5 Interfaz: texto tiempo que queda y puntos
-        this.tiempo = this.add.text(gameWidth*(1/15), gameHeight*(1/16), this.timer.getElapsed()/100, { font: '32px Courier', fill: '#ffffff' });
-        this.add.text(gameWidth*(7/8), gameHeight*(1/16), 'J1=' + points[0] + ' J2=' + points[1], { font: '24px Courier', fill: '#ffffff' });
+        this.tiempo = this.add.text(gameWidth*(1/15), gameHeight*(1/16), this.timer.getElapsed()/100, { font: '64px Caveat Brush', fill: '#ffffff' });
     }
 
     //Resetea el multiplicador y el rebote del j1
-    restartEffect1()
-    {
+    restartEffect1(){
         this.effect2 = 1;
         this.player2.setBounce(0.9);
     }
 
     //Resetea el multiplicador y el rebote del j2
-    restartEffect2()
-    {
+    restartEffect2(){
         this.effect1 = 1;
         this.player1.setBounce(0.9);
     }
 
     //Reduce a la mitad la velocidad de movimiento del jugador indicado por el parámetro (1 = j2, otro = j1)
-    slow(j)
-    {
-        if(j==1)
-        {
+    slow(j){
+        if(j==1){
             this.effect2 = 1/2;
-        }
-        else
-        {
+        } else {
             this.effect1 = 1/2;
         }
     }
 
     //Aumenta el rebote del jugador pasado como parámetro
-    force(player)
-    {
+    force(player){
         player.setBounce(2.0);
     }
 
     //Invierte los controles del jugador pasado como parámetro (1 = j2, otro = j1)
-    reverse(j)
-    {
-        if(j==1)
-        {
+    reverse(j){
+        if(j==1){
             this.effect2 = -1;
-        }
-        else
-        {
+        } else{
              this.effect1 = -1;
         }
     }
 
     //Aumenta la velocidad de movimiento del jugador pasado como parámetro (1 = j2, otro = j1)
-    frighten(j)
-    {
-        if(j==1)
-        {
+    frighten(j){
+        if(j==1){
             this.effect2 = 5;
-        }
-        else
-        {
+        } else{
             this.effect1 = 5;
         }
     }
 
-    ability(habil,j,player)
-    {
-        if(habil == 0)
-        {
+    ability(habil,j,player){
+        if(habil == 0){
             this.slow(j);
-        }
-        else if(habil == 1)
-        {
+        } else if(habil == 1){
             this.force(player);
-        }
-        else if(habil == 2)
-        {
+        } else if(habil == 2){
             this.reverse(j);
-        }
-        else if(habil == 3)
-        {
+        } else if(habil == 3){
             this.frighten(j);
-        }
-        else if(habil == 4)
-        {
+        } else if(habil == 4){
             this.reverse(j);
         }
 
         //Temporalizador para las habilidades
-        if(j==1)
-        {
+        if(j==1){
             this.timerhability1 = this.time.addEvent({ delay: 1000 * this.ability1Duration, callback: this.restartEffect1, callbackScope: this});
-        }
-        else
-        {
+        } else{
             this.timerhability2 = this.time.addEvent({ delay: 1000 * this.ability2Duration, callback: this.restartEffect2, callbackScope: this});
         }
     }
 
     //Calcula la dirección a la que debe apuntar el sprite
-    calculateRotation(player, vector2D)
-    {
+    calculateRotation(player, vector2D){
         let angulo = 0;
-        if (vector2D[0]>0 && vector2D[1]>0)
-        {
+        if (vector2D[0]>0 && vector2D[1]>0){
             angulo = 135;
-        }
-        else if(vector2D[0]<0 && vector2D[1]>0)
-        {
+        } else if(vector2D[0]<0 && vector2D[1]>0){
             angulo = -135;
-        }
-        else if(vector2D[0]>0 && vector2D[1]<0)
-        {
+        } else if(vector2D[0]>0 && vector2D[1]<0){
             angulo = 45;
-        }
-        else if(vector2D[0]<0 && vector2D[1]<0)
-        {
+        } else if(vector2D[0]<0 && vector2D[1]<0){
             angulo = -45;
-        }
-        else if(vector2D[0]>0 && vector2D[1]==0)
-        {
+        } else if(vector2D[0]>0 && vector2D[1]==0){
             angulo = 90;
-        }
-        else if(vector2D[0]<0 && vector2D[1]==0)
-        {
+        } else if(vector2D[0]<0 && vector2D[1]==0){
             angulo = -90;
-        }
-        else if(vector2D[0]==0 && vector2D[1]>0)
-        {
+        } else if(vector2D[0]==0 && vector2D[1]>0){
             angulo = 180;
-        }
-        else if(vector2D[0]==0 && vector2D[1]<0)
-        {
+        } else if(vector2D[0]==0 && vector2D[1]<0){
             angulo = 0;
         }
         player.setAngle(angulo);
     }
 
     //Da fuerza al jugador dependiendo de las teclas que pulsa y de los efectos de habilidades y llama a calculateRotation()
-    calculateForces(player, keyUp, keyLeft, keyDown, keyRight, efect, dist)
-    {
+    calculateForces(player, keyUp, keyLeft, keyDown, keyRight, efect, dist){
         let angle;
         //Calcula el vector de aceleración
         let acceleration = [efect*(this.force * keyRight.isDown - this.force * keyLeft.isDown), efect*(this.force * keyDown.isDown - this.force * keyUp.isDown)];
         this.calculateRotation(player, acceleration);   //Actualiza el ángulo del sprite
         //Creo que para una habilidad aún no terminada
-        if(efect == 5)
-        {
+        if(efect == 5){
             let modulo = Math.sqrt(dist[0]*dist[0] + dist[1]*dist[1]);
             acceleration = [this.force*dist[0]/modulo, force*dist[1]/modulo];
         }
@@ -392,118 +337,92 @@ class Battle extends Phaser.Scene
     }
 
     //Esta función devuelve si el jugador pasado como parámetro está dentro de la base pasada como parámetro en booleano
-    checkPosition(player, base)
-    {
+    checkPosition(player, base){
         let ret = false;
-        if (player.x < base.x + base.width/2*0.05 && player.x > base.x - base.width/2*0.05) //Comprueba x
-        {
+        if (player.x < base.x + base.width/2*0.05 && player.x > base.x - base.width/2*0.05){ //Comprueba x
             ret = true;
-        }
-        if (player.y < base.y + base.height/2*0.05 && player.y > base.y - base.height/2*0.05)   //Comprueba y
-        {
+        } if (player.y < base.y + base.height/2*0.05 && player.y > base.y - base.height/2*0.05){ //Comprueba y
             ret = ret && true;
-        }
-        else {
+        } else {
             ret = false;
         }
         return ret;
     }
 
     //Actualiza los puntos y avisa por pantalla del ganador de la ronda.
-    actualizePoints()
-    {
-        if (this.checkPosition(this.player1, this.correctTombstone))
-        {
-            this.roundEndText1 = this.add.text(gameWidth*(2/60), gameHeight*(3/5), 'Un punto para el jugador 1', { font: '32px Courier', fill: '#ffffff' });
+    actualizePoints(){
+        if (this.checkPosition(this.player1, this.correctTombstone)){
+            this.roundEndText1 = this.add.text(gameWidth*(2/60), gameHeight*(3/5), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
             points[0]++;
-        }
-        if (this.checkPosition(this.player2, this.correctTombstone))
-        {
-            this.roundEndText2 = this.add.text(gameWidth*(2/60), gameHeight*(4/5), 'Un punto para el jugador 2', { font: '32px Courier', fill: '#ffffff' });
+        } if (this.checkPosition(this.player2, this.correctTombstone)){
+            this.roundEndText2 = this.add.text(gameWidth*(2/60), gameHeight*(4/5), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
             points[1]++;
         }
     }
 
     //Llama a actualizar los puntos, para a los jugadores, actualiza variables y pone un temporizador para cambiar de escena
-    endFunc()
-    {
+    endFunc(){
         this.tiempo.setText(0); //Mostrar contador a 0
         //Muestra el mensaje de fin de ronda
-        this.roundEndText0 = this.add.text(gameWidth*(1/6), gameHeight*(2/5), 'Se acabó el tiempo', { font: '64px Courier', fill: '#ffffff' });
+        this.roundEndText0 = this.add.text(gameWidth*(1/6), gameHeight*(2/5), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
         this.roundEnd = true;
         this.freeze();  //Congela a los jugadores
         this.actualizePoints(); //Actualiza los puntos y avisa de quien ha ganado
         this.time.addEvent({ delay: 4000, callback: this.changeScene, callbackScope: this});    //Pone un temporizador para la llamada a la función de cambio de escena
-
     }
 
     //Cambia de escena dependiendo de si es la útlima ronda o no y avisa del ganador en caso de que haya.
-    changeScene()
-    {
+    changeScene(){
         let msg;
-        if (round == 3) //Si es la última ronda
-        {
+        if (round == 3){
             //Borra los mensajes anteriores de final de ronda
             if (this.roundEndText0 != undefined) this.roundEndText0.setAlpha(0);
             if (this.roundEndText1 != undefined) this.roundEndText1.setAlpha(0);
             if (this.roundEndText2 != undefined) this.roundEndText2.setAlpha(0);
             //Imprime si ha habido ganador/es
-            if (points[0] > points[1])
-            {
+            if (points[0] > points[1]){
                 msg = 'Ha ganado el jugador 1';
-            }
-            else if (points[1] > points[0])
-            {
+            } else if (points[1] > points[0]){
                 msg = 'Ha ganado el jugador 2';
-            }
-            else {
+            } else {
                 msg = 'Ha habido un empate';
             }
-            this.add.text(50, gameHeight/2, msg, { font: '60px Courier', fill: '#ffffff' });
+            this.add.text(gameWidth*(4/10), gameHeight/2, msg, { font: '60px Caveat Brush', fill: '#ffffff' });
             this.time.addEvent({delay:4000, callback: this.restart, callbackScope: this});  //Prepara la función de cambio de escena
         }
         //En caso de no ser la última ronda pone otra cinemática
         else {
             this.scene.start('cutscene');
         }
-
     }
 
     //Reinicia el juego poniendo a 0 el contador de ronda y llamando a la escena de menú principal
-    restart()
-    {
+    restart(){
         round = 0;
         this.scene.start('menu');
     }
 
     //Para el movimiento de los jugadores
-    freeze()
-    {
+    freeze(){
         this.player1.setVelocity(0);
         this.player2.setVelocity(0);
         this.player1.setAngularVelocity(0);
         this.player2.setAngularVelocity(0);
     }
 
-    update()
-    {
+    update(){
         //Mientras no haya terminado la ronda
-        if (!this.roundEnd)
-        {
+        if (!this.roundEnd){
             this.tiempo.setText(Math.trunc(this.roundDuration-this.timer.getElapsedSeconds())); //Actualiza el contador
-            if(this.used1==true && this.moveKeys.esp.isDown)    //Si no ha sido usada la habilidad del j1 y se pulsa la tecla
-            {
+            if(this.used1==true && this.moveKeys.esp.isDown){
                 //Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
                 this.ability(this.ability1, 1, this.player1);
                 this.used1=false;   //Actualiza la variable que almacena si la habilidad ha sido usada
             }
-            if(this.used2==true && this.moveKeys.p.isDown)
-            {
+            if(this.used2==true && this.moveKeys.p.isDown){
                 this.ability(this.ability2, 2, this.player2);
                 this.used2=false;
             }
-
-
             this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
             this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
             this.dist = [-this.dist[0],-this.dist[1]];
@@ -511,24 +430,67 @@ class Battle extends Phaser.Scene
         }
 
         //Control de animación
-        if(player1Config[0]==0)
-        {
+        if(player1Config[0]==0){
             //Si hay movimiento seguir con la animación
-            if (!this.ghostbuster1anim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-                this.ghostbuster1anim.resume();
+            if (!this.ghostbusterManim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+                this.ghostbusterManim.resume();
             }
             //Si el movimiento es muy bajo parar la animación
             if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-                this.ghostbuster1anim.pause();
+                this.ghostbusterManim.pause();
+            }
+        } else if (player1Config[0]==1) {
+            if (!this.ghostbusterWanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+                this.ghostbusterWanim.resume();
+            }
+            if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+                this.ghostbusterWanim.pause();
+            }
+        } else if (player1Config[0]==2) {
+            if (!this.blueGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+                this.blueGhostanim.resume();
+            }
+            if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+                this.blueGhostanim.pause();
+            }
+        } else if (player1Config[0]==3) {
+            if (!this.redGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+                this.redGhostanim.resume();
+            }
+            if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+                this.redGhostanim.pause();
             }
         }
-        if(player2Config[0]==0)
-        {
-            if (!this.ghostbuster2anim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
-                this.ghostbuster2anim.resume();
+
+        if(player2Config[0]==0){
+            //Si hay movimiento seguir con la animación
+            if (!this.ghostbusterManim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+                this.ghostbusterManim.resume();
+            }
+            //Si el movimiento es muy bajo parar la animación
+            if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+                this.ghostbusterManim.pause();
+            }
+        } else if (player2Config[0]==1) {
+            if (!this.ghostbusterWanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+                this.ghostbusterWanim.resume();
             }
             if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
-                this.ghostbuster2anim.pause();
+                this.ghostbusterWanim.pause();
+            }
+        } else if (player2Config[0]==2) {
+            if (!this.blueGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+                this.blueGhostanim.resume();
+            }
+            if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+                this.blueGhostanim.pause();
+            }
+        } else if (player2Config[0]==3) {
+            if (!this.redGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+                this.redGhostanim.resume();
+            }
+            if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+                this.redGhostanim.pause();
             }
         }
     }

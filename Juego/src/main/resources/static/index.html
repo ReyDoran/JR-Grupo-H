@@ -4,27 +4,50 @@
         <meta charset="UTF-8" />
         <script src = "phaser.js"></script>
         <script src = "http://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<title>TeAcuerdasDe</title>
-		<style type="text/css">
-			html, body {
-	    		height: 100%;
-			}
-			html {
-	    		display: table;
-	    		margin: auto;
-			}
-
-			body {
-	    		display: table-cell;
-	    		vertical-align: middle;
-			}
-		</style>
+        <link href="https://fonts.googleapis.com/css?family=Caveat+Brush&display=swap" rel="stylesheet">
+  		<title>TeAcuerdasDe</title>
+  		<style type="text/css">
+  			html, body{
+  	    		height: 100%;
+  			}
+  			html{
+  	    		display: table;
+  	    		width: 50%;
+  	    		margin: auto;
+  			}
+  			body{
+  	    		display: table-cell;
+  	    		vertical-align: middle;
+  			}
+  			input{
+      			position: relative;
+      			top: 50%;
+      			left: 35%;
+    		}
+        #chat{
+          position: relative;
+          top: 80%;
+          left: 5%;
+        }
+        #butChat
+        {
+          position: relative;
+          top: 80%;
+          left: 5%;
+        }
+  		</style>
     </head>
     <body>
-        <script src = "login.js"></script>
-        <script src = "menu.js"></script>
-        <script src = "cutscene.js"></script>
-        <script src = "battle.js"></script>
-        <script src = "game.js"></script>
+      <input type="text" id="name" placeholder="Usuario" name="name" required>
+	    <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
+      <input type="submit" id="butLogIn" value="Iniciar sesión">
+      <input type="submit" id="butSignUp" value="Registrarse">
+      <input type="text" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
+      <input type="submit" id="butChat" value="Enviar">
+      <script src = "login.js"></script>
+      <script src = "menu.js"></script>
+      <script src = "cutscene.js"></script>
+      <script src = "battle.js"></script>
+      <script src = "game.js"></script>
     </body>
 </html>
