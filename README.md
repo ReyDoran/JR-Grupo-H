@@ -81,7 +81,7 @@ Tras esto, la pantalla de selección de habilidades es bastante parecida a la an
 En la parte de la cinemática hemos cambiado el tipo de fuente y el tamaño de las preguntas, para hacer más visible estas.
 ![](https://i.imgur.com/bb3vPbb.png)
 
-
+Finalmente la nueva pantalla de juego, que ha sufrido múltiples cambios para mejorar su aspecto y funcionalidad.
 
 
 
