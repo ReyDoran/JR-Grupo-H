@@ -57,6 +57,35 @@ Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habr
 
 ![](https://imgur.com/rmsEi1W.png)
 
+# ----------------------------- Fase 3 -----------------------------
+
+En esta tercera fase hemos cambiado muchas cosas en el apartado estético, hemos cambiado toda la interfaz por completo, tanto la de in game como la de los distintos menús, hemos aprovechado la televisión que hay en el juego, para aprovecharla como nexo proncipal entre las distintas pantallas.
+Nada más empezar hemos implementado un vídeo a modo de introducción del juego que de pie a la pantalla con el título, a continuación la pantalla con el título.
+
+![](https://imgur.com/a/jboIeFQ)
+Una vez avanzas la pantalla, accedes al nuevo menú principal con las opciones de jugar, on line, tutorial. 
+![](https://imgur.com/a/jboIeFQ)
+
+En esta tercera fase hemos cambiado por completo el tutorial, seguiendo las sugerencias recibidas tras la presentación de la anterior fase.
+![](https://imgur.com/a/nqxRhe4)
+
+Una vez le damos a jugar, en la nueva pantalla de selección de personaje aparecen los 4 personajes disponibles, además hemos mejorado la parte de respuestas visuales para la parte del usuario.
+![](https://imgur.com/a/tL5BZ4J)
+
+
+Tras esto, la pantalla de selección de habilidades es bastante parecida a la anterior, aún asíhemos cambiado algo el diseño de las cartas.
+![](https://imgur.com/a/nQPZhTH)
+
+En la parte de la cinemática hemos cambiado el tipo de fuente y el tamaño de las preguntas, para hacer más visible estas.
+![](https://imgur.com/gallery/BZbWRgF)
+
+
+
+
+
+
+
+
 Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
 Tomás Pérez Martínez - tomas22tomas@gmail.com - t.perez.2016@alumnos.urjc.es - Tovilu  
 Manuel Pérez Ramil - manetoscopio@gmail.com - m.perezra.2016@alumnos.urjc.es - ReyDoran  
