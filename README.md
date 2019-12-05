@@ -83,7 +83,7 @@ En la parte de la cinemática hemos cambiado el tipo de fuente y el tamaño de l
 
 Finalmente la nueva pantalla de juego, que ha sufrido múltiples cambios para mejorar su aspecto y funcionalidad.
 
-
+![](https://i.imgur.com/zoeGQvD.png)
 
 
 
