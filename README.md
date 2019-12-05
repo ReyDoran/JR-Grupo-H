@@ -59,25 +59,27 @@ Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habr
 
 # ----------------------------- Fase 3 -----------------------------
 
-En esta tercera fase hemos cambiado muchas cosas en el apartado estético, hemos cambiado toda la interfaz por completo, tanto la de in game como la de los distintos menús, hemos aprovechado la televisión que hay en el juego, para aprovecharla como nexo proncipal entre las distintas pantallas.
-Nada más empezar hemos implementado un vídeo a modo de introducción del juego que de pie a la pantalla con el título, a continuación la pantalla con el título.
+En esta tercera fase hemos cambiado muchas cosas en el apartado estético, hemos cambiado toda la interfaz por completo, tanto la de in-game como la de los distintos menús, hemos aprovechado la televisión que hay en el juego, para aprovecharla como nexo principal entre las distintas pantallas.
+Nada más empezar hemos implementado un vídeo a modo de introducción del juego que de pie a la pantalla con el título, a continuación,
+la pantalla .
 
-![](https://imgur.com/a/jboIeFQ.png)
-Una vez avanzas la pantalla, accedes al nuevo menú principal con las opciones de jugar, on line, tutorial. 
-![](https://imgur.com/a/jboIeFQ)
+![](https://i.imgur.com/Mz7RBgp.png)
 
-En esta tercera fase hemos cambiado por completo el tutorial, seguiendo las sugerencias recibidas tras la presentación de la anterior fase.
-![](https://imgur.com/a/nqxRhe4)
+Una vez avanzas la pantalla, accedes al nuevo menú principal con las opciones de jugar, on line y tutorial. 
 
-Una vez le damos a jugar, en la nueva pantalla de selección de personaje aparecen los 4 personajes disponibles, además hemos mejorado la parte de respuestas visuales para la parte del usuario.
-![](https://imgur.com/a/tL5BZ4J)
+![](https://i.imgur.com/a9vqgm9.png)
 
+En esta tercera fase hemos cambiado por completo el tutorial, siguiendo las sugerencias recibidas tras la presentación de la anterior fase.
+![](https://i.imgur.com/byDtPdc.png)
 
-Tras esto, la pantalla de selección de habilidades es bastante parecida a la anterior, aún asíhemos cambiado algo el diseño de las cartas.
-![](https://imgur.com/0Tv4DHE)
+Una vez le damos a jugar, en la nueva pantalla de selección de personaje aparecen los 4 personajes disponibles, además hemos mejorado la parte de respuestas visuales para la parte de usuario.
+![](https://i.imgur.com/QBTqkMe.png)
+
+Tras esto, la pantalla de selección de habilidades es bastante parecida a la anterior, aún así hemos cambiado algo el diseño de las cartas.
+![](https://i.imgur.com/0Tv4DHE.png)
 
 En la parte de la cinemática hemos cambiado el tipo de fuente y el tamaño de las preguntas, para hacer más visible estas.
-![](https://imgur.com/gallery/BZbWRgF)
+![](https://i.imgur.com/bb3vPbb.png)
 
 
 
