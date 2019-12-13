@@ -19,24 +19,35 @@ class Battle extends Phaser.Scene
     initMatterPhysics(){
         //Iniciar jugadores
         //Crear imagenes dependiendo de la configuración elegida
+        let widthPos1 = gameWidth*5.5/14;
+        let widthPos2 = gameWidth*8.5/14;
+
         if(player1Config[0]==0){
-            this.player1 = this.matter.add.sprite(100, 300, 'ch_ghostbusterM').setScale(0.8);
+            this.player1 = this.matter.add.sprite(widthPos1, gameHeight/2, 'ch_ghostbusterM').setScale(0.8);
+            this.iconP1 = this.add.image(widthPos1, gameHeight/9, 'ch_ghostbusterMFace');
         } else if(player1Config[0]==1){
-            this.player1 = this.matter.add.sprite(100, 300, 'ch_ghostbusterW').setScale(0.8);
+            this.player1 = this.matter.add.sprite(widthPos1, gameHeight/2, 'ch_ghostbusterW').setScale(0.8);
+            this.iconP1 = this.add.image(widthPos1, gameHeight/9, 'ch_ghostbusterWFace');
         } else if(player1Config[0]==2){
-            this.player1 = this.matter.add.sprite(100, 300, 'ch_blueGhost').setScale(0.8);
+            this.player1 = this.matter.add.sprite(widthPos1, gameHeight/2, 'ch_blueGhost').setScale(0.8);
+            this.iconP1 = this.add.image(widthPos1, gameHeight/9, 'ch_blueGhostFace');
         } else if(player1Config[0]==3) {
-            this.player1 = this.matter.add.sprite(100, 300, 'ch_redGhost').setScale(0.8);
+            this.player1 = this.matter.add.sprite(widthPos1, gameHeight/2, 'ch_redGhost').setScale(0.8);
+            this.iconP1 = this.add.image(widthPos1, gameHeight/9, 'ch_redGhostFace');
         }
 
         if(player2Config[0]==0){
-            this.player2 = this.matter.add.sprite(400, 300, 'ch_ghostbusterM').setScale(0.8);
+            this.player2 = this.matter.add.sprite(widthPos2, gameHeight/2, 'ch_ghostbusterM').setScale(0.8);
+            this.iconP2 = this.add.image(widthPos2, gameHeight/9, 'ch_ghostbusterMFace').setFlip(true);
         } else if(player2Config[0]==1){
-            this.player2 = this.matter.add.sprite(400, 300, 'ch_ghostbusterW').setScale(0.8);
+            this.player2 = this.matter.add.sprite(widthPos2, gameHeight/2, 'ch_ghostbusterW').setScale(0.8);
+            this.iconP2 = this.add.image(widthPos2, gameHeight/9, 'ch_ghostbusterWFace').setFlip(true);
         } else if(player2Config[0]==2){
-            this.player2 = this.matter.add.sprite(400, 300, 'ch_blueGhost').setScale(0.8);
+            this.player2 = this.matter.add.sprite(widthPos2, gameHeight/2, 'ch_blueGhost').setScale(0.8);
+            this.iconP2 = this.add.image(widthPos2, gameHeight/9, 'ch_blueGhostFace').setFlip(true);
         } else if(player2Config[0]==3){
-            this.player2 = this.matter.add.sprite(400, 300, 'ch_redGhost').setScale(0.8);
+            this.player2 = this.matter.add.sprite(widthPos2, gameHeight/2, 'ch_redGhost').setScale(0.8);
+            this.iconP2 = this.add.image(widthPos2, gameHeight/9, 'ch_redGhostFace').setFlip(true);
         }
 
         //Añadir colisión circular
@@ -64,9 +75,9 @@ class Battle extends Phaser.Scene
     Función que añade al mapa  tumbas con numeros diferentes, asignando la correcta a basebuena
     */
     initTombstones(){
-        this.tombstones = [this.add.image(gameWidth*(1/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
-                            this.add.image(gameWidth*(3/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05),
-                            this.add.image(gameWidth*(1/2),gameHeight*(1/4),'sp_tombstone').setOrigin(0.5).setScale(0.05)];
+        this.tombstones = [this.add.image(gameWidth*(1/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
+                            this.add.image(gameWidth*(3/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
+                            this.add.image(gameWidth*(1/2),gameHeight*(2/5),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90)];
         //Creamos el texto de cada tumba
         /*
         Creo un array con 2 números dentro de un rango diferentes a la respuesta (y entre sí)
@@ -90,19 +101,19 @@ class Battle extends Phaser.Scene
         if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[0];
         }
-        this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
+        this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
         numbers.splice(aux, 1); //Elimina del array para no volver a escogerlo
         aux = Math.trunc(Math.random()*numbers.length);
         if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[1];
         }
-        this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
+        this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
         numbers.splice(aux, 1);
         aux = Math.trunc(Math.random()*numbers.length);
         if (numbers[aux] == answer){
             this.correctTombstone = this.tombstones[2];
         }
-        this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '16px Caveat Brush', fill: '#ffffff' });
+        this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
     }
 
     create(){
@@ -128,18 +139,44 @@ class Battle extends Phaser.Scene
         this.ability2Duration = 5;
 
         //boolean que dice si la habilidad ha sido usada o no
-        this.used1=true;
-        this.used2=true;
-
-        //distancia entre jugadores
-        this.dist = [0,0];
-
+        this.used1=false;
+        this.used2=false;
 
         //2 Creacion de sprites. Los instanciados más tarde se pintarán por encima.
         //2.1 Estáticos
         this.add.image(gameWidth/2, gameHeight/2, 'bg_cemetery').setOrigin(0.5).setScale(0.26);
         this.initTombstones();
         this.initMatterPhysics();
+
+        let habPos = [0, gameWidth/14, gameWidth*2.5/14, gameWidth*4/14, 0, gameWidth*10/14, gameWidth*11.5/14, gameWidth*13/14];
+        let cardsHeight = gameHeight/9;
+
+        this.crossH1P1 = this.add.image(habPos[1], cardsHeight, 'img_cross').setAlpha(0);
+        this.crossH2p1 = this.add.image(habPos[2], cardsHeight, 'img_cross').setAlpha(0);
+        this.crossh3P1 = this.add.image(habPos[3], cardsHeight, 'img_cross').setAlpha(0);
+        this.crossH1P2 = this.add.image(habPos[5], cardsHeight, 'img_cross').setAlpha(0);
+        this.crossH2P2 = this.add.image(habPos[6], cardsHeight, 'img_cross').setAlpha(0);
+        this.crossH3P2 = this.add.image(habPos[7], cardsHeight, 'img_cross').setAlpha(0);
+
+        let i;
+        for (i=1; i<4; i++){
+          if(player1Config[i]==0){
+            this.slowCardP1 = this.add.image(habPos[i], cardsHeight, 'cd_slow_ig').setScale(0.3);
+          } else if (player1Config[i] == 1) {
+            this.forceCardP1 = this.add.image(habPos[i], cardsHeight, 'cd_force_ig').setScale(0.3);
+          } else if (player1Config[i] == 2) {
+            this.reverseCardP1 = this.add.image(habPos[i], cardsHeight, 'cd_reverse_ig').setScale(0.3);
+          }
+
+          if(player2Config[i]==0){
+            this.slowCardP2 = this.add.image(habPos[i+4], cardsHeight, 'cd_slow_ig').setScale(0.3);
+          } else if (player2Config[i]==1){
+            this.forceCardP2 = this.add.image(habPos[i+4], cardsHeight, 'cd_force_ig').setScale(0.3);
+          } else if (player2Config[i]==2) {
+            this.reverseCardP2 = this.add.image(habPos[i+4], cardsHeight, 'cd_reverse_ig').setScale(0.3);
+          }
+        }
+
 
         //2.2 Animaciones
         if(player1Config[0]==0 || player2Config[0]==0){
@@ -229,7 +266,7 @@ class Battle extends Phaser.Scene
 
 
         //5 Interfaz: texto tiempo que queda y puntos
-        this.tiempo = this.add.text(gameWidth*(1/15), gameHeight*(1/16), this.timer.getElapsed()/100, { font: '64px Caveat Brush', fill: '#ffffff' });
+        this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), this.timer.getElapsed()/100, { font: '64px Caveat Brush', fill: '#ffffff' });
     }
 
     //Resetea el multiplicador y el rebote del j1
@@ -414,14 +451,14 @@ class Battle extends Phaser.Scene
         //Mientras no haya terminado la ronda
         if (!this.roundEnd){
             this.tiempo.setText(Math.trunc(this.roundDuration-this.timer.getElapsedSeconds())); //Actualiza el contador
-            if(this.used1==true && this.moveKeys.esp.isDown){
+            if(this.used1==false && this.moveKeys.esp.isDown){
                 //Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
                 this.ability(this.ability1, 1, this.player1);
-                this.used1=false;   //Actualiza la variable que almacena si la habilidad ha sido usada
+                this.used1=true;   //Actualiza la variable que almacena si la habilidad ha sido usada
             }
-            if(this.used2==true && this.moveKeys.p.isDown){
+            if(this.used2==false && this.moveKeys.p.isDown){
                 this.ability(this.ability2, 2, this.player2);
-                this.used2=false;
+                this.used2=true;
             }
             this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
             this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);

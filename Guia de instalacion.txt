@@ -1,0 +1,3 @@
+Para ejecutar el servidor tad.jar, escribir "java -jar tad.jar" en la cmd. 
+Para conectarse escribir la url "localhost:8080" desde el mismo pc. Para conectarse 
+desde otro pc escribir en la URL la ip del pc que ejecute el servidor seguido del puerto :8080.

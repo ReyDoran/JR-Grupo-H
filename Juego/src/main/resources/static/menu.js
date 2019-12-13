@@ -24,52 +24,7 @@ class Menu extends Phaser.Scene {
       super({key:"menu"});
   }
 
-  preload() {
-	  //MENU
-    	//Background
-      this.load.image('bg_black', 'assets/background/1280x720-black-solid-color-background.jpg');
-      this.load.image('bg_frame', 'assets/background/bg_frame.png');
-      this.load.image('bg_square', 'assets/background/bg_square.png');
-      this.load.spritesheet('bg_estatica', 'assets/background/bg_estatica.png', { frameWidth: 1280, frameHeight: 720});
-    	//Botones
-    	this.load.image('bt_play', 'assets/buttons/bt_play.png');
-      this.load.image('bt_online', 'assets/buttons/bt_online.png');
-    	this.load.image('bt_tutorial', 'assets/buttons/bt_tutorial.png');
-    	this.load.image('bt_return', 'assets/buttons/bt_return.png');
-    	this.load.image('bt_ghostbusterM', 'assets/buttons/bt_ghostbusterM.png');
-      this.load.image('bt_ghostbusterW', 'assets/buttons/bt_ghostbusterW.png');
-    	this.load.image('bt_blueGhost', 'assets/buttons/bt_blueGhost.png');
-      this.load.image('bt_redGhost', 'assets/buttons/bt_redGhost.png');
-    	this.load.image('bt_ready', 'assets/buttons/bt_ready.png');
-    	this.load.image('bt_exit', 'assets/buttons/bt_exit.png');
-    	this.load.image('img_teamSelect', 'assets/images/img_teamSelect.png');
-    	this.load.image('img_abilitiesSelect', 'assets/images/img_abilitiesSelect.png');
-      this.load.image('img_player1', 'assets/images/img_player1.png');
-      this.load.image('img_player2', 'assets/images/img_player2.png');
-    	//Cartas de habilidades
-    	this.load.image('cd_force', 'assets/cards/cd_force.png');
-    	this.load.image('cd_reverse', 'assets/cards/cd_reverse.png');
-    	this.load.image('cd_slow', 'assets/cards/cd_slow.png');
-    	//Imagen tutorial
-    	this.load.image('img_tutorial', 'assets/images/img_tutorial.png');
-    //CUTSCENE
-    	//Actors
-    	this.load.spritesheet('ch_blueGhostL', 'assets/characters/ch_blueGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-    	this.load.spritesheet('ch_redGhostL', 'assets/characters/ch_redGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-    	this.load.spritesheet('ch_ghostbusterL', 'assets/characters/ch_ghostbusterLateral.png',{ frameWidth: 3460/4, frameHeight: 5910/8});
-    	//Background
-    	this.load.image('interior', 'assets/background/bg_interior.png');
-    	this.load.image('frame', 'assets/background/bg_frame.png');
-    //BATTLE
-    	//Personajes
-    	this.load.spritesheet('ch_ghostbusterM', 'assets/characters/ch_ghostbusterM.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-    	this.load.spritesheet('ch_ghostbusterW', 'assets/characters/ch_ghostbusterW.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-    	this.load.spritesheet('ch_blueGhost', 'assets/characters/ch_blueGhost.png',{ frameWidth: 950/4, frameHeight: 1422/6 });
-    	this.load.spritesheet('ch_redGhost', 'assets/characters/ch_redGhost.png',{ frameWidth: 950/4, frameHeight: 1428/6 });
-    	//2 Escenario
-    	this.load.image('sp_tombstone', 'assets/props/sp_tombstone.png');
-    	this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
-  }
+  preload() {}
 
   /*
   Crea todos los menús pero desabilita y pone alpha a 0 a todos menos al principal.
@@ -110,23 +65,26 @@ class Menu extends Phaser.Scene {
       //Boton de tutorial
       this.bt_tutorial.on('pointerdown', function (pointer){
         this.disableMainMenu();
-        this.showTutorial();
+        this.showTutorial1();
       }, this);
 
       this.bt_play.disableInteractive();
       this.bt_tutorial.disableInteractive();
 
       //TUTORIAL
-      this.img_tutorial = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial');
-      this.img_tutorial.setAlpha(0);
+      this.img_tutorial1 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial1');
+      this.img_tutorial1.setAlpha(0);
+      this.img_tutorial2 = this.add.image(gameWidth/2, gameHeight/2, 'img_tutorial2');
+      this.img_tutorial2.setAlpha(0);
 
       //Son return to ___
-      this.returnChar = this.add.image(gameWidth*10/50, gameHeight*7/50, 'bt_return').setAlpha(0);
-      this.returnChar.setAngle(-20);
-      this.returnAbi = this.add.image(gameWidth*10/50, gameHeight*7/50, 'bt_return').setAlpha(0);
-      this.returnAbi.setAngle(-20);
-      this.returnMenu = this.add.image(gameWidth*10/50, gameHeight*7/50, 'bt_return').setAlpha(0);
-      this.returnMenu.setAngle(-20);
+      this.returnChar = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
+      this.returnAbi = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
+      this.returnMenu = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
+      this.returnTuto = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
+
+      this.nextTuto = this.add.image(gameWidth*43/50, gameHeight*9/50, 'bt_advance').setAlpha(0).setScale(0.7);
+      this.nextMenu = this.add.image(gameWidth*43/50, gameHeight*9/50, 'bt_advance').setAlpha(0).setScale(0.7);
 
       //SELECCIÓN DE EQUIPO
       this.teamSelect = this.add.image(gameWidth*(2/4),gameHeight*(14/60),'img_teamSelect');
@@ -200,8 +158,23 @@ class Menu extends Phaser.Scene {
       }, this);
 
       this.returnMenu.on('pointerdown', function (pointer){
-        this.disableTutorial();
+        this.disableTutorial1();
         this.disableCharSelectMenu();
+        this.showMainMenu();
+      }, this);
+
+      this.returnTuto.on('pointerdown', function (pointer){
+        this.disableTutorial2();
+        this.showTutorial1();
+      }, this);
+
+      this.nextTuto.on('pointerdown', function (pointer){
+        this.disableTutorial1();
+        this.showTutorial2();
+      }, this);
+
+      this.nextMenu.on('pointerdown', function (pointer){
+        this.disableTutorial2();
         this.showMainMenu();
       }, this);
 
@@ -223,14 +196,14 @@ class Menu extends Phaser.Scene {
 
       this.abilitySelect = this.add.image(gameWidth*(2/4),gameHeight*(16/60),'img_abilitiesSelect');
 
-      this.ability0 = this.add.image(gameWidth/4, gameHeight*(35/60), 'cd_slow').setScale(1).setOrigin(0.5);
+      this.ability0 = this.add.image(gameWidth/4, gameHeight*(35/60), 'cd_slow').setScale(0.7).setOrigin(0.5);
       this.ability0.text = this.add.text(gameWidth/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-      this.ability1 = this.add.image(gameWidth*2/4, gameHeight*(35/60), 'cd_force').setScale(1).setOrigin(0.5);
+      this.ability1 = this.add.image(gameWidth*2/4, gameHeight*(35/60), 'cd_force').setScale(0.7).setOrigin(0.5);
       this.ability1.text = this.add.text(gameWidth*2/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
-      this.ability2 = this.add.image(gameWidth*3/4, gameHeight*(35/60), 'cd_reverse').setScale(1).setOrigin(0.5);
+      this.ability2 = this.add.image(gameWidth*3/4, gameHeight*(35/60), 'cd_reverse').setScale(0.7).setOrigin(0.5);
       this.ability2.text = this.add.text(gameWidth*3/4-this.offset, gameHeight*(35/60), this.abilitiesSelected + 1, { font: '32px Courier', fill: '#ffffff' });
 
-      this.ready = this.add.image(gameWidth/2, gameHeight*(6/7), 'bt_ready').setScale(0.045);
+      this.ready = this.add.image(gameWidth/2, gameHeight*(17/20), 'bt_ready');
       this.ready.setAlpha(0);
 
       this.abilitySelect.setAlpha(0);
@@ -347,8 +320,6 @@ class Menu extends Phaser.Scene {
       //Llamamos a que se muestre el Main menú, ya que todos están deshabilitados.
       this.showMainMenu();
 
-      //this.time.addEvent({ delay: 10000, callback: function() {this.scene.start('login');}, callbackScope: this});
-
       //Interfaz por encima de casi todo
       this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
       this.anims.create({
@@ -359,7 +330,7 @@ class Menu extends Phaser.Scene {
       });
       this.bg_estatica.play('bg_estatica_anim');
 
-      this.TVBorder = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
+      this.TVBorder = this.add.image(gameWidth/2, gameHeight/2, 'bg_frame');
   }
 
   showMainMenu() {
@@ -468,16 +439,36 @@ class Menu extends Phaser.Scene {
     this.returnChar.disableInteractive();
   }
 
-  showTutorial() {
-    this.img_tutorial.setAlpha(1);
+  showTutorial1() {
+    this.img_tutorial1.setAlpha(1);
     this.returnMenu.setAlpha(1);
     this.returnMenu.setInteractive();
+    this.nextTuto.setAlpha(1);
+    this.nextTuto.setInteractive();
   }
 
-  disableTutorial(){
-    this.img_tutorial.setAlpha(0);
+  disableTutorial1(){
+    this.img_tutorial1.setAlpha(0);
     this.returnMenu.setAlpha(0);
     this.returnMenu.disableInteractive();
+    this.nextTuto.setAlpha(0);
+    this.nextTuto.disableInteractive();
+  }
+
+  showTutorial2() {
+    this.img_tutorial2.setAlpha(1);
+    this.returnTuto.setAlpha(1);
+    this.returnTuto.setInteractive();
+    this.nextMenu.setAlpha(1);
+    this.nextMenu.setInteractive();
+  }
+
+  disableTutorial2(){
+    this.img_tutorial2.setAlpha(0);
+    this.returnTuto.setAlpha(0);
+    this.returnTuto.disableInteractive();
+    this.nextMenu.setAlpha(0);
+    this.nextMenu.disableInteractive();
   }
 
   update(){
