@@ -12,7 +12,6 @@ class Intro extends Phaser.Scene {
     this.load.on('complete', function () {
       console.log('complete');
     });
-
     //INTRO
       this.load.image('img_title','assets/images/img_title.png')
     //MENU
@@ -88,12 +87,6 @@ class Intro extends Phaser.Scene {
     this.bg_estatica.play('bg_estatica_anim');
 
     this.TVBorder = this.add.image(gameWidth/2, gameHeight/2, 'bg_frame');
-
-    //Eliminar el video de introHTML
-    this.time.addEvent({ delay: 12000, callback: function() {
-      var introElem = document.getElementById('introHTML');
-      introElem.parentNode.removeChild(introElem);
-    }, callbackScope: this});
   }
   update(){}
 }
