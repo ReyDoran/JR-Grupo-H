@@ -1,5 +1,6 @@
 'use strict'
 
+var chatFeed = document.getElementById('chatfeed');
 var nam = document.getElementById('name');
 var pass = document.getElementById('pass');
 var logIn = document.getElementById('butLogIn');

@@ -9,18 +9,18 @@
   		<title>TeAcuerdasDe</title>
     </head>
     <body>
-      <div class="login">
-        <input type="text" id="name" placeholder="Usuario" name="name" required>
-	      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
-        <input type="submit" class="btn btn-primary btn-block btn-large" id="butLogIn" value="Iniciar sesión">
-        <input type="submit" class="btn btn-primary btn-block btn-large" id="butSignUp" value="Registrarse">
-      </div>
-      <div class="chatstyle" id="chat_div">
-        <input type="text" class="chatfeed" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
-        <input type="submit" class="btn btn-primary btn-block btn-large" id="butChat" value="Enviar">
-        <div id="chatfeed">
-          
+      <div class="loginScene">
+        <div class="login">
+          <input type="text" id="name" placeholder="Usuario" name="name" required>
+  	      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butLogIn" value="Iniciar sesión">
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butSignUp" value="Registrarse">
         </div>
+        <div class="chatstyle" id="chat_div">
+          <input type="text" class="chatfeed" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butChat" value="Enviar">
+        </div>
+        <div id="chatfeed"></div>
       </div>
 
       <script src = "intro.js"></script>

@@ -31,6 +31,10 @@ var backMenu = false;
 //variable para simular cambio de escena
 var loggedIn = false;
 
+var failedAttempts = 0;
+
+var registered = false;
+
 class Login extends Phaser.Scene
 {
 	constructor()
@@ -66,11 +70,13 @@ class Login extends Phaser.Scene
 		logIn.style.display = "inline-block";
 		this.chatmes = this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
 		this.conected = this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
-		this.log = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		this.reg = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		this.fall = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.log = this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.reg = this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.fall = this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 
     this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
+
+		this.userCreatedText = this.add.text(gameWidth(25/100), gameHeight(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
 
     this.back.on('pointerdown', function (pointer){
 	  	nam.style.display = 'none';
@@ -80,6 +86,7 @@ class Login extends Phaser.Scene
 	  	chat.style.display = 'none';
 	  	send.style.display = 'none';
 			document.getElementById("chat_div").style.visibility = "hidden";
+			document.getElementById("chatfeed").style.visibility = "hidden";
 	  	loadchat = false;
 	  	this.chatmes.setText("");
 	  	this.conected.setText("");
@@ -120,6 +127,15 @@ class Login extends Phaser.Scene
 	  	}
 	  	if (loggedIn == true)
 	  	{
+				if (registered == true) {
+						 this.log.setText("");
+						 this.reg.setText("");
+						 this.userCreatedText.setText("");
+						 this.userCreatedText.setText("Usuario creado. Iniciando sesión");
+						 this.succesfulRegisterTimer = this.time.addEvent({delay: 3000, callback: this.loggedInToTrue, loop: false, callbackScope: this});
+						 registered = false;
+				}
+				chatFeed.style.display = 'initial';
 				this.log.setText("");
 		  	this.reg.setText("");
 	  		errorlogin = false;
@@ -132,16 +148,20 @@ class Login extends Phaser.Scene
 		  	this.showOnlineMenu();
 		  	loadchat = true;
 	  	}
-	  	if(errorlogin)
-	  	{
-	  		this.log.setText("Error, usuario o contraseña incorrecta");
-		  	this.reg.setText("");
-	  	}
-	  	if(errorregister)
-	  	{
-	  		this.log.setText("");
-		  	this.reg.setText("Error nombre de usuario ya en uso");
-	  	}
+			if(errorlogin)
+				{
+					this.log.setText("Error, usuario o contraseña incorrecta");
+					this.reg.setText("");
+					this.userCreatedText.setText("");
+					errorlogin = false;
+				 }
+				 if(errorregister)
+				 {
+					 this.userCreatedText.setText("");
+					 this.log.setText("");
+					 this.reg.setText("Error nombre de usuario ya en uso");
+					 errorregister = false;
+				 }
 	  	if(backMenu)
 	  	{
 	  		this.fall.setText("El servidor se ha caido");
@@ -158,11 +178,23 @@ class Login extends Phaser.Scene
 	  	}
 	}
 
+	loggedInToTrue() {
+  	loggedIn = true;
+		document.getElementById("chat_div").style.visibility = "visible";
+  }
+
 	getchat()
 	{
 		$.get('http://'+URLdomain+'/chat', function(data){
-			dat = data;
-		});
+					 dat = " ";
+					 for (let j = 0; j < data.length; j++) {
+							 let msg = data[j].split('');
+							 msg[0] = " ";
+							 msg[msg.length-1] = " ";
+							 let msgString = msg.join("");
+							 dat += msgString + "\n";
+					 }
+			 });
 		document.getElementById("chatfeed").innerHTML = dat;
 	}
 
@@ -210,20 +242,27 @@ class Login extends Phaser.Scene
 	    //console.log("Lista de conectados:");
 	    //console.log(users);
 	    }).fail(function (data) {
-	        if (data.status == 0)
-	        {
-	        	nam.style.display = 'none';
-		    	pass.style.display = 'none';
-		    	logIn.style.display = 'none';
-		    	signUp.style.display = 'none';
-		    	chat.style.display = 'none';
-		    	send.style.display = 'none';
-		    	loadchat = false;
-		    	errorlogin = false;
-				errorregister = false;
-
-				backMenu = true;
+					if (data.status == 0)
+        	{
+          	if (failedAttempts >= 5) {
+            	failedAttempts = 0;
+              nam.style.display = 'none';
+              pass.style.display = 'none';
+              logIn.style.display = 'none';
+              signUp.style.display = 'none';
+            	chatFeed.style.display = 'none';
+              chat.style.display = 'none';
+              send.style.display = 'none';
+              loadchat = false;
+              errorlogin = false;
+              errorregister = false;
+              backMenu = true;
+            }
+            else {
+                failedAttempts++;
+            }
         }
+    	})
     })
 	}
 
@@ -307,6 +346,7 @@ function login()
 		nam.style.display = 'none';
 		pass.style.display = 'none';
 		document.getElementById("chat_div").style.visibility = "visible";
+		document.getElementById("chatfeed").style.visibility = "visible";
 	}).fail(function (data) {
 		//console.log("No existe esa combinación de nombre-contraseña");
 		errorlogin = true;
@@ -342,6 +382,7 @@ function register()
 	 	 }
 		}).done(function (id) {
 			//console.log("Usuario creado");
+			registered = true;
 			user.name = tempUser.name;
 			user.pass = tempUser.pass;
 			user.id = id;
