@@ -89,7 +89,7 @@ public class UsersController {
 	 * @return
 	 */
 	@GetMapping
-	public ResponseEntity<ArrayList<String>> usersOnline() {
+	public ResponseEntity<ArrayList<String>[]> usersOnline() {
 		int disconnectTime = 3000;	//Milisegundos que debe de haber de inactividad para desconectar
 		//Variables para iterar
 		Collection<User> usersCollection = users.values();
@@ -97,6 +97,8 @@ public class UsersController {
 		User user;
 		//Fin variables para iterar
 		ArrayList<String> usersOnline = new ArrayList<>();	//Lista a devolver
+		ArrayList<String> usersDisconnected = new ArrayList<>();	//Lista a devolver
+		ArrayList<String> ret[] = new ArrayList[2];
 		Date actualTime = new Date();	//Momento actual
 		//Itera por todos los usuarios
 		for(int i = 0; i < usersCollection.size(); i++) {
@@ -105,10 +107,16 @@ public class UsersController {
 				//Si han pasado menos de 3000 milisegundos de diferencia añadir
 				if (actualTime.getTime() - user.getLastOnline().getTime() < 3000) {
 					usersOnline.add(user.getName());
+				} else {
+					usersDisconnected.add(user.getName());
 				}
+			} else {
+				usersDisconnected.add(user.getName());
 			}
 		}
-		return new ResponseEntity<ArrayList<String>>(usersOnline, HttpStatus.OK);
+		ret[0] = usersOnline;
+		ret[1] = usersDisconnected;
+		return new ResponseEntity<ArrayList<String>[]>(ret, HttpStatus.OK);
 	}
 
 	/**
