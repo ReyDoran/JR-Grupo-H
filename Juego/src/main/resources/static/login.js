@@ -48,25 +48,11 @@ var p;
 var h1;
 var h2;
 var h3;
-var ch1;
-var ch2;
-var ch3;
-var ch4;
-var ch5;
-var ch6;
-var ch7;
-var ch8;
-var ch9;
-var rQ1;
-var rQ2;
-var rQ3;
-var cT1;
-var cT2;
-var cT3;
 
-var characters;
-var correctTombstones;
-var roundQuestions;
+
+var characters = [9];
+var correctTombstones = [3];
+var roundQuestions = [3];
 
 var ax;
 var ay;
@@ -117,7 +103,7 @@ connection.onmessage = function(msg)
         case 1:
         {
             //Generacion de la partida
-            p = info.personaje;
+            p = info.p;
             h1 = info.h1;
             h2 = info.h2;
             h3 = info.h3;

@@ -14,6 +14,7 @@ class Menu extends Phaser.Scene {
       super({key:"menu"});
   }
 
+
   preload() {
 
   }
@@ -85,6 +86,7 @@ class Menu extends Phaser.Scene {
         this.disableTutorial1();
         this.showMainMenu();
       }, this);
+
       //Interfaz por encima de casi todo
       this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
       this.anims.create({

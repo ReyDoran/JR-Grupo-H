@@ -48,25 +48,11 @@ var p;
 var h1;
 var h2;
 var h3;
-var ch1;
-var ch2;
-var ch3;
-var ch4;
-var ch5;
-var ch6;
-var ch7;
-var ch8;
-var ch9;
-var rQ1;
-var rQ2;
-var rQ3;
-var cT1;
-var cT2;
-var cT3;
 
-var characters;
-var correctTombstones;
-var roundQuestions;
+
+var characters = [9];
+var correctTombstones = [3];
+var roundQuestions = [3];
 
 var ax;
 var ay;
@@ -117,7 +103,7 @@ connection.onmessage = function(msg)
         case 1:
         {
             //Generacion de la partida
-            p = info.personaje;
+            p = info.p;
             h1 = info.h1;
             h2 = info.h2;
             h3 = info.h3;
@@ -218,7 +204,6 @@ class Login extends Phaser.Scene
     this.online = this.add.image(gameWidth*35/50, gameHeight*35/50, 'online').setAlpha(0).setScale(0.5).setInteractive();
 
 	this.userCreatedText = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
-
 
     this.back.on('pointerdown', function (pointer){
 	  	nam.style.display = 'none';
@@ -321,7 +306,6 @@ class Login extends Phaser.Scene
 		  	this.showOnlineMenu();
 		  	loadchat = true;
 	  	}
-
 		if (registered == true) {
 			 this.log.setText("");
 			 this.reg.setText("");
@@ -347,6 +331,7 @@ class Login extends Phaser.Scene
 	  	if(backMenu)
 	  	{
 	  		this.fall.setText("El servidor se ha caido");
+
 	  		this.backMenuFuncTimer = this.time.addEvent({ delay: 4000, callback: this.backMenuFunc, loop: false, callbackScope: this});
 	  	}
 	  	if(match)

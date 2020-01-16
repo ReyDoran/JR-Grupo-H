@@ -58,7 +58,7 @@ class CutsceneOnline extends Phaser.Scene {
       Las preguntas coinciden con el índice de answers que lleva su cuenta (actualizado en schedulePlaner())
       */
       this.questions = ["¿Cuántos fantasmas azules pasaron?", "¿Cuántos fantasmas rojos pasaron?", "¿Cuántos cazafantasmas pasaron?", "¿Cuántos personajes pasaron en total?"];
-      this.questionIndex = roundQuestions[round];
+      this.questionIndex = round;
       this.answers = [0, 0, 0, 0];
 
       //Timers para enseñar la pregunta y cambiar de escena.
@@ -89,11 +89,10 @@ class CutsceneOnline extends Phaser.Scene {
 
     //Enseña la pregunta
     showQuestion() {
-        this.add.text(gameWidth*3/20, gameHeight/2, this.questions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
-        console.log(this.answers[this.questionIndex]);
+        this.add.text(gameWidth*3/20, gameHeight/2, roundQuestions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
     }
 
-    //Cambia la escena y acutaliza el valor de la variable global round con la respuesta
+    //Cambia la escena y actualiza el valor de la variable global round con la respuesta
     changeScene() {
         answer = this.answers[this.questionIndex];
         console.log(this.answers[this.questionIndex] + ' = ' + answer);

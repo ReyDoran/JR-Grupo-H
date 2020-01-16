@@ -18,12 +18,21 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	private ObjectMapper mapper = new ObjectMapper();
 	BlockingQueue <WebSocketSession>matchmaking = new ArrayBlockingQueue<>(1000);
 	ConcurrentHashMap <String,WebSocketSession>users = new ConcurrentHashMap<String,WebSocketSession>();
-	int num = 0;
+	int num;
 	Random rand = new Random();
 	int [] r1 = new int[9];
 	int [] r2 = new int[3];
 	int [] r3 = new int[3];
-
+	
+	public void setNum(int h)
+	{
+		num=h;
+	}
+	
+	public int getNum()
+	{
+		return num;
+	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -83,66 +92,47 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		    //Eleccion de personajes y de habilidades
 		    case "1":
 		    {
-		    	num++;
+		    	this.setNum(this.getNum()+1);
 		    	//Se elijen los personajes
-		    	String p = node.get("personaje").asText();
+		    	String p = node.get("p").asText();
 		    	String h1 = node.get("h1").asText();
 		    	String h2 = node.get("h2").asText();
 		    	String h3 = node.get("h3").asText();
 		    	String enemigo = node.get("sess").asText();
-
-		    	//Se hacen los randoms para la partida
-                int ch1 = r1[0];
-                int ch2 = r1[1];
-                int ch3 = r1[2];
-                int ch4 = r1[3];
-                int ch5 = r1[4];
-                int ch6 = r1[5];
-                int ch7 = r1[6];
-                int ch8 = r1[7];
-                int ch9 = r1[8];
-
-                int rQ1 = r2[0];
-                int rQ2 = r2[1];
-                int rQ3 = r2[2];
-
-                int cT1 = r3[0];
-                int cT2 = r3[1];
-                int cT3 = r3[2];
+		    	
 
 		    	//Respuesta
 		    	ObjectNode responseNode = mapper.createObjectNode();
 	    		responseNode.put("code",1);
-	    		responseNode.put("personaje",p);
+	    		responseNode.put("p",p);
 	    		responseNode.put("h1",h1);
 	    		responseNode.put("h2",h2);
 	    		responseNode.put("h3",h3);
-	    		responseNode.put("characters", ch1);
-	    		responseNode.put("characters", ch2);
-	    		responseNode.put("characters", ch3);
-	    		responseNode.put("characters", ch4);
-	    		responseNode.put("characters", ch5);
-	    		responseNode.put("characters", ch6);
-	    		responseNode.put("characters", ch7);
-	    		responseNode.put("characters", ch8);
-	    		responseNode.put("characters", ch9);
-	    		responseNode.put("characters", rQ1);
-	    		responseNode.put("characters", rQ2);
-	    		responseNode.put("characters", rQ3);
-	    		responseNode.put("characters", cT1);
-	    		responseNode.put("characters", cT2);
-	    		responseNode.put("characters", cT3);
+	    		responseNode.put("ch1", r1[0]);
+	    		responseNode.put("ch2", r1[1]);
+	    		responseNode.put("ch3", r1[2]);
+	    		responseNode.put("ch4", r1[3]);
+	    		responseNode.put("ch5", r1[4]);
+	    		responseNode.put("ch6", r1[5]);
+	    		responseNode.put("ch7", r1[6]);
+	    		responseNode.put("ch8", r1[7]);
+	    		responseNode.put("ch9", r1[8]);
+	    		responseNode.put("rQ1", r2[0]);
+	    		responseNode.put("rQ2", r2[1]);
+	    		responseNode.put("rQ3", r2[2]);
+	    		responseNode.put("cT1", r3[0]);
+	    		responseNode.put("cT2", r3[1]);
+	    		responseNode.put("cT3", r3[2]);
 	    		System.out.println("Mensaje enviado: " + responseNode.toString());
 	    		users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
-	    		session.sendMessage(new TextMessage(responseNode.toString()));
 
-					if(num==2)
-          {
-	          ObjectNode responseNode1 = mapper.createObjectNode();
-	          responseNode1.put("code",4);
-	          users.get(enemigo).sendMessage(new TextMessage(responseNode1.toString()));
-	          session.sendMessage(new TextMessage(responseNode1.toString()));
-          }
+				if(num>=2)
+				{
+					ObjectNode responseNode1 = mapper.createObjectNode();
+					responseNode1.put("code",4);
+					users.get(enemigo).sendMessage(new TextMessage(responseNode1.toString()));
+					session.sendMessage(new TextMessage(responseNode1.toString()));
+				}
 
 		    	break;
 		    }

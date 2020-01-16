@@ -39,41 +39,119 @@ class SeleccionPJH extends Phaser.Scene {
     Al pulsarse cada uno de los dos botones, dependiendo de la iteración de la configuración de partida se actualiza:
     El primer parámetro de playerXConfig a 0 o 1 dependiendo de la elección.
     */
-    this.ghostbusterM.on('pointerdown', function (pointer){
-      if (this.iter == 0) player1Config[0] = 0;
-      if (this.iter == 1) player2Config[0] = 0;
-      this.disableCharSelectMenu();
-      this.showAbilitiesSelectMenu();
-    }, this);
-    this.ghostbusterM.on('pointerover', function (pointer) { this.ghostbusterM.setScale(0.9); }, this);
-    this.ghostbusterM.on('pointerout', function (pointer) { this.ghostbusterM.setScale(0.7); }, this);
+    
+    
+    if(conectado)
+	{
+		if(playerj=1)
+		{
+			this.ghostbusterM.on('pointerdown', function (pointer){
+			      player1Config[0] = 0;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.ghostbusterM.on('pointerover', function (pointer) { this.ghostbusterM.setScale(0.9); }, this);
+			    this.ghostbusterM.on('pointerout', function (pointer) { this.ghostbusterM.setScale(0.7); }, this);
 
-    this.ghostbusterW.on('pointerdown', function (pointer){
-      if (this.iter == 0) player1Config[0] = 1;
-      if (this.iter == 1) player2Config[0] = 1;
-      this.disableCharSelectMenu();
-      this.showAbilitiesSelectMenu();
-    }, this);
-    this.ghostbusterW.on('pointerover', function (pointer) { this.ghostbusterW.setScale(0.9); }, this);
-    this.ghostbusterW.on('pointerout', function (pointer) { this.ghostbusterW.setScale(0.7); }, this);
+			    this.ghostbusterW.on('pointerdown', function (pointer){
+			      player1Config[0] = 1;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.ghostbusterW.on('pointerover', function (pointer) { this.ghostbusterW.setScale(0.9); }, this);
+			    this.ghostbusterW.on('pointerout', function (pointer) { this.ghostbusterW.setScale(0.7); }, this);
 
-    this.blueGhost.on('pointerdown', function (pointer){
-      if (this.iter == 0) player1Config[0] = 2;
-      if (this.iter == 1) player2Config[0] = 2;
-      this.disableCharSelectMenu();
-      this.showAbilitiesSelectMenu();
-    }, this);
-    this.blueGhost.on('pointerover', function (pointer)  { this.blueGhost.setScale(1.1); }, this);
-    this.blueGhost.on('pointerout', function (pointer) { this.blueGhost.setScale(0.9); }, this);
+			    this.blueGhost.on('pointerdown', function (pointer){
+			      player1Config[0] = 2;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.blueGhost.on('pointerover', function (pointer)  { this.blueGhost.setScale(1.1); }, this);
+			    this.blueGhost.on('pointerout', function (pointer) { this.blueGhost.setScale(0.9); }, this);
 
-    this.redGhost.on('pointerdown', function (pointer){
-      if (this.iter == 0) player1Config[0] = 3;
-      if (this.iter == 1) player2Config[0] = 3;
-      this.disableCharSelectMenu();
-      this.showAbilitiesSelectMenu();
-    }, this);
-    this.redGhost.on('pointerover', function (pointer) { this.redGhost.setScale(1.1); }, this);
-    this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);
+			    this.redGhost.on('pointerdown', function (pointer){
+			      player1Config[0] = 3;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.redGhost.on('pointerover', function (pointer) { this.redGhost.setScale(1.1); }, this);
+			    this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);
+		}
+		else
+		{
+			this.ghostbusterM.on('pointerdown', function (pointer){
+			      player2Config[0] = 0;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.ghostbusterM.on('pointerover', function (pointer) { this.ghostbusterM.setScale(0.9); }, this);
+			    this.ghostbusterM.on('pointerout', function (pointer) { this.ghostbusterM.setScale(0.7); }, this);
+
+			    this.ghostbusterW.on('pointerdown', function (pointer){
+			      player2Config[0] = 1;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.ghostbusterW.on('pointerover', function (pointer) { this.ghostbusterW.setScale(0.9); }, this);
+			    this.ghostbusterW.on('pointerout', function (pointer) { this.ghostbusterW.setScale(0.7); }, this);
+
+			    this.blueGhost.on('pointerdown', function (pointer){
+			      player2Config[0] = 2;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.blueGhost.on('pointerover', function (pointer)  { this.blueGhost.setScale(1.1); }, this);
+			    this.blueGhost.on('pointerout', function (pointer) { this.blueGhost.setScale(0.9); }, this);
+
+			    this.redGhost.on('pointerdown', function (pointer){
+			      player2Config[0] = 3;
+			      this.disableCharSelectMenu();
+			      this.showAbilitiesSelectMenu();
+			    }, this);
+			    this.redGhost.on('pointerover', function (pointer) { this.redGhost.setScale(1.1); }, this);
+			    this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);
+		}
+	}
+    else
+    {
+    	this.ghostbusterM.on('pointerdown', function (pointer){
+    		  if (this.iter == 0) player1Config[0] = 0;
+		      if (this.iter == 1) player2Config[0] = 0;
+		      this.disableCharSelectMenu();
+		      this.showAbilitiesSelectMenu();
+		    }, this);
+		    this.ghostbusterM.on('pointerover', function (pointer) { this.ghostbusterM.setScale(0.9); }, this);
+		    this.ghostbusterM.on('pointerout', function (pointer) { this.ghostbusterM.setScale(0.7); }, this);
+
+		    this.ghostbusterW.on('pointerdown', function (pointer){
+		    	if (this.iter == 0) player1Config[0] = 1;
+		    
+		      if (this.iter == 1) player2Config[0] = 1;
+		      this.disableCharSelectMenu();
+		      this.showAbilitiesSelectMenu();
+		    }, this);
+		    this.ghostbusterW.on('pointerover', function (pointer) { this.ghostbusterW.setScale(0.9); }, this);
+		    this.ghostbusterW.on('pointerout', function (pointer) { this.ghostbusterW.setScale(0.7); }, this);
+
+		    this.blueGhost.on('pointerdown', function (pointer){
+		    	
+		    	if (this.iter == 0) player1Config[0] = 2;
+		      if (this.iter == 1) player2Config[0] = 2;
+		      this.disableCharSelectMenu();
+		      this.showAbilitiesSelectMenu();
+		    }, this);
+		    this.blueGhost.on('pointerover', function (pointer)  { this.blueGhost.setScale(1.1); }, this);
+		    this.blueGhost.on('pointerout', function (pointer) { this.blueGhost.setScale(0.9); }, this);
+
+		    this.redGhost.on('pointerdown', function (pointer){
+		    	if (this.iter == 0) player1Config[0] = 3;		    
+		      if (this.iter == 1) player2Config[0] = 3;
+		      this.disableCharSelectMenu();
+		      this.showAbilitiesSelectMenu();
+		    }, this);
+		    this.redGhost.on('pointerover', function (pointer) { this.redGhost.setScale(1.1); }, this);
+		    this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);
+    }
 
     //Son return to ___
     this.returnChar = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
@@ -193,28 +271,60 @@ class SeleccionPJH extends Phaser.Scene {
     }, this);
 
     //Botón de continuar a la siguiente selección o de empezar juego
-    this.ready.on('pointerdown', function (pointer){
+    this.ready.on('pointerdown', function (pointer)
+    {
       //Sólo funciona si se han seleccionado 3 habilidades
       if (this.abilitiesSelected == 3){
         //Impide que este botón se pinte
         this.abilitiesMenu = false;
         //Actualizar las abilidades del jugador dependiendo de la iteración del menú
-        if (this.iter == 0) {
-          player1Config[1] = this.abilitiesIndex[0];
-          player1Config[2] = this.abilitiesIndex[1];
-          player1Config[3] = this.abilitiesIndex[2];
-
-          if (conectado == true){
-              msg = {
-                code: "1",
-                p: player1Config[0],
-                h1: player1Config[1],
-                h2: player1Config[2],
-                h3: player1Config[3],
-                sess: session
-              }
-            connection.send(JSON.stringify(msg));
-
+        if (this.iter == 0) 
+        {
+        	if(conectado)
+        	{
+        		if(playerj=1)
+        		{
+        			player1Config[1] = this.abilitiesIndex[0];
+                    player1Config[2] = this.abilitiesIndex[1];
+                    player1Config[3] = this.abilitiesIndex[2];
+                    
+                    
+                        msg = {
+                          code: "1",
+                          p: player1Config[0],
+                          h1: player1Config[1],
+                          h2: player1Config[2],
+                          h3: player1Config[3],
+                          sess: session
+                        }
+                      connection.send(JSON.stringify(msg));
+        		}
+        		else
+        		{
+        			player2Config[1] = this.abilitiesIndex[0];
+                    player2Config[2] = this.abilitiesIndex[1];
+                    player2Config[3] = this.abilitiesIndex[2];
+                    
+                    if (conectado){
+                        msg = {
+                          code: "1",
+                          p: player2Config[0],
+                          h1: player2Config[1],
+                          h2: player2Config[2],
+                          h3: player2Config[3],
+                          sess: session
+                        }
+                        connection.send(JSON.stringify(msg));
+                    }
+        		
+        		}
+        	}
+            else
+        	{
+        		player1Config[1] = this.abilitiesIndex[0];
+                player1Config[2] = this.abilitiesIndex[1];
+                player1Config[3] = this.abilitiesIndex[2];
+        	}       
         }
 
         //Si es la segunda iteración, comienza la partida. Si no vuelve al menú de selección de equipo (actualizando iter)
@@ -225,8 +335,12 @@ class SeleccionPJH extends Phaser.Scene {
 
           this.scene.start('cutscene');
         } else {
-          this.iter++;
-          this.showCharSelectMenu();
+        	if(!conectado)
+        	{
+        		this.iter++;
+                this.showCharSelectMenu();
+        	}
+          
         }
         //Imprime por pantalla la configuración de cada jugador DEBUG
         //console.log('P1 ' + player1Config);
@@ -236,7 +350,7 @@ class SeleccionPJH extends Phaser.Scene {
 
 
         }
-      }
+      
     }, this);
 
     //Interfaz por encima de casi todo
@@ -351,8 +465,9 @@ class SeleccionPJH extends Phaser.Scene {
     else if (this.abilitiesMenu == true && this.abilitiesSelected != 3) this.ready.setAlpha(0.4);
     else this.ready.setAlpha(0);
 
-    if (sincro == 2){
-      cambiarescena();
+    if (sincro == 2)
+    {
+      this.cambiarescena();
     }
   }
 }
