@@ -217,7 +217,8 @@ class Login extends Phaser.Scene
 
     this.online = this.add.image(gameWidth*35/50, gameHeight*35/50, 'online').setAlpha(0).setScale(0.5).setInteractive();
 
-		this.userCreatedText = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
+	this.userCreatedText = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
+
 
     this.back.on('pointerdown', function (pointer){
 	  	nam.style.display = 'none';
@@ -226,8 +227,10 @@ class Login extends Phaser.Scene
 	  	signUp.style.display = 'none';
 	  	chat.style.display = 'none';
 	  	send.style.display = 'none';
+
 		document.getElementById("chat_div").style.visibility = "hidden";
 		document.getElementById("chatfeed").style.visibility = "hidden";
+
 	  	loadchat = false;
 	  	this.chatmes.setText("");
 	  	this.conected.setText("");
@@ -305,20 +308,20 @@ class Login extends Phaser.Scene
 	  	}
 	  	if (loggedIn == true)
 	  	{
-
-				chatFeed.style.display = 'initial';
-				this.log.setText("");
+			chatFeed.style.display = 'initial';
+			this.log.setText("");
 		  	this.reg.setText("");
 	  		errorlogin = false;
 	  		errorregister = false;
 		  	loggedIn = false;
 		  	this.onlineConfirmationTimer = this.time.addEvent({ delay: 500, callback: this.onlineConfirmationGet, loop: true, callbackScope: this});
-				this.getChatTimer = this.time.addEvent({ delay: 250, callback: this.getchat, loop: true, callbackScope: this});
-        this.getUsersTimer = this.time.addEvent({ delay: 500, callback: this.getusers, loop: true, callbackScope: this});
+			this.getChatTimer = this.time.addEvent({ delay: 250, callback: this.getchat, loop: true, callbackScope: this});
+        	this.getUsersTimer = this.time.addEvent({ delay: 500, callback: this.getusers, loop: true, callbackScope: this});
 		  	this.disableLogin();
 		  	this.showOnlineMenu();
 		  	loadchat = true;
 	  	}
+
 		if (registered == true) {
 			 this.log.setText("");
 			 this.reg.setText("");
@@ -363,6 +366,7 @@ class Login extends Phaser.Scene
 
 	loggedInToTrue() {
   	loggedIn = true;
+
   	this.userCreatedText.setText("");
 		document.getElementById("chat_div").style.visibility = "visible";
 		document.getElementById("chatfeed").style.visibility = "visible";
@@ -389,8 +393,8 @@ class Login extends Phaser.Scene
 
 		$.get('http://'+URLdomain+'/users', function(users){
 			if (users!=null){
-							us = users[0];
-							us2 = users[1];
+				us = users[0];
+				us2 = users[1];
 			}
 		});
 		let connectedText = "";
@@ -453,7 +457,6 @@ class Login extends Phaser.Scene
         }
     	})
     }
-
 
 	registerUser()
 	{

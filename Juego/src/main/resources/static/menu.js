@@ -14,6 +14,7 @@ class Menu extends Phaser.Scene {
       super({key:"menu"});
   }
 
+
   preload() {
 
   }
