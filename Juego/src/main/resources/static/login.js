@@ -72,85 +72,85 @@ class Login extends Phaser.Scene
 		//Botones chat
 		this.bt_up = this.add.image(gameWidth*(55/100),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
 		this.bt_up.scaleX = 0.5;
-	  this.bt_up.scaleY = 0.5;
-	  this.bt_up.setAlpha(0);
+		this.bt_up.scaleY = 0.5;
+		this.bt_up.setAlpha(0);
 		this.bt_down = this.add.image(gameWidth*(55/100),gameHeight*(3/4),'bt_chat').setInteractive();
 		this.bt_down.scaleX = 0.5;
-	  this.bt_down.scaleY = 0.5;
-	  this.bt_down.setAlpha(0);
+		this.bt_down.scaleY = 0.5;
+		this.bt_down.setAlpha(0);
 
-    //Subir
-    this.bt_up.on('pointerdown', function (pointer)
-    {
-    	this.chatmes.y+=10;
-    }, this);
+		//Subir
+		this.bt_up.on('pointerdown', function (pointer)
+		{
+			this.chatmes.y+=10;
+		}, this);
 
-    //Bajar
-    this.bt_down.on('pointerdown', function (pointer)
-    {
-    	this.chatmes.y-=10;
-    }, this);
+		//Bajar
+		this.bt_down.on('pointerdown', function (pointer)
+		{
+			this.chatmes.y-=10;
+		}, this);
 
-    //Botones usuarios conectados
-    this.bt_up_users = this.add.image(gameWidth*(7/10),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
-		this.bt_up_users.scaleX = 0.5;
-    this.bt_up_users.scaleY = 0.5;
-    this.bt_up_users.setAlpha(0);
-		this.bt_down_users = this.add.image(gameWidth*(7/10),gameHeight*(3/4),'bt_chat').setInteractive();
-		this.bt_down_users.scaleX = 0.5;
-    this.bt_down_users.scaleY = 0.5;
-    this.bt_down_users.setAlpha(0);
+		//Botones usuarios conectados
+		this.bt_up_users = this.add.image(gameWidth*(7/10),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
+			this.bt_up_users.scaleX = 0.5;
+		this.bt_up_users.scaleY = 0.5;
+		this.bt_up_users.setAlpha(0);
+			this.bt_down_users = this.add.image(gameWidth*(7/10),gameHeight*(3/4),'bt_chat').setInteractive();
+			this.bt_down_users.scaleX = 0.5;
+		this.bt_down_users.scaleY = 0.5;
+		this.bt_down_users.setAlpha(0);
 
 
-    //Subir
-    this.bt_up_users.on('pointerdown', function (pointer)
-    {
-    	this.conected.y+=10;
-    }, this);
+		//Subir
+		this.bt_up_users.on('pointerdown', function (pointer)
+		{
+			this.conected.y+=10;
+		}, this);
 
-    //Bajar
-    this.bt_down_users.on('pointerdown', function (pointer)
-    {
-    	this.conected.y-=10;
-    }, this);
+		//Bajar
+		this.bt_down_users.on('pointerdown', function (pointer)
+		{
+			this.conected.y-=10;
+		}, this);
 
-    this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
+		this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 
-    this.back.on('pointerdown', function (pointer){
-	  	nam.style.display = 'none';
-	  	pass.style.display = 'none';
-	  	logIn.style.display = 'none';
-	  	signUp.style.display = 'none';
-	  	chat.style.display = 'none';
-	  	send.style.display = 'none';
-	  	loadchat = false;
-	  	this.chatmes.setText("");
-	  	this.conected.setText("");
-	  	this.bt_up.setAlpha(0);
-	  	this.bt_down.setAlpha(0);
-	  	this.bt_up_users.setAlpha(0);
-	  	this.bt_down_users.setAlpha(0);
-	  	errorlogin = false;
+		this.back.on('pointerdown', function (pointer){
+			nam.style.display = 'none';
+			pass.style.display = 'none';
+			logIn.style.display = 'none';
+			signUp.style.display = 'none';
+			chat.style.display = 'none';
+			send.style.display = 'none';
+			loadchat = false;
+			this.chatmes.setText("");
+			this.conected.setText("");
+			this.bt_up.setAlpha(0);
+			this.bt_down.setAlpha(0);
+			this.bt_up_users.setAlpha(0);
+			this.bt_down_users.setAlpha(0);
+			errorlogin = false;
 			errorregister = false;
 			backMenu = false;
 
-    	this.scene.start('menu');
-    }, this);
+			this.scene.start('menu');
+		}, this);
 
-    this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
-    this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
+		this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
+		this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
 
-    //Interfaz por encima de casi todo
-    this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
-    this.anims.create({
-	    key: 'bg_estatica_anim',
-	    frames: this.anims.generateFrameNumbers('bg_estatica'),
-	    frameRate: 20,
-	    repeat: -1
-	  });
-    this.interf.play('bg_estatica_anim');
+		//Interfaz por encima de casi todo
+		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+		this.anims.create({
+			key: 'bg_estatica_anim',
+			frames: this.anims.generateFrameNumbers('bg_estatica'),
+			frameRate: 20,
+			repeat: -1
+		});
+		this.interf.play('bg_estatica_anim');
 
-    this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
+		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
 	}
 
 	update()
@@ -263,19 +263,17 @@ $(document).ready(function()
 
 function getchat()
 {
-
 	$.get('http://'+URLdomain+'/chat', function(data){
 		dat = data;
-		});
+	});
 }
 
 function getusers()
 {
-
 	$.get('http://'+URLdomain+'/users', function(users){
 		us = users[0];
 		us2 = users[1];
-		});
+	});
 }
 
 
@@ -290,7 +288,7 @@ function sendText()
 		 headers: {
 		 "Content-type":"application/json"
 	 	 }
-		})
+	})
 }
 
 function disableLogin()
@@ -310,26 +308,25 @@ function showOnlineMenu()
 function onlineConfirmationGet() {
     $.get('http://'+URLdomain+'/users/'+user.id, function(){
         //console.log("Estoy online");
-        });
+    });
     $.get('http://'+URLdomain+'/users', function(users){
         //console.log("Lista de conectados:");
         //console.log(users);
-        }).fail(function (data) {
-            if (data.status == 0)
-            {
-            	nam.style.display = 'none';
-    	    	pass.style.display = 'none';
-    	    	logIn.style.display = 'none';
-    	    	signUp.style.display = 'none';
-    	    	chat.style.display = 'none';
-    	    	send.style.display = 'none';
-    	    	loadchat = false;
-    	    	errorlogin = false;
-    			errorregister = false;
-
-    			backMenu = true;
-            }
-        })
+    }).fail(function (data) {
+        if (data.status == 0)
+        {
+			nam.style.display = 'none';
+			pass.style.display = 'none';
+			logIn.style.display = 'none';
+			signUp.style.display = 'none';
+			chat.style.display = 'none';
+			send.style.display = 'none';
+			loadchat = false;
+			errorlogin = false;
+			errorregister = false;
+			backMenu = true;
+        }
+    })
 }
 
 function login()
@@ -339,38 +336,36 @@ function login()
 		 url:'http://'+URLdomain+'/users',
 		 data: JSON.stringify(tempUser),
 		 processData: false,
-		 headers: {
-		 "Content-type":"application/json"
-	 	 }
-		}).done(function (id) {
+		 headers: { "Content-type":"application/json" }
+	}).done(function (id) {
 			//console.log("Inicio de sesión correcto");
-			user.name = tempUser.name;
-			user.pass = tempUser.pass;
-			user.id = id;
-			loggedIn = true;
-			butSignUp.style.display = 'none';
-			butLogIn.style.display = 'none';
+		user.name = tempUser.name;
+		user.pass = tempUser.pass;
+		user.id = id;
+		loggedIn = true;
+		butSignUp.style.display = 'none';
+		butLogIn.style.display = 'none';
+		nam.style.display = 'none';
+		pass.style.display = 'none';
+	}).fail(function () {
+		//console.log("No existe esa combinación de nombre-contraseña");
+		errorlogin = true;
+		errorregister = false;
+		if (data.status == 0)
+		{
 			nam.style.display = 'none';
 			pass.style.display = 'none';
-		}).fail(function () {
-			//console.log("No existe esa combinación de nombre-contraseña");
-			errorlogin = true;
+			logIn.style.display = 'none';
+			signUp.style.display = 'none';
+			chat.style.display = 'none';
+			send.style.display = 'none';
+			loadchat = false;
+			errorlogin = false;
 			errorregister = false;
-			if (data.status == 0)
-            {
-            	nam.style.display = 'none';
-    	    	pass.style.display = 'none';
-    	    	logIn.style.display = 'none';
-    	    	signUp.style.display = 'none';
-    	    	chat.style.display = 'none';
-    	    	send.style.display = 'none';
-    	    	loadchat = false;
-    	    	errorlogin = false;
-    			errorregister = false;
 
-    			backMenu = true;
-            }
-		});
+			backMenu = true;
+		}
+	});
 }
 
 /*
@@ -386,42 +381,42 @@ function register()
 		 headers: {
 		 "Content-type":"application/json"
 	 	 }
-		}).done(function (id) {
-			//console.log("Usuario creado");
-			user.name = tempUser.name;
-			user.pass = tempUser.pass;
-			user.id = id;
-		}).fail(function () {
-			//console.log("Nombre de usuario ya en uso");
+	}).done(function (id) {
+		//console.log("Usuario creado");
+		user.name = tempUser.name;
+		user.pass = tempUser.pass;
+		user.id = id;
+	}).fail(function () {
+		//console.log("Nombre de usuario ya en uso");
+		errorlogin = false;
+		errorregister = true;
+		if (data.status == 0)
+		{
+			nam.style.display = 'none';
+			pass.style.display = 'none';
+			logIn.style.display = 'none';
+			signUp.style.display = 'none';
+			chat.style.display = 'none';
+			send.style.display = 'none';
+			loadchat = false;
 			errorlogin = false;
-			errorregister = true;
-			if (data.status == 0)
-            {
-            	nam.style.display = 'none';
-    	    	pass.style.display = 'none';
-    	    	logIn.style.display = 'none';
-    	    	signUp.style.display = 'none';
-    	    	chat.style.display = 'none';
-    	    	send.style.display = 'none';
-    	    	loadchat = false;
-    	    	errorlogin = false;
-    			errorregister = false;
+			errorregister = false;
 
-    			backMenu = true;
-            }
-		});
+			backMenu = true;
+		}
+	});
 }
 
 function registerUser()
 {
 	$.ajax({
-	 method: "POST",
-	 url:'http://'+URLdomain+'/users',
-	 data: JSON.stringify(tempUser),
-	 processData: false,
-	 headers: {
-	 "Content-type":"application/json"
- 	 },
-	 success: console.log("Registrado")
- });
+		method: "POST",
+		url:'http://'+URLdomain+'/users',
+		data: JSON.stringify(tempUser),
+		processData: false,
+		headers: {
+		"Content-type":"application/json"
+		},
+		success: console.log("Registrado")
+ 	});
 }

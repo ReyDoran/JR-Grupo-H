@@ -34,37 +34,37 @@ public class UsersController {
 	
 	//En el constructor se leen los usuarios del archivo "users.txt".
 	public UsersController() {
-		nextId = new AtomicLong(0);	//Inicializa nextId en caso de que no se lea nada
+		nextId = new AtomicLong(0);					//Inicializa nextId en caso de que no se lea nada
 		try {
             FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            int count = 0;	//Lleva la cuenta de si lee nombre, contraseña o id
-            String line;	//Guarda el contenido de la línea
+            int count = 0;							//Lleva la cuenta de si lee nombre, contraseña o id
+            String line;							//Guarda el contenido de la línea
             String name = "";
             String pass = "";
             long id = 0;
             line = bufferedReader.readLine();
-            while(line != null) {	//Lee mientras haya líneas. Con count sabemos si lee nombre, contrasñea o id.
+            while(line != null) {					//Lee mientras haya líneas. Con count sabemos si lee nombre, contraseña o id.
                 if (count == 0) {
                 	name = line;
                 }
                 else if (count == 1) {
                 	pass = line;
                 }
-                else if (count == 2) {	//En caso de que se haya leído un usuario lo añade al mapa
+                else if (count == 2) {				//En caso de que se haya leído un usuario lo añade al mapa
                 	id = Long.parseLong(line);
-                	count = -1;	//Reinicia el contador para leer de nuevo el nombre
-                	User readUser = new User();	//Creamos un nuevo usuario
+                	count = -1;						//Reinicia el contador para leer de nuevo el nombre
+                	User readUser = new User();		//Creamos un nuevo usuario
                 	readUser.setName(name);
                 	readUser.setPass(pass);
                 	readUser.setId(id);
-                    users.put(id, readUser);	//Añadimos el nuevo usuario
+                    users.put(id, readUser);		//Añadimos el nuevo usuario
                 }
-                count++;	//Actualizamos count
+                count++;							//Actualizamos count
                 line = bufferedReader.readLine();	//Leemos nueva línea
             }   
-            bufferedReader.close();	//Cerramos archivo
-            nextId = new AtomicLong(id);	//Instanciamos de nuevo para el nuevo id base.
+            bufferedReader.close();					//Cerramos archivo
+            nextId = new AtomicLong(id);			//Instanciamos de nuevo para el nuevo id base.
         }
         catch(FileNotFoundException ex) {
             System.out.println("File not found");                
@@ -90,22 +90,23 @@ public class UsersController {
 	 */
 	@GetMapping
 	public ResponseEntity<ArrayList<String>[]> usersOnline() {
-		int disconnectTime = 3000;	//Milisegundos que debe de haber de inactividad para desconectar
+		int disconnectTime = 3000;									//Milisegundos que debe de haber de inactividad para desconectar
 		//Variables para iterar
 		Collection<User> usersCollection = users.values();
 		Iterator<User> iter = usersCollection.iterator();
 		User user;
 		//Fin variables para iterar
-		ArrayList<String> usersOnline = new ArrayList<>();	//Lista a devolver
+		ArrayList<String> usersOnline = new ArrayList<>();			//Lista a devolver
 		ArrayList<String> usersDisconnected = new ArrayList<>();	//Lista a devolver
 		ArrayList<String> ret[] = new ArrayList[2];
-		Date actualTime = new Date();	//Momento actual
+		Date actualTime = new Date();								//Momento actual
+		
 		//Itera por todos los usuarios
 		for(int i = 0; i < usersCollection.size(); i++) {
 			user = iter.next();
 			if (user.getLastOnline() != null) {
 				//Si han pasado menos de 3000 milisegundos de diferencia añadir
-				if (actualTime.getTime() - user.getLastOnline().getTime() < 3000) {
+				if (actualTime.getTime() - user.getLastOnline().getTime() < disconnectTime) {
 					usersOnline.add(user.getName());
 				} else {
 					usersDisconnected.add(user.getName());
@@ -127,7 +128,7 @@ public class UsersController {
 	@GetMapping("/{id}")
 	public ResponseEntity<String> getUser(@PathVariable long id) {
 		User user = users.get(id);	//Obtiene el usuario del mapa
-		if (user != null) {	//Comprueba que existe
+		if (user != null) {			//Comprueba que existe
 			user.setLastOnline(new Date());	//Actualiza la fecha al momento actual
 			//Devuelve código OK y el nombre del usuario (para debug)
 			return new ResponseEntity<>(user.getName(), HttpStatus.OK);

@@ -7,7 +7,7 @@ class Intro extends Phaser.Scene {
 
   preload() {
     this.load.on('progress', function (value) {
-      console.log(value);
+      //console.log(value);
     });
     this.load.on('complete', function () {
       console.log('complete');
