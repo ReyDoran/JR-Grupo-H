@@ -4,44 +4,32 @@
         <meta charset="UTF-8" />
         <script src = "phaser.js"></script>
         <script src = "http://code.jquery.com/jquery-2.2.0.min.js"></script>
-		<title>TeAcuerdasDe</title>
-		<style type="text/css">
-			html, body
-			{
-	    		height: 100%;
-			}
-			html
-			{
-	    		display: table;
-	    		width: 50%;
-	    		margin: auto;
-			}
-			body
-			{
-	    		display: table-cell;
-	    		vertical-align: middle;
-			}
-			input
-    		{
-      			position: relative;
-      			top: 50%;
-      			left: 35%;
-    		}
-
-
-		</style>
+        <link href="https://fonts.googleapis.com/css?family=Caveat+Brush&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+  		<title>TeAcuerdasDe</title>
     </head>
     <body>
-      <input type="text" id="name" placeholder="Usuario" name="name" required>
-      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
-      <input type="submit" id="butLogIn" value="Iniciar sesión">
-      <input type="submit" id="butSignUp" value="Registrarse">
-      <input type="text" id="chat" placeholder="Chat" name="chat" required>
-      <input type="submit" id="butChat" value="Enviar">
-      <script src = "login.js"></script>
+      <div class="loginScene">
+        <div class="login">
+          <input type="text" id="name" placeholder="Usuario" name="name" required>
+  	      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butLogIn" value="Iniciar sesión">
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butSignUp" value="Registrarse">
+        </div>
+        <div class="chatstyle" id="chat_div">
+          <input type="text" class="chatfeed" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butChat" value="Enviar">
+        </div>
+        <div id="chatfeed"></div>
+      </div>
+      <script src = "intro.js"></script>
       <script src = "menu.js"></script>
+      <script src = "login.js"></script>
       <script src = "cutscene.js"></script>
       <script src = "battle.js"></script>
+      <script src = "cutsceneOnline.js"></script>
+      <script src = "battleOnline.js"></script>
+      <script src = "selecciónPJH.js"></script>
       <script src = "game.js"></script>
     </body>
 </html>

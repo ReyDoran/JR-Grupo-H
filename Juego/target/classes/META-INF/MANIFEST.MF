@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Built-By: Manuel
-Build-Jdk: 10.0.1
-Implementation-Title: rest_ejer1_con_ui
+Implementation-Title: rest
 Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: tomas
 Implementation-Vendor-Id: es.urjc.code.juegosenred
-Implementation-Vendor: Pivotal Software, Inc.
+Build-Jdk: 1.8.0_191
 Implementation-URL: http://projects.spring.io/spring-boot/items-backen
  d-and-frontend/
 Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
 

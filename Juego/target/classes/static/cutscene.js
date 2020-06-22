@@ -16,10 +16,6 @@ class Cutscene extends Phaser.Scene {
       let background = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'interior').setOrigin(0.5);
       background.scaleX = 1.07;
       background.scaleY = 1.07;
-      let frame = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'frame').setOrigin(0.5);
-      frame.scaleX = 1.07;
-      frame.scaleY = 1.07;
-      frame.setDepth(1);  //El frame se pintará siempre por encima de todo
 
       //Creamos animaciones
       this.anims.create({
@@ -70,16 +66,29 @@ class Cutscene extends Phaser.Scene {
 
       //Enseña la ronda que es (y lo quita en unos segundos)
       let msg = 'Ronda ' + (round);
-      this.roundText = this.add.text(200, 200, msg, { font: '64px Courier', fill: '#ffffff' })
+      this.roundText = this.add.text(gameWidth*(9/20), gameHeight*(8/20), msg, { font: '64px Caveat Brush', fill: '#ffffff' });
       this.time.addEvent({ delay: 4000, callback: function () {this.roundText.setAlpha(0);}, callbackScope: this});
 
       //Funcion que se encarga de crear los actores
       this.schedulePlanner();
+
+      this.bg_estatica = this.add.sprite(gameWidth*9/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+      this.anims.create({
+          key: 'bg_estatica_anim',
+          frames: this.anims.generateFrameNumbers('bg_estatica'),
+          frameRate: 20,
+          repeat: -1
+      });
+      this.bg_estatica.play('bg_estatica_anim');
+      this.bg_estatica.setDepth(1)
+
+      this.TVBorder = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
+      this.TVBorder.setDepth(1.1);
     }
 
     //Enseña la pregunta
     showQuestion() {
-        this.add.text(this.game.canvas.width/5, this.game.canvas.height/2, this.questions[this.questionIndex], { font: '40px Courier', fill: '#ffffff' });
+        this.add.text(gameWidth*3/20, gameHeight/2, this.questions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
         console.log(this.answers[this.questionIndex]);
     }
 
