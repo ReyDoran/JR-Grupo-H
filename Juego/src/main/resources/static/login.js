@@ -8,12 +8,14 @@ var user = {
 	id: -1
 }
 
-var userNameElement = document.getElementById('name');
-var userPassElement = document.getElementById('pass');
-var logInElement = document.getElementById('logInButton');
-var signUpElement = document.getElementById('signUpButton');
-var sendElement = document.getElementById('chatButton');
-var chatElement = document.getElementById('chat');
+var userNameElement;
+var userPassElement;
+var logInElement;
+var signUpElement;
+var sendElement;
+var chatElement;
+
+var text;
 
 class Login extends Phaser.Scene
 {
@@ -30,16 +32,20 @@ class Login extends Phaser.Scene
 		console.log("Hola");
 	}
 	
-	preload() {}
+	preload() {
+		userNameElement = document.getElementById('name');
+		userPassElement = document.getElementById('pass');
+		logInElement = document.getElementById('logInButton');
+		signUpElement = document.getElementById('signUpButton');
+		sendElement = document.getElementById('chatButton');
+		chatElement = document.getElementById('chat');
+		text = "";
+	}
 
 	create()
 	{
-		userNameElement.style.display = 'inline-block';
-		userPassElement.style.display = 'inline-block';
-		logInElement.style.display = 'inline-block';
-		signUpElement.style.display = 'inline-block';
-		chatElement.style.display = 'none';
-		sendElement.style.display = 'none';
+		showLogin();
+		disableChatMenu();
 
 		//Averiguar qué son los square
 		this.square1 = this.make.image({
@@ -267,19 +273,7 @@ class Login extends Phaser.Scene
 		});
 	}
 
-	// Envía el mensaje del chat
-	sendText()
-	{
-		$.ajax({
-				method: "POST",
-				url:'http://'+URLdomain+'/chat',
-				data: JSON.stringify(text),
-				processData: false,
-				headers: {
-				"Content-type":"application/json"
-			}
-		})
-	}
+	
 
 	// Avisa al servidor que está conectado y pide la lista de los usuarios conectados.
 	// Si no recibe respuesta después de 5 veces, se desconecta.
@@ -405,6 +399,20 @@ $(document).ready(function()
 		sendText();
 	})
 });
+
+// Envía el mensaje del chat
+function sendText()
+{
+	$.ajax({
+			method: "POST",
+			url:'http://'+URLdomain+'/chat',
+			data: JSON.stringify(text),
+			processData: false,
+			headers: {
+			"Content-type":"application/json"
+		}
+	})
+}
 
 // --- FUNCIONES DEL HUD ---
 // Activa los elementos de HTML para la pantalla de login
