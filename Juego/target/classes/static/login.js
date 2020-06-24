@@ -2,24 +2,21 @@
 
 var URLdomain = window.location.host; //URL
 
+var user = {
+	name: "ahora",
+	pass: "si?",
+	id: -1
+}
+
+var userNameElement = document.getElementById('name');
+var userPassElement = document.getElementById('pass');
+var logInElement = document.getElementById('logInButton');
+var signUpElement = document.getElementById('signUpButton');
+var sendElement = document.getElementById('chatButton');
+var chatElement = document.getElementById('chat');
+
 class Login extends Phaser.Scene
 {
-	//Usuario
-	user = {
-		name: "name",
-		pass: "",
-		id: -1
-	}
-
-	//Botones 
-	userNameElement = document.getElementById('name');
-	userPassElement = document.getElementById('pass');
-	logInElement = document.getElementById('logInButton');
-	signUpElement = document.getElementById('signUpButton');
-	sendElement = document.getElementById('chatButton');
-	chatElement = document.getElementById('chat');
-
-	//
 	loggedIn = false;
 	onlineConfirmationTimer;
 	onlineUsersTimer;
@@ -33,31 +30,16 @@ class Login extends Phaser.Scene
 		console.log("Hola");
 	}
 	
-	preload() {
-		//Métodos y variables que requieren parent
-		this.logInElement.parent = this;
-		this.signUpElement.parent = this;
-	}
+	preload() {}
 
 	create()
 	{
-		this.userNameElement.style.display = 'inline-block';
-		this.userPassElement.style.display = 'inline-block';
-		this.logInElement.style.display = 'inline-block';
-		this.signUpElement.style.display = 'inline-block';
-		this.chatElement.style.display = 'none';
-		this.sendElement.style.display = 'none';
-		
-		//console.log("Name: "+this.user.name+" Pass: "+this.user.pass);
-
-		this.logInElement.addEventListener("pointerdown", function(){
-			//console.log("Name: "+this.parent.user.name+" Pass: "+this.parent.user.pass);
-			this.parent.user = this.parent.loginFunc(this.parent.user, this.parent); 
-		});
-
-		this.signUpElement.addEventListener("pointerdown", function(){ 
-			this.parent.user = this.parent.register(this.parent.user, this.parent); 
-		});
+		userNameElement.style.display = 'inline-block';
+		userPassElement.style.display = 'inline-block';
+		logInElement.style.display = 'inline-block';
+		signUpElement.style.display = 'inline-block';
+		chatElement.style.display = 'none';
+		sendElement.style.display = 'none';
 
 		//Averiguar qué son los square
 		this.square1 = this.make.image({
@@ -231,77 +213,6 @@ class Login extends Phaser.Scene
 	  	}*/
 	}
 
-	//DA ERROR POR LA INFORMACIÓN QUE SE LE PASA, ESTOY EN ELLO
-	loginFunc(user, loginRef)
-	{
-		console.log("Name: "+user.name+" Pass: "+user.pass);
-		$.ajax({
-			method: "PUT",
-			url:'http://' + URLdomain + '/users',
-			data: JSON.stringify(user),
-			processData: false,
-			headers: { "Content-type":"application/json" }
-		}).done(function (id) {
-			console.log("Inicio de sesión correcto");
-			user.id = id;
-			loginRef.disableLogin();
-			loginRef.showChatMenu();
-			return user;
-		}).fail(function(data) {
-			console.log("No existe esa combinación de nombre-contraseña");
-			//errorlogin = true;
-			//errorregister = false;
-			if (data.status == 0)
-			{
-				console.log("data.status == 0");
-				/*userNameElement.style.display = 'none';
-				userPassElement.style.display = 'none';
-				logInElement.style.display = 'none';
-				signUpElement.style.display = 'none';
-				chatElement.style.display = 'none';
-				sendElement.style.display = 'none';
-				loadchat = false;
-				errorlogin = false;
-				errorregister = false;
-				backMenu = true;*/
-			}
-		});
-	}
-
-	//LO MISMO QUE EL LOGIN
-	register(user, loginRef)
-	{
-		$.ajax({
-				method: "POST",
-				url:'http://'+URLdomain+'/users',
-				data: JSON.stringify(user),
-				processData: false,
-				headers: {
-				"Content-type":"application/json"
-			}
-		}).done(function (id) {
-			console.log("Usuario creado");
-			user.id = id;
-			return user;
-		}).fail(function (data) {
-			console.log("Nombre de usuario ya en uso");
-			if (data.status == 0)
-			{
-				console.log("data.status == 0");
-				/*userNameElement.style.display = 'none';
-				userPassElement.style.display = 'none';
-				logInElement.style.display = 'none';
-				signUpElement.style.display = 'none';
-				chatElement.style.display = 'none';
-				sendElement.style.display = 'none';
-				loadchat = false;
-				errorlogin = false;
-				errorregister = false;
-				backMenu = true;*/
-			}
-		});
-	}
-
 	//HASTA AQUI MAS O MENOS LIMPIO TODO 
 	//LO DE ABAJO ESTÁ POR VER SU UTILIDAD, SI ESTÁ BIEN PROGRAMADO Y ETC.
 
@@ -337,42 +248,6 @@ class Login extends Phaser.Scene
 	  	this.bt_up_users.setAlpha(1);
 	  	this.bt_down_users.setAlpha(1);
 	}
-
-	// --- ACCIONES DE LOS BOTONES ---
-	/*$(document).ready(function()
-	{
-		let input1 = $('#name');
-		let input2 = $('#pass');
-		let input3 = $('#chat');
-
-		// Log In button
-		// Almacena los valores de nombre y contraseña y llama a login()
-		$("#butLogIn").click(function()
-		{
-			console.log("Pulsado login");
-			User.name = input1.val();
-			User.pass = input2.val();
-			//login();
-		})
-
-		// Sign Up button
-		// Almacena los valores de nombre y contraseña y llama a register()
-		$("#butSignUp").click(function()
-		{
-			console.log("Pulsado register");
-			User.name = input1.val();
-			User.pass = input2.val();
-			register();
-		})
-
-		// Boton enviar chat
-		// Envía el texto introducido + su nombre de usuario
-		$("#butChat").click(function(){
-			text = user.name + ": " + input3.val();
-			sendText();
-		})
-	});*/
-
 
 	// --- PETICIONES AL SERVIDOR ---
 	// Pide el texto del chat
@@ -436,8 +311,6 @@ class Login extends Phaser.Scene
 	/*
 	* Setea a true registerUser si el nombre de usuario no está en uso
 	*/
-	
-
 	registerUser()
 	{
 		$.ajax({
@@ -450,39 +323,118 @@ class Login extends Phaser.Scene
 			},
 			success: console.log("Registrado")
 		});
-	}
-
-	// --- FUNCIONES DEL HUD ---
-	// Activa los elementos de HTML para la pantalla de login
-	showLogin()
-	{
-		this.userNameElement.style.display = "inline-block";
-		this.userPassElement.style.display = "inline-block";
-		this.logInElement.style.display = "inline-block";
-		this.signUpElement.style.display = "inline-block";
-	}
-
-	// Oculta los elementos de HTML para la pantalla de login
-	disableLogin()
-	{
-		this.userNameElement.style.display = "none";
-		this.userPassElement.style.display = "none";
-		this.logInElement.style.display = "none";
-		this.signUpElement.style.display = "none";
-	}
-
-	// Activa los elementos de HTML para el lobby online
-	showChatMenu()
-	{
-		this.chatElement.style.display = "inline-block";
-		this.sendElement.style.display = "inline-block";
-	}
-	
-	// Desactiva los elementos de HTML para el lobby online
-	disableChatMenu()
-	{
-		this.chatElement.style.display = "none";
-		this.sendElement.style.display = "none";	
-	}
+	}	
 }
 
+function loginFunc()
+{
+	console.log("LOGIN Name: "+user.name+" Pass: "+user.pass);
+	$.ajax({
+		method: "PUT",
+		url:'http://' + URLdomain + '/users',
+		data: JSON.stringify(user),
+		processData: false,
+		headers: { "Content-type":"application/json" }
+	}).done(function(id) {
+		console.log("Inicio de sesión correcto");
+		user.id = id;
+		disableLogin();
+		showChatMenu();
+	}).fail(function(data) {
+		console.log("No existe esa combinación de nombre-contraseña");
+		if (data.status == 0)
+		{
+			console.log("data.status == 0");
+		}
+	});
+}
+
+function register()
+{
+	console.log("REGISTER Name: "+user.name+" Pass: "+user.pass);
+	$.ajax({
+		method: "POST",
+		url:'http://'+URLdomain+'/users',
+		data: JSON.stringify(user),
+		processData: false,
+		headers: { "Content-type":"application/json" }
+	}).done(function (id) {
+		console.log("Usuario creado");
+		user.id = id;
+		disableLogin();
+		showChatMenu();
+	}).fail(function (data) {
+		console.log("Nombre de usuario ya en uso");
+		if (data.status == 0)
+		{
+			console.log("data.status == 0");
+		}
+	});
+}
+
+// --- ACCIONES DE LOS BOTONES ---
+$(document).ready(function()
+{
+	let input1 = $('#name');
+	let input2 = $('#pass');
+	let input3 = $('#chat');
+
+	// Login button
+	// Almacena los valores de nombre y contraseña y llama a login()
+	$("#logInButton").click(function()
+	{
+		console.log("Pulsado login");
+		user.name = input1.val();
+		user.pass = input2.val();
+		loginFunc();
+	})
+
+	// Sign Up button
+	// Almacena los valores de nombre y contraseña y llama a register()
+	$("#signUpButton").click(function()
+	{
+		user.name = input1.val();
+		user.pass = input2.val();
+		register();
+	})
+
+	// Boton enviar chat
+	// Envía el texto introducido + su nombre de usuario
+	$("#chatButton").click(function(){
+		text = user.name + ": " + input3.val();
+		sendText();
+	})
+});
+
+// --- FUNCIONES DEL HUD ---
+// Activa los elementos de HTML para la pantalla de login
+function showLogin()
+{
+	userNameElement.style.display = "inline-block";
+	userPassElement.style.display = "inline-block";
+	logInElement.style.display = "inline-block";
+	signUpElement.style.display = "inline-block";
+}
+
+// Oculta los elementos de HTML para la pantalla de login
+function disableLogin()
+{
+	userNameElement.style.display = "none";
+	userPassElement.style.display = "none";
+	logInElement.style.display = "none";
+	signUpElement.style.display = "none";
+}
+
+// Activa los elementos de HTML para el lobby online
+function showChatMenu()
+{
+	chatElement.style.display = "inline-block";
+	sendElement.style.display = "inline-block";
+}
+
+// Desactiva los elementos de HTML para el lobby online
+function disableChatMenu()
+{
+	chatElement.style.display = "none";
+	sendElement.style.display = "none";
+}
