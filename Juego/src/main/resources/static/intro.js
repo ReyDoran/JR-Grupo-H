@@ -1,11 +1,25 @@
 'use strict'
 
 class Intro extends Phaser.Scene {
+  userName = document.getElementById('name');
+ 	userPass = document.getElementById('pass');
+ 	logIn = document.getElementById('logInButton');
+ 	signUp = document.getElementById('signUpButton');
+ 	send = document.getElementById('chatButton');
+  chat = document.getElementById('chat');
+  
   constructor() {
       super({key:"intro"});
   }
 
   preload() {
+    this.userName.style.display = 'none';
+		this.userPass.style.display = 'none';
+		this.logIn.style.display = 'none';
+		this.signUp.style.display = 'none';
+		this.chat.style.display = 'none';
+    this.send.style.display = 'none';
+    
     this.load.on('progress', function (value) {
       //console.log(value);
     });
@@ -62,12 +76,6 @@ class Intro extends Phaser.Scene {
     this.bg_estatica.play('bg_estatica_anim');
 
     this.TVBorder = this.add.image(gameWidth/2, gameHeight/2, 'bg_frame');
-
-    //Eliminar el video de introHTML
-    this.time.addEvent({ delay: 1000, callback: function() {
-      var introElem = document.getElementById('introHTML');
-      introElem.parentNode.removeChild(introElem);
-    }, callbackScope: this});
   }
 
   update(){}

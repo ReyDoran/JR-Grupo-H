@@ -1,18 +1,5 @@
 'use strict'
 
-var nam = document.getElementById('name');
-var pass = document.getElementById('pass');
-var logIn = document.getElementById('butLogIn');
-var signUp = document.getElementById('butSignUp');
-var chat = document.getElementById('chat');
-var send = document.getElementById('butChat');
-nam.style.display = 'none';
-pass.style.display = 'none';
-logIn.style.display = 'none';
-signUp.style.display = 'none';
-chat.style.display = 'none';
-send.style.display = 'none';
-
 /*
 Escena menú principal.
 En esta escena se puede acceder a una partida y al bt_tutorial.
