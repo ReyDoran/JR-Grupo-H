@@ -18,6 +18,7 @@ var text = "";
 
 var errorlogin = false;
 var errorregister = false;
+var errorconnected = false;
 
 var dat;
 var us2;
@@ -44,6 +45,7 @@ class Login extends Phaser.Scene
 		this.onlineConfirmationTimer;
 		this.onlineUsersTimer;
 		this.chatAndUsersTimer;
+		this.backToMenuTimer;
 
 		this.square1 = this.make.image({
 	        x: gameWidth*(5/20),
@@ -66,7 +68,7 @@ class Login extends Phaser.Scene
 		pass.style.display = "inline-block";
 		signUp.style.display = "inline-block";
 		logIn.style.display = "inline-block";
-		this.chatmes = this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
+		this.chatmes = this.add.text(gameWidth*(15/100), gameHeight*(17/80),"",{ font: '16px Courier', fill: '#ffffff' });
 		this.conected = this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
 		this.log = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.reg = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
@@ -119,19 +121,7 @@ class Login extends Phaser.Scene
 		this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 
 		this.back.on('pointerdown', function (pointer){
-			disableLogin();
-			disableOnlineMenu();
-			this.chatmes.setText("");
-			this.conected.setText("");
-			this.bt_up.setAlpha(0);
-			this.bt_down.setAlpha(0);
-			this.bt_up_users.setAlpha(0);
-			this.bt_down_users.setAlpha(0);
-			errorlogin = false;
-			errorregister = false;
-			backMenu = false;
-			this.deactivateLobbyMethods();
-			this.scene.start('menu');
+			this.changeSceneToMenu();			
 		}, this);
 
 		this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
@@ -153,7 +143,7 @@ class Login extends Phaser.Scene
 	// Pide y actualiza el chat y los usuarios conectados
 	actualizeChatAndUsers()
 	{	
-		console.log("actualizo chat y users");
+		//console.log("actualizo chat y users");
 		let connectedText = "";
   		let disconnectedText = "";
   		this.log.setText("");
@@ -190,17 +180,41 @@ class Login extends Phaser.Scene
 	  		this.log.setText("");
 		  	this.reg.setText("Error nombre de usuario ya en uso");
 	  	}
+	  	if(errorconnected)
+	  	{
+	  		this.log.setText("");
+	  		this.reg.setText("Error usuario ya conectado");
+	  	}
 	  	if(backMenu)
 	  	{
-	  		this.fall.setText("El servidor se ha caido");
-	  		for(var i=0; i<50000; i++)
-	  		{
-
-	  		}
-	  		this.fall.setText("");
 	  		backMenu = false;
-	  		this.scene.start('menu');
+	  		this.backToMenu();
 	  	}
+	}
+
+	backToMenu()
+	{
+		this.log.setText("");
+		this.reg.setText("");
+		this.fall.setText("El servidor se ha caído");
+		this.backToMenuTimer = this.time.addEvent({ delay: 5000, callback: this.changeSceneToMenu, loop: false, callbackScope: this});
+	}
+
+	changeSceneToMenu(){
+		errorlogin = false;
+		errorregister = false;
+		errorconnected = false;
+		disableLogin();
+		disableOnlineMenu();
+		this.fall.setText("");
+		this.chatmes.setText("");
+		this.conected.setText("");
+		this.bt_up.setAlpha(0);
+		this.bt_down.setAlpha(0);
+		this.bt_up_users.setAlpha(0);
+		this.bt_down_users.setAlpha(0);
+		this.deactivateLobbyMethods();
+		this.scene.start('menu');
 	}
 
 	// Activa los métodos que deben ser llamados en el lobby a través de timers
@@ -223,8 +237,11 @@ class Login extends Phaser.Scene
 	// Realiza los cambios necesarios para cambiar al lobby
 	changeToLobby()
 	{
+		this.reg.setText("");
+		this.log.setText("");
 	  	errorlogin = false;
 		errorregister = false;
+		errorconnected = false;
 	  	disableLogin();
 	  	showOnlineMenu();
 	  	this.activateLobbyMethods();	  	
@@ -307,7 +324,13 @@ function sendText()
 // Si no recibe respuesta después de 5 veces, se desconecta.
 function onlineConfirmationGet() {
     $.get('http://'+URLdomain+'/users/'+user.id, function(){
-        console.log("Estoy online");
+        unableToReachServer = 0;
+    }).fail(function () {
+		unableToReachServer++;
+		if (unableToReachServer > 5)
+		{
+			backMenu = true;				
+		}
     });
 }
 
@@ -317,12 +340,8 @@ function onlineUsersGet() {
         //console.log(users);
     }).fail(function (data) {
         if (data.status == 0)
-        {
-			disableLogin();
-			disableOnlineMenu();
-			errorlogin = false;
-			errorregister = false;
-			backMenu = true;
+        {	
+			backMenu = true;	
         }
     })
 }
@@ -351,18 +370,19 @@ function login()
 		errorregister = false;
 		if (data.status == 0)
 		{
-			nam.style.display = 'none';
-			pass.style.display = 'none';
-			logIn.style.display = 'none';
-			signUp.style.display = 'none';
-			chat.style.display = 'none';
-			send.style.display = 'none';
-			errorlogin = false;
 			errorregister = false;
+			errorlogin = false;
+			errorconnected = false;
 			backMenu = true;
 		} else if (data.status == 404){
+			errorlogin = true;
+			errorconnected = false;
+			errorregister = false;			
 			console.log("error 404");
 		} else if (data.status == 401){
+			errorlogin = false;
+			errorconnected = true;
+			errorregister = false;
 			console.log("error 401");
 		}
 	});
@@ -383,6 +403,7 @@ function register()
 	 	 }
 	}).done(function (id) {
 		//console.log("Usuario creado");
+		unableToReachServer = 0;
 		user.name = tempUser.name;
 		user.pass = tempUser.pass;
 		user.id = id;
@@ -397,15 +418,9 @@ function register()
 		errorregister = true;
 		if (data.status == 0)
 		{
-			nam.style.display = 'none';
-			pass.style.display = 'none';
-			logIn.style.display = 'none';
-			signUp.style.display = 'none';
-			chat.style.display = 'none';
-			send.style.display = 'none';
-			errorlogin = false;
 			errorregister = false;
-
+			errorlogin = false;
+			errorconnected = false;
 			backMenu = true;
 		}
 	});
