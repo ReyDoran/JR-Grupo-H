@@ -204,16 +204,21 @@ public class UsersController {
 	 */
 	@PutMapping
 	public ResponseEntity<Long> login(@RequestBody User user) {
-		boolean match = false;	//Comprueba si el login es correcto
-		long id = -1;	//Guarda el id del usuario al que se le ha hecho login
+		boolean match = false;			//Comprueba si el login es correcto
+		boolean isOnline = false;		//Comprueba si el usuario ya existe y está online
+		long id = -1;					//Guarda el id del usuario al que se le ha hecho login
+		Date actualTime = new Date();	//Fecha actual
+		int disconnectTime = 3000;		//Milisegundos que debe de haber de inactividad para desconectar
+
 		//Variables para iterar
 		Collection<User> usersCollection = users.values();
 		Iterator<User> iter = usersCollection.iterator();
-		User userAux;
+		User userAux = new User();
 		//Fin variables para iterar
+		
 		//Itera por todos los usuarios hasta que termine o encuentre un nombre y contraseñas igual
 		int i = 0;
-		while (i < usersCollection.size() && match == false) {
+		while (i < usersCollection.size() && !match) {
 			userAux = iter.next();
 			//Si hace coincide nombre y contraseña actualiza la variable match
 			if (userAux.getName().contentEquals(user.getName()) && userAux.getPass().contentEquals(user.getPass())) {
@@ -223,11 +228,16 @@ public class UsersController {
 			i++;
 		}
 		
-		//Si ha hecho match
-		if (match == true) {
-			return new ResponseEntity<Long>(id, HttpStatus.OK);
+		if (actualTime.getTime() - userAux.getLastOnline().getTime() < disconnectTime) {
+			isOnline = true;
 		}
-		else {
+		
+		//Si ha hecho match
+		if (match && !isOnline) {
+			return new ResponseEntity<Long>(id, HttpStatus.OK);
+		} else if(isOnline) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

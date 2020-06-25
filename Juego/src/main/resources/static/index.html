@@ -7,51 +7,80 @@
         <link href="https://fonts.googleapis.com/css?family=Caveat+Brush&display=swap" rel="stylesheet">
   		<title>TeAcuerdasDe</title>
   		<style type="text/css">
-  			html, body{
-  	    		height: 100%;
-  			}
-  			html{
-  	    		display: table;
-  	    		width: 50%;
-  	    		margin: auto;
-  			}
-  			body{
-  	    		display: table-cell;
-  	    		vertical-align: middle;
-  			}
-  			input{
-      			position: relative;
-      			top: 50%;
-      			left: 35%;
-    		}
-        #chat{
-          position: relative;
-          top: 76%;
-          left: 15%;
-        }
-        #butChat
-        {
-          position: relative;
-          top: 76%;
-          left: 15%;
-        }
+			html, body{
+				height: 100%;
+			}
+			html{
+				display: table;
+				width: 50%;
+				margin: auto;
+			}
+			body{
+				display: table-cell;
+				vertical-align: middle;
+			}
+			h1{
+				position: fixed;
+				margin: 0px;
+				height: 720px;
+				width: 1290px;
+			}
+			input{
+				position: relative;
+				top: 50%;
+				left: 35%;
+			}
+			#chat{
+				position: relative;
+				top: 75%;
+				left: 15%;
+			}
+			#butChat
+			{
+				position: relative;
+				top: 75%;
+				left: 15%;
+			}
+			#name{
+				position: relative;
+				top: 50%;
+				left: 27%;
+			}
+			#pass{
+				position: relative;
+				top: 50%;
+				left: 27%;
+			}
+			#butLogIn{
+				position: relative;
+				top: 50%;
+				left: 27%;
+			}
+			#butSignUp{
+				position: relative;
+				top: 50%;
+				left: 27%;
+			}
   		</style>
     </head>
     <body>
-      <video id="introHTML" style="position: absolute; top: window.innerHeight/2; left: window.innerWidth/2;" width="1280" height="720" autoplay>
-      <source src="/assets/video/intro.mp4" type="video/mp4">
-      </video>
-      <input type="text" id="name" placeholder="Usuario" name="name" required>
-	    <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
-      <input type="submit" id="butLogIn" value="Iniciar sesión">
-      <input type="submit" id="butSignUp" value="Registrarse">
-      <input type="text" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
-      <input type="submit" id="butChat" value="Enviar">
-      <script src = "intro.js"></script>
-      <script src = "menu.js"></script>
-      <script src = "login.js"></script>
-      <script src = "cutscene.js"></script>
-      <script src = "battle.js"></script>
-      <script src = "game.js"></script>
+	    <h1>
+			<video id="introHTML" style="position: absolute; top: window.innerHeight/2; left: window.innerWidth/2;" width="1280" height="720" autoplay>
+			<source src="/assets/video/intro.mp4" type="video/mp4">
+			</video>
+			<input type="text"		id="chat" 		placeholder="Chat"   		name="chat" required	maxlength="50">
+			<input type="text" 		id="name" 		placeholder="Usuario" 		name="name" required>
+			<input type="password" 	id="pass" 		placeholder="Contraseña" 	name="pass" required>
+			<input type="submit" 	id="butLogIn" 	value="Iniciar sesión">
+			<input type="submit" 	id="butSignUp" 	value="Registrarse">
+			<input type="submit" 	id="butChat" 	value="Enviar">
+			   
+			<script src = "intro.js"></script>
+			<script src = "menu.js"></script>
+			<script src = "login.js"></script>
+			<script src = "cutscene.js"></script>
+			<script src = "battle.js"></script>
+			<script src = "game.js"></script>
+	    </h1>
     </body>
 </html>

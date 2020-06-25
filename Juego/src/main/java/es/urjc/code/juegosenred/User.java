@@ -11,6 +11,11 @@ public class User {
 	private Date lastOnline;
 
 	public User() {
+		this.id = -1;
+		this.name = "";
+		this.pass = "";
+		this.score = 0;
+		this.lastOnline = new Date();
 	}
 
 	public long getId() {

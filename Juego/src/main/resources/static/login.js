@@ -48,7 +48,7 @@ class Login extends Phaser.Scene
 
 		this.square1 = this.make.image({
 	        x: gameWidth*(5/20),
-	        y: gameHeight*(17/40),
+	        y: gameHeight*(19/40),
 	        key: 'bg_square',
 	        add: false
 	    });
@@ -73,11 +73,11 @@ class Login extends Phaser.Scene
 		this.reg = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.fall = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		//Botones chat
-		this.bt_up = this.add.image(gameWidth*(55/100),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
+		this.bt_up = this.add.image(gameWidth*(60/100),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
 		this.bt_up.scaleX = 0.5;
 		this.bt_up.scaleY = 0.5;
 		this.bt_up.setAlpha(0);
-		this.bt_down = this.add.image(gameWidth*(55/100),gameHeight*(3/4),'bt_chat').setInteractive();
+		this.bt_down = this.add.image(gameWidth*(60/100),gameHeight*(3/4),'bt_chat').setInteractive();
 		this.bt_down.scaleX = 0.5;
 		this.bt_down.scaleY = 0.5;
 		this.bt_down.setAlpha(0);
@@ -160,7 +160,7 @@ class Login extends Phaser.Scene
 		  	registerUser();
 		  	disableLogin();
 		  	showOnlineMenu();
-	  	}	  	
+	  	}
 	  	if(loggedIn == true){	// Cambiar a poder ser por un callback o evento
 	  		loggedIn = false;
 	  		this.changeToLobby();
@@ -281,6 +281,7 @@ $(document).ready(function()
 	$("#butChat").click(function(){
 		text = user.name + ": " + input3.val();
 		sendText();
+		chat.value = "";
 	})
 })
 
@@ -351,7 +352,7 @@ function login()
 		 processData: false,
 		 headers: { "Content-type":"application/json" }
 	}).done(function (id) {
-			//console.log("Inicio de sesión correcto");
+		//console.log("Inicio de sesión correcto");
 		user.name = tempUser.name;
 		user.pass = tempUser.pass;
 		user.id = id;
@@ -360,7 +361,7 @@ function login()
 		butLogIn.style.display = 'none';
 		nam.style.display = 'none';
 		pass.style.display = 'none';
-	}).fail(function () {
+	}).fail(function (data) {
 		//console.log("No existe esa combinación de nombre-contraseña");
 		errorlogin = true;
 		errorregister = false;
@@ -375,8 +376,11 @@ function login()
 			loadchat = false;
 			errorlogin = false;
 			errorregister = false;
-
 			backMenu = true;
+		} else if (data.status == 404){
+			console.log("error 404");
+		} else if (data.status == 401){
+			console.log("error 401");
 		}
 	});
 }
@@ -399,7 +403,12 @@ function register()
 		user.name = tempUser.name;
 		user.pass = tempUser.pass;
 		user.id = id;
-	}).fail(function () {
+		loggedIn = true;
+		butSignUp.style.display = 'none';
+		butLogIn.style.display = 'none';
+		nam.style.display = 'none';
+		pass.style.display = 'none';
+	}).fail(function (data) {
 		//console.log("Nombre de usuario ya en uso");
 		errorlogin = false;
 		errorregister = true;
