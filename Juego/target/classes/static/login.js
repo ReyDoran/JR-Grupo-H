@@ -31,6 +31,8 @@ var backMenu = false;
 //variable para simular cambio de escena
 var loggedIn = false;
 
+var unableToReachServer = 0;	// Cuenta el nº de veces consecutivas que no consigue contactar con el servidor
+
 class Login extends Phaser.Scene
 {
 	constructor()
@@ -42,6 +44,7 @@ class Login extends Phaser.Scene
 	create()
 	{
 		this.onlineConfirmationTimer;
+		this.onlineUsersTimer;
 
 		this.square1 = this.make.image({
 	        x: gameWidth*(5/20),
@@ -117,12 +120,8 @@ class Login extends Phaser.Scene
 		this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 
 		this.back.on('pointerdown', function (pointer){
-			nam.style.display = 'none';
-			pass.style.display = 'none';
-			logIn.style.display = 'none';
-			signUp.style.display = 'none';
-			chat.style.display = 'none';
-			send.style.display = 'none';
+			disableLogin();
+			disableOnlineMenu();
 			loadchat = false;
 			this.chatmes.setText("");
 			this.conected.setText("");
@@ -133,7 +132,7 @@ class Login extends Phaser.Scene
 			errorlogin = false;
 			errorregister = false;
 			backMenu = false;
-
+			this.deactivateLobbyMethods();
 			this.scene.start('menu');
 		}, this);
 
@@ -161,20 +160,10 @@ class Login extends Phaser.Scene
 		  	registerUser();
 		  	disableLogin();
 		  	showOnlineMenu();
-	  	}
-	  	if (loggedIn == true)
-	  	{
-	  		errorlogin = false;
-	  		errorregister = false;
-		  	loggedIn = false;
-		  	this.onlineConfirmationTimer = this.time.addEvent({ delay: 1000, callback: onlineConfirmationGet, loop: true});
-		  	disableLogin();
-		  	showOnlineMenu();
-		  	loadchat = true;
-		  	this.bt_up.setAlpha(1);
-		  	this.bt_down.setAlpha(1);
-		  	this.bt_up_users.setAlpha(1);
-		  	this.bt_down_users.setAlpha(1);
+	  	}	  	
+	  	if(loggedIn == true){	// Cambiar a poder ser por un callback o evento
+	  		loggedIn = false;
+	  		this.changeToLobby();
 	  	}
 	  	if(loadchat)
 	  	{
@@ -228,15 +217,48 @@ class Login extends Phaser.Scene
 	  		this.scene.start('menu');
 	  	}
 	}
+
+	// Activa los métodos que deben ser llamados en el lobby a través de timers
+	// Avisar de estar online (onlineConfirmationGet)
+	// Pedir lista de jugadores conectados (onlineUsersGet)
+	activateLobbyMethods()
+	{
+	  	this.onlineConfirmationTimer = this.time.addEvent({ delay: 1000, callback: onlineConfirmationGet, loop: true});
+	  	this.onlineUsersTimer = this.time.addEvent({ delay: 1000, callback: onlineUsersGet, loop: true});
+	}
+
+	// Desactiva los métodos que no deben ser llamados cuando se salga del lobby
+	// Quita los temporizadores (no se si es necesario pero por si acaso)
+	deactivateLobbyMethods()
+	{
+		this.time.removeAllEvents();
+	}
+
+	// Realiza los cambios necesarios para cambiar al lobby
+	changeToLobby()
+	{
+	  	errorlogin = false;
+		errorregister = false;
+	  	disableLogin();
+	  	showOnlineMenu();
+	  	this.activateLobbyMethods();
+	  	loadchat = true;
+	  	this.bt_up.setAlpha(1);
+	  	this.bt_down.setAlpha(1);
+	  	this.bt_up_users.setAlpha(1);
+	  	this.bt_down_users.setAlpha(1);
+	}
 }
 
+// --- ACCIONES DE LOS BOTONES ---
 $(document).ready(function()
 {
 	let input1 = $('#name');
 	let input2 = $('#pass');
 	let input3 = $('#chat');
 
-	//Log In button
+	// Log In button
+	// Almacena los valores de nombre y contraseña y llama a login()
 	$("#butLogIn").click(function()
 	{
 		tempUser.name = input1.val();
@@ -244,7 +266,8 @@ $(document).ready(function()
 		login();
 	})
 
-	//Sign Up button
+	// Sign Up button
+	// Almacena los valores de nombre y contraseña y llama a register()
 	$("#butSignUp").click(function()
 	{
 		//console.log("Pulsado register");
@@ -253,7 +276,8 @@ $(document).ready(function()
 		register();
 	})
 
-	//Boton enviar chat
+	// Boton enviar chat
+	// Envía el texto introducido + su nombre de usuario
 	$("#butChat").click(function(){
 		text = user.name + ": " + input3.val();
 		sendText();
@@ -261,6 +285,8 @@ $(document).ready(function()
 })
 
 
+// --- PETICIONES AL SERVIDOR ---
+// Pide el texto del chat
 function getchat()
 {
 	$.get('http://'+URLdomain+'/chat', function(data){
@@ -268,6 +294,7 @@ function getchat()
 	});
 }
 
+// Pide los usuarios existentes
 function getusers()
 {
 	$.get('http://'+URLdomain+'/users', function(users){
@@ -276,10 +303,9 @@ function getusers()
 	});
 }
 
-
+// Envía el mensaje del chat
 function sendText()
 {
-	//console.log(text);
 	$.ajax({
 		 method: "POST",
 		 url:'http://'+URLdomain+'/chat',
@@ -291,36 +317,23 @@ function sendText()
 	})
 }
 
-function disableLogin()
-{
-	nam.style.display = "none";
-	pass.style.display = "none";
-	logIn.style.display = "none";
-	signUp.style.display = "none";
-}
-
-function showOnlineMenu()
-{
-	chat.style.display = "inline-block";
-	send.style.display = "inline-block";
-}
-
+// Avisa al servidor que está conectado y pide la lista de los usuarios conectados.
+// Si no recibe respuesta después de 5 veces, se desconecta.
 function onlineConfirmationGet() {
     $.get('http://'+URLdomain+'/users/'+user.id, function(){
-        //console.log("Estoy online");
+        console.log("Estoy online");
     });
+}
+
+function onlineUsersGet() {
     $.get('http://'+URLdomain+'/users', function(users){
         //console.log("Lista de conectados:");
         //console.log(users);
     }).fail(function (data) {
         if (data.status == 0)
         {
-			nam.style.display = 'none';
-			pass.style.display = 'none';
-			logIn.style.display = 'none';
-			signUp.style.display = 'none';
-			chat.style.display = 'none';
-			send.style.display = 'none';
+			disableLogin();
+			disableOnlineMenu();
 			loadchat = false;
 			errorlogin = false;
 			errorregister = false;
@@ -419,4 +432,37 @@ function registerUser()
 		},
 		success: console.log("Registrado")
  	});
+}
+
+
+// --- FUNCIONES DEL HUD ---
+// Activa los elementos de HTML para la pantalla de login
+function showLogin()
+{
+	nam.style.display = "inline-block";
+	pass.style.display = "inline-block";
+	logIn.style.display = "inline-block";
+	signUp.style.display = "inline-block";
+}
+
+// Oculta los elementos de HTML para la pantalla de login
+function disableLogin()
+{
+	nam.style.display = "none";
+	pass.style.display = "none";
+	logIn.style.display = "none";
+	signUp.style.display = "none";
+}
+
+// Activa los elementos de HTML para el lobby online
+function showOnlineMenu()
+{
+	chat.style.display = "inline-block";
+	send.style.display = "inline-block";
+}
+
+function disableOnlineMenu()
+{
+	chat.style.display = "none";
+	send.style.display = "none";	
 }
