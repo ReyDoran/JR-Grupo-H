@@ -4,7 +4,6 @@ var URLdomain = window.location.host;
 
 var posted = false;
 var registeredUsers = [];
-var registerUserBoolean = false;
 var tempUser = {
 		name: "",
 		pass: ""
@@ -14,7 +13,6 @@ var user = {
 		pass: "",
 		id: -1
 }
-var loadchat = false;
 
 var text = "";
 
@@ -45,6 +43,7 @@ class Login extends Phaser.Scene
 	{
 		this.onlineConfirmationTimer;
 		this.onlineUsersTimer;
+		this.chatAndUsersTimer;
 
 		this.square1 = this.make.image({
 	        x: gameWidth*(5/20),
@@ -122,7 +121,6 @@ class Login extends Phaser.Scene
 		this.back.on('pointerdown', function (pointer){
 			disableLogin();
 			disableOnlineMenu();
-			loadchat = false;
 			this.chatmes.setText("");
 			this.conected.setText("");
 			this.bt_up.setAlpha(0);
@@ -152,48 +150,35 @@ class Login extends Phaser.Scene
 		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
 	}
 
+	// Pide y actualiza el chat y los usuarios conectados
+	actualizeChatAndUsers()
+	{	
+		console.log("actualizo chat y users");
+		let connectedText = "";
+  		let disconnectedText = "";
+  		this.log.setText("");
+	  	this.reg.setText("");
+	  	getchat();
+	  	getusers();
+	  	this.chatmes.setText(dat);
+	  	if (us != null) {
+		  	for (let i = 0; i < us.length; i++) {
+		  		connectedText += us[i] + "\n";
+		  	}
+	  	}
+	  	if (us2 != null) {
+		  	for (let i = 0; i < us2.length; i++) {
+		  		disconnectedText += us2[i] + "\n";
+		  	}
+	  	}
+	  	this.conected.setText("CONECTADOS:\n"+connectedText+"\nDESCONECTADOS:\n"+disconnectedText);
+	}
+
 	update()
 	{
-		if (registerUserBoolean == true)
-	  	{
-		  	registerUserBoolean = false;
-		  	registerUser();
-		  	disableLogin();
-		  	showOnlineMenu();
-	  	}
 	  	if(loggedIn == true){	// Cambiar a poder ser por un callback o evento
 	  		loggedIn = false;
 	  		this.changeToLobby();
-	  	}
-	  	if(loadchat)
-	  	{
-	  		let connectedText = "";
-	  		let disconnectedText = "";
-	  		this.log.setText("");
-		  	this.reg.setText("");
-		  	getchat();
-		  	getusers();
-		  	this.chatmes.setText(dat);
-		  	if (us != null) {
-			  	for (let i = 0; i < us.length; i++) {
-			  		connectedText += us[i] + "\n";
-			  	}
-		  	}
-		  	if (us2 != null) {
-			  	for (let i = 0; i < us2.length; i++) {
-			  		disconnectedText += us2[i] + "\n";
-			  	}
-		  	}
-		  	this.conected.setText("CONECTADOS:\n"+connectedText+"\nDESCONECTADOS:\n"+disconnectedText);
-	  	}
-	  	else
-	  	{
-	  		this.chatmes.setText("");
-	    	this.conected.setText("");
-	    	this.bt_up.setAlpha(0);
-	    	this.bt_down.setAlpha(0);
-	    	this.bt_up_users.setAlpha(0);
-	    	this.bt_down_users.setAlpha(0);
 	  	}
 	  	if(errorlogin)
 	  	{
@@ -224,7 +209,8 @@ class Login extends Phaser.Scene
 	activateLobbyMethods()
 	{
 	  	this.onlineConfirmationTimer = this.time.addEvent({ delay: 1000, callback: onlineConfirmationGet, loop: true});
-	  	this.onlineUsersTimer = this.time.addEvent({ delay: 1000, callback: onlineUsersGet, loop: true});
+	  	this.chatAndUsersTimer = this.time.addEvent({ delay: 1000, callback: this.actualizeChatAndUsers, loop: true, callbackScope: this});
+	  	//this.onlineUsersTimer = this.time.addEvent({ delay: 1000, callback: onlineUsersGet, loop: true});
 	}
 
 	// Desactiva los métodos que no deben ser llamados cuando se salga del lobby
@@ -241,8 +227,7 @@ class Login extends Phaser.Scene
 		errorregister = false;
 	  	disableLogin();
 	  	showOnlineMenu();
-	  	this.activateLobbyMethods();
-	  	loadchat = true;
+	  	this.activateLobbyMethods();	  	
 	  	this.bt_up.setAlpha(1);
 	  	this.bt_down.setAlpha(1);
 	  	this.bt_up_users.setAlpha(1);
@@ -335,7 +320,6 @@ function onlineUsersGet() {
         {
 			disableLogin();
 			disableOnlineMenu();
-			loadchat = false;
 			errorlogin = false;
 			errorregister = false;
 			backMenu = true;
@@ -373,7 +357,6 @@ function login()
 			signUp.style.display = 'none';
 			chat.style.display = 'none';
 			send.style.display = 'none';
-			loadchat = false;
 			errorlogin = false;
 			errorregister = false;
 			backMenu = true;
@@ -420,7 +403,6 @@ function register()
 			signUp.style.display = 'none';
 			chat.style.display = 'none';
 			send.style.display = 'none';
-			loadchat = false;
 			errorlogin = false;
 			errorregister = false;
 
