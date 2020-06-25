@@ -35,10 +35,10 @@ class Cutscene extends Phaser.Scene {
       //Cartas de habilidades
       this.load.image('cd_force', 'assets/cards/cd_force.png');
       this.load.image('cd_reverse', 'assets/cards/cd_reverse.png');
-      this.load.image('cd_slow', 'assets/cards/cd_slow.png');*/
+      this.load.image('cd_slow', 'assets/cards/cd_slow.png');
       //Imagenes
       this.load.image('img_tutorial1', 'assets/images/img_tutorial1.png');
-      this.load.image('img_tutorial2', 'assets/images/img_tutorial2.png');  
+      this.load.image('img_tutorial2', 'assets/images/img_tutorial2.png');  */
       //this.Loader.destroy('img_title');
       this.load.spritesheet('ch_blueGhostL', 'assets/characters/ch_blueGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
       this.load.spritesheet('ch_redGhostL', 'assets/characters/ch_redGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
