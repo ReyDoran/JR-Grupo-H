@@ -152,10 +152,10 @@ public class UsersController {
 		Iterator<User> iter = usersCollection.iterator();
 		User userAux;
 		User newUser = new User();
-		
+		//Fin variables para iterar
 		//Itera por todos los usuarios hasta que termine o encuentre un nombre igual
 		int i = 0;
-		while (i < usersCollection.size() && !exists) {
+		while (i < usersCollection.size() && exists == false) {
 			userAux = iter.next();
 			if (userAux.getName().contentEquals(user.getName())) {	//Si ya existe ese nombre actualiza exists
 				exists = true;
@@ -163,7 +163,7 @@ public class UsersController {
 			i++;
 		}
 		
-		if (!exists) {	//Si el nombre no está en uso
+		if (exists == false) {	//Si el nombre no está en uso
 			//Registarmos el usuario y le devolvemos su id
 			long id = nextId.incrementAndGet();
 			newUser.setId(id);
@@ -213,7 +213,7 @@ public class UsersController {
 		//Fin variables para iterar
 		//Itera por todos los usuarios hasta que termine o encuentre un nombre y contraseñas igual
 		int i = 0;
-		while (i < usersCollection.size() && !match) {
+		while (i < usersCollection.size() && match == false) {
 			userAux = iter.next();
 			//Si hace coincide nombre y contraseña actualiza la variable match
 			if (userAux.getName().contentEquals(user.getName()) && userAux.getPass().contentEquals(user.getPass())) {
@@ -224,7 +224,7 @@ public class UsersController {
 		}
 		
 		//Si ha hecho match
-		if (match) {
+		if (match == true) {
 			return new ResponseEntity<Long>(id, HttpStatus.OK);
 		}
 		else {
