@@ -28,8 +28,7 @@ public class Rest implements WebSocketConfigurer
 	
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(echoHandler(), "/juego")
-			.setAllowedOrigins("*");
+		registry.addHandler(echoHandler(), "/juego").setAllowedOrigins("*");
 	}
 	
 	@Bean
