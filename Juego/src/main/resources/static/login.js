@@ -16,6 +16,7 @@ var user = {
 }
 var loadchat = false;
 
+//text
 var text = "";
 
 var errorlogin = false;
