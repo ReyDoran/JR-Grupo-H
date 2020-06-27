@@ -487,7 +487,7 @@ class BattleOnline extends Phaser.Scene
 				this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 				
 				// Convierte el vector en un Vector2 de phaser
-				let accelerationVec = new Phaser.Math.Vector2(xAccelWS, ay);
+				let accelerationVec = new Phaser.Math.Vector2(xAccelWS, yAccelWS);
 				this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
 				this.player2.setAngle(angle);
 				this.player2.x = x;
