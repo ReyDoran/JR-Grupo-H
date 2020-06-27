@@ -23,20 +23,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableWebSocket
-public class Rest implements WebSocketConfigurer
-{
-	
+public class Rest implements WebSocketConfigurer {
+
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(echoHandler(), "/juego").setAllowedOrigins("*");
 	}
-	
+
 	@Bean
-	public WebsocketEchoHandler echoHandler() 
-	{
+	public WebsocketEchoHandler echoHandler() {
 		return new WebsocketEchoHandler();
 	}
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(Rest.class, args);
 	}

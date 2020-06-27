@@ -44,7 +44,7 @@ public class User {
 	public int getScore() {
 		return score;
 	}
-	
+
 	public Date getLastOnline() {
 		return lastOnline;
 	}
@@ -52,9 +52,10 @@ public class User {
 	public void setLastOnline(Date lastOnline) {
 		this.lastOnline = lastOnline;
 	}
-	
+
 	public String toString() {
-		//return "User [id:" + id + ", name:" + name + ", score:" + score + ", date:" + online + "]";
+		// return "User [id:" + id + ", name:" + name + ", score:" + score + ", date:" +
+		// online + "]";
 		return name;
 	}
 }
