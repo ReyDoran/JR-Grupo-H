@@ -1,4 +1,4 @@
-# ----------------------------- Fase 1 -----------------------------
+# ---------------------------- Fase 1 ----------------------------
 ![Documento de diseño de juego](https://github.com/ReyDoran/JR-Grupo-H/blob/master/Documento%20de%20dise%C3%B1o%20GDD.docx)
 ## ¿Te acuerdas de...?
 Es un juego de agudeza visual y memoria al estilo mario party en 2 dimensiones, vista cenital y con temática de cazafantasmas.  
@@ -29,7 +29,7 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
   
 ![](https://imgur.com/n2GgkOC.png)  
 
-# ----------------------------- Fase 2 -----------------------------
+# --------------------------- Fase 2 -----------------------------
 
 ![](https://imgur.com/gPbqT3C.jpeg)
 
@@ -57,7 +57,7 @@ Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habr
 
 ![](https://imgur.com/rmsEi1W.png)
 
-# ----------------------------- Fase 3 -----------------------------
+# ---------------------------- Fase 3 ----------------------------
 
 En esta tercera fase hemos cambiado muchas cosas en el apartado estético, hemos cambiado toda la interfaz por completo, tanto la de in-game como la de los distintos menús, hemos aprovechado la televisión que hay en el juego, para aprovecharla como nexo principal entre las distintas pantallas.
 Nada más empezar hemos implementado un vídeo a modo de introducción del juego que de pie a la pantalla con el título, a continuación,
