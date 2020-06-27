@@ -14,11 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler {
-
 	private ObjectMapper mapper = new ObjectMapper();
-	BlockingQueue<WebSocketSession> matchmaking = new ArrayBlockingQueue<>(1000); // Los jugadores que estan buscando se
-																					// emparejan por orden de llegada
+	BlockingQueue<WebSocketSession> matchmaking = new ArrayBlockingQueue<>(100); // Los jugadores que estan buscando se emparejan por orden de llegada
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
+	
 	int num = 0;
 	Random rand = new Random();
 	int[] r1 = new int[9];
