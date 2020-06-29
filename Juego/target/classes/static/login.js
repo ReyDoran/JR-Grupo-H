@@ -293,6 +293,7 @@ class Login extends Phaser.Scene
 		// Cambia de escena para menú
 		if(backMenu)
 		{
+			backMenu = false;
 			this.fall.setText("El servidor se ha caido");
 			this.backMenuFuncTimer = this.time.addEvent({ delay: 4000, callback: this.backMenuFunc, loop: false, callbackScope: this});
 		}
@@ -367,10 +368,7 @@ class Login extends Phaser.Scene
 	onlineConfirmationGet() {
 		$.get('http://'+URLdomain+'/users/'+user.id, function(){
 			//console.log("Estoy online");
-		});
-		$.get('http://'+URLdomain+'/users', function(users){
-			//console.log("Lista de conectados:");
-			//console.log(users);
+			failedAttempts = 0;
 		}).fail(function (data) {
 			if (data.status == 0)
 			{
@@ -494,8 +492,7 @@ function login()
 			errorconnected = true;
 			//console.log("error 401");
 		} 
-		else 
-		{
+		else if (data.status == 404) {
 			errorlogin = true;
 		}
 	});
