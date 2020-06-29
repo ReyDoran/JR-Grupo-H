@@ -19,13 +19,13 @@ Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio
   
 ### Mecánicas 
 
-Las posibilidades comienzan en la selección de personaje, ya que hay dos equipos con 3 habilidades compartidas y otras 2 propias de cada uno, de las cuales se podrán escoger 3 en total. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta. Cada pregunta acertada concede puntos y cuando acaben ganará el que más tenga.
+Las posibilidades comienzan en la selección de personaje, ya que hay 4 personajes diferentes y 3 habilidades. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta. Cada pregunta acertada concede puntos y cuando acaben ganará el que más tenga.
 
 ![](https://i.ytimg.com/vi/E1wNFj1l7kk/maxresdefault.jpg)  
 
 ### Flujo 
 
-Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos bando y personaje, con sus respectivas posibles habilidades, habiendo tres comunes y dos únicas de cada equipo. Al acabar la selección, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza.  
+Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selección, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza.  
   
 ![](https://imgur.com/n2GgkOC.png)  
 
@@ -33,7 +33,7 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 
 ![](https://imgur.com/gPbqT3C.jpeg)
 
-Menu principal en el que se puede escoger entre jugar o leer el manual.
+Menu principal en el que se puede escoger entre jugar local, jugar online o leer el manual.
 
 ![](https://imgur.com/QmrAiac.jpeg)
 
@@ -49,7 +49,7 @@ Tambien deberemos elegir las habilidades que tendra este.
 
 ![](https://imgur.com/7tlzCjm.jpeg)
 
-Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque no harán una pregunta.
+Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harán una pregunta.
 
 ![](https://imgur.com/iCOjhpE.jpeg)
 
