@@ -5,84 +5,33 @@
         <script src = "phaser.js"></script>
         <script src = "http://code.jquery.com/jquery-2.2.0.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Caveat+Brush&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
         <link rel="icon" href="\assets\favicon.ico" type="image/ico"/>
 		<link rel="shortcut icon" href="\assets\favicon.ico" type="image/ico"/>
   		<title>TeAcuerdasDe</title>
-  		<style type="text/css">
-			html, body{
-				height: 100%;
-			}
-			html{
-				display: table;
-				width: 50%;
-				margin: auto;
-			}
-			body{
-				display: table-cell;
-				vertical-align: middle;
-			}
-			h1{
-				position: fixed;
-				margin: 0px;
-				height: 720px;
-				width: 1290px;
-			}
-			input{
-				position: relative;
-				top: 50%;
-				left: 35%;
-			}
-			#chat{
-				position: relative;
-				top: 75%;
-				left: 15%;
-			}
-			#butChat
-			{
-				position: relative;
-				top: 75%;
-				left: 15%;
-			}
-			#name{
-				position: relative;
-				top: 50%;
-				left: 27%;
-			}
-			#pass{
-				position: relative;
-				top: 50%;
-				left: 27%;
-			}
-			#butLogIn{
-				position: relative;
-				top: 50%;
-				left: 27%;
-			}
-			#butSignUp{
-				position: relative;
-				top: 50%;
-				left: 27%;
-			}
-  		</style>
     </head>
     <body>
-	    <h1>
+    <div class="loginScene">
+        <div class="login">
+          <input type="text" id="name" placeholder="Usuario" name="name" required>
+  	      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butLogIn" value="Iniciar sesión">
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butSignUp" value="Registrarse">
+        </div>
+        <div class="chatstyle" id="chat_div">
+          <input type="text" class="chatfeed" id="chat" maxlength="50" placeholder="Chat" name="chat" required>
+          <input type="submit" class="btn btn-primary btn-block btn-large" id="butChat" value="Enviar">
+        </div>
+        <div id="chatfeed"></div>
+      </div>
 			<video id="introHTML" style="position: absolute; top: window.innerHeight/2; left: window.innerWidth/2;" width="1280" height="720" autoplay>
 			<source src="/assets/video/intro.mp4" type="video/mp4">
-			</video>
-			<input type="text"		id="chat" 		placeholder="Chat"   		name="chat" required	maxlength="50">
-			<input type="text" 		id="name" 		placeholder="Usuario" 		name="name" required>
-			<input type="password" 	id="pass" 		placeholder="Contraseña" 	name="pass" required>
-			<input type="submit" 	id="butLogIn" 	value="Iniciar sesión">
-			<input type="submit" 	id="butSignUp" 	value="Registrarse">
-			<input type="submit" 	id="butChat" 	value="Enviar">
-			   
+			</video> 
 			<script src = "intro.js"></script>
 			<script src = "menu.js"></script>
 			<script src = "login.js"></script>
 			<script src = "cutscene.js"></script>
 			<script src = "battle.js"></script>
 			<script src = "game.js"></script>
-	    </h1>
     </body>
 </html>

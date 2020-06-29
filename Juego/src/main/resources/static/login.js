@@ -4,18 +4,21 @@ var URLdomain = window.location.host;
 
 var posted = false;
 var registeredUsers = [];
+
 var tempUser = {
-		name: "",
-		pass: ""
+	name: "",
+	pass: ""
 }
 var user = {
-		name: "",
-		pass: "",
-		id: -1
+	name: "",
+	pass: "",
+	id: -1
 }
 
+//text
 var text = "";
 
+// Errores de inicio de sesión
 var errorlogin = false;
 var errorregister = false;
 var errorconnected = false;
@@ -26,107 +29,82 @@ var us2;
 var us;
 
 var backMenu = false;
+var serverOffline = false;
 
 //variable para simular cambio de escena
+var failedAttempts = 0;
 var loggedIn = false;
+var registered = false;
 
-var unableToReachServer = 0;	// Cuenta el nº de veces consecutivas que no consigue contactar con el servidor
+var chatFeed = document.getElementById('chatfeed');
+var nam = document.getElementById('name');
+var pass = document.getElementById('pass');
+var logIn = document.getElementById('butLogIn');
+var signUp = document.getElementById('butSignUp');
+var chat = document.getElementById('chat');
+var send = document.getElementById('butChat');
 
+nam.style.display = 'none';
+pass.style.display = 'none';
+logIn.style.display = 'none';
+signUp.style.display = 'none';
+chat.style.display = 'none';
+send.style.display = 'none';
 class Login extends Phaser.Scene
 {
 	constructor()
 	{
 		super({key:"login"});
 	}
+	
 	preload() {}
 
 	create()
 	{
 		this.onlineConfirmationTimer;
-		this.onlineUsersTimer;
-		this.chatAndUsersTimer;
-		this.backToMenuTimer;
-
+		this.backMenuFuncTimer;
+		this.registerTimer;
+		
 		this.square1 = this.make.image({
-	        x: gameWidth*(5/20),
-	        y: gameHeight*(19/40),
-	        key: 'bg_square',
-	        add: false
-	    });
+			x: gameWidth*(5/20),
+			y: gameHeight*(17/40),
+			key: 'bg_square',
+			add: false
+		});
 		this.square1.scaleX = 2;
 		this.square1.scaleY = 0.8;
-
+		
 		this.square2 = this.make.image({
-	        x: gameWidth*(15/20),
-	        y: gameHeight*(17/40),
-	        key: 'bg_square',
-	        add: false
-	    });
+			x: gameWidth*(15/20),
+			y: gameHeight*(17/40),
+			key: 'bg_square',
+			add: false
+		});
 		this.square2.scaleY = 0.8;
-
+		
 		nam.style.display = "inline-block";
 		pass.style.display = "inline-block";
 		signUp.style.display = "inline-block";
 		logIn.style.display = "inline-block";
-		this.chatmes = this.add.text(gameWidth*(15/100), gameHeight*(17/80),"",{ font: '16px Courier', fill: '#ffffff' });
-		this.conected = this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
-		this.log = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		this.reg = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		this.fall = this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		//Botones chat
-		this.bt_up = this.add.image(gameWidth*(60/100),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
-		this.bt_up.scaleX = 0.5;
-		this.bt_up.scaleY = 0.5;
-		this.bt_up.setAlpha(0);
-		this.bt_down = this.add.image(gameWidth*(60/100),gameHeight*(3/4),'bt_chat').setInteractive();
-		this.bt_down.scaleX = 0.5;
-		this.bt_down.scaleY = 0.5;
-		this.bt_down.setAlpha(0);
-
-		//Subir
-		this.bt_up.on('pointerdown', function (pointer)
-		{
-			this.chatmes.y+=10;
-		}, this);
-
-		//Bajar
-		this.bt_down.on('pointerdown', function (pointer)
-		{
-			this.chatmes.y-=10;
-		}, this);
-
-		//Botones usuarios conectados
-		this.bt_up_users = this.add.image(gameWidth*(7/10),gameHeight*(1/4),'bt_chat').setInteractive().setFlipY(true);
-			this.bt_up_users.scaleX = 0.5;
-		this.bt_up_users.scaleY = 0.5;
-		this.bt_up_users.setAlpha(0);
-			this.bt_down_users = this.add.image(gameWidth*(7/10),gameHeight*(3/4),'bt_chat').setInteractive();
-			this.bt_down_users.scaleX = 0.5;
-		this.bt_down_users.scaleY = 0.5;
-		this.bt_down_users.setAlpha(0);
-
-
-		//Subir
-		this.bt_up_users.on('pointerdown', function (pointer)
-		{
-			this.conected.y+=10;
-		}, this);
-
-		//Bajar
-		this.bt_down_users.on('pointerdown', function (pointer)
-		{
-			this.conected.y-=10;
-		}, this);
-
-		this.back = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
-
+		
+		this.userCreatedText = 	this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
+		this.chatmes = 			this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
+		this.conected = 		this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
+		this.log = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.reg = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
+		
+		
 		this.back.on('pointerdown', function (pointer){
-			this.changeSceneToMenu();			
+			this.closeLobby();
+			this.scene.start('menu');
 		}, this);
-
+	
+		
 		this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
 		this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
-
+		
 		//Interfaz por encima de casi todo
 		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
 		this.anims.create({
@@ -136,140 +114,210 @@ class Login extends Phaser.Scene
 			repeat: -1
 		});
 		this.interf.play('bg_estatica_anim');
-
+		
 		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
 	}
-
-	// Pide y actualiza el chat y los usuarios conectados
-	actualizeChatAndUsers()
-	{	
-		//console.log("actualizo chat y users");
-		let connectedText = "";
-  		let disconnectedText = "";
-  		this.log.setText("");
-	  	this.reg.setText("");
-	  	getchat();
-	  	getusers();
-	  	this.chatmes.setText(dat);
-	  	if (us != null) {
-		  	for (let i = 0; i < us.length; i++) {
-		  		connectedText += us[i] + "\n";
-		  	}
-	  	}
-	  	if (us2 != null) {
-		  	for (let i = 0; i < us2.length; i++) {
-		  		disconnectedText += us2[i] + "\n";
-		  	}
-	  	}
-	  	this.conected.setText("CONECTADOS:\n"+connectedText+"\nDESCONECTADOS:\n"+disconnectedText);
-	}
-
+	
 	update()
 	{
-	  	if(loggedIn == true){	// Cambiar a poder ser por un callback o evento
-	  		loggedIn = false;
-	  		this.changeToLobby();
-	  	}
-	  	if(errorlogin)
-	  	{
-	  		this.log.setText("Error, usuario o contraseña incorrecta");
-		  	this.reg.setText("");
-	  	}
-	  	if(errorregister)
-	  	{
-	  		this.log.setText("");
-		  	this.reg.setText("Error nombre de usuario ya en uso");
-	  	}
-	  	if(errorconnected)
-	  	{
-	  		this.log.setText("");
-	  		this.reg.setText("Error usuario ya conectado");
-	  	}
-	  	if(backMenu)
-	  	{
-	  		backMenu = false;
-	  		this.backToMenu();
-	  	}
+		// Muestra al jugador que inició sesión y activa el HUD de lobby
+		if (loggedIn)
+		{
+			chatFeed.style.display = 'initial';
+			this.log.setText("");
+			this.reg.setText("");
+			this.userCreatedText.setText("");
+			this.onlineConfirmationTimer = this.time.addEvent({ delay: 500, callback: this.onlineConfirmationGet, loop: true, callbackScope: this});
+			this.getChatTimer = this.time.addEvent({ delay: 250, callback: this.getchat, loop: true, callbackScope: this});
+			this.getUsersTimer = this.time.addEvent({ delay: 500, callback: this.getusers, loop: true, callbackScope: this});
+			this.disableLogin();
+			this.enableOnlineMenu();
+			document.getElementById("chat_div").style.visibility = "visible";
+			document.getElementById("chatfeed").style.visibility = "visible";
+			loggedIn = false;
+		}
+		// Muestra al jugador que se registró y activa el HUD de lobby
+		if (registered) {
+			this.log.setText("");
+			this.reg.setText("");
+			this.userCreatedText.setText("");
+			this.userCreatedText.setText("Usuario creado. Iniciando sesión");
+			this.disableLogin();
+			this.registerTimer = this.time.addEvent({ delay: 2000, callback: this.loggedInToTrue, loop: false, callbackScope: this});
+			registered = false;
+		}
+		// Muestra al jugador el error al conectarse
+		if(errorlogin)
+		{
+			this.log.setText("Error, usuario o contraseña incorrecta");
+			this.reg.setText("");
+			this.userCreatedText.setText("");
+			errorlogin = false;
+		}
+		// Muestra al jugador el error al conectarse
+		if(errorconnected)
+		{
+			this.userCreatedText.setText("");
+			this.log.setText("");
+			this.reg.setText("Error usuario ya conectado");
+			errorconnected = false;
+		}
+		// Muestra al jugador el error al registrarse
+		if(errorregister)
+		{
+			this.userCreatedText.setText("");
+			this.log.setText("");
+			this.reg.setText("Error nombre de usuario ya en uso");
+			errorregister = false;
+		}
+		// Cambia de escena para menú
+		if(backMenu)
+		{
+			backMenu = false;
+			this.fall.setText("El servidor se ha caido");
+			this.backMenuFuncTimer = this.time.addEvent({ delay: 4000, callback: this.backMenuFunc, loop: false, callbackScope: this});
+		}
+		
 	}
-
-	backToMenu()
-	{
-		this.log.setText("");
-		this.reg.setText("");
-		this.fall.setText("El servidor se ha caído");
-		this.backToMenuTimer = this.time.addEvent({ delay: 5000, callback: this.changeSceneToMenu, loop: false, callbackScope: this});
+	
+	loggedInToTrue() {
+		loggedIn = true;
 	}
-
-	changeSceneToMenu(){
-		errorlogin = false;
-		errorregister = false;
-		errorconnected = false;
-		disableLogin();
-		disableOnlineMenu();
-		this.fall.setText("");
+	
+	closeLobby() {
+		this.disableOnlineMenu();
+		this.disableLogin();
+		document.getElementById("chat_div").style.visibility = "hidden";
+		document.getElementById("chatfeed").style.visibility = "hidden";
 		this.chatmes.setText("");
 		this.conected.setText("");
-		this.bt_up.setAlpha(0);
-		this.bt_down.setAlpha(0);
-		this.bt_up_users.setAlpha(0);
-		this.bt_down_users.setAlpha(0);
-		this.deactivateLobbyMethods();
+		this.time.removeAllEvents();
+	}
+	
+	backMenuFunc() {
+		this.chatmes.setText("");
+		this.conected.setText("");
+		this.fall.setText("");
+		this.time.removeAllEvents();
+		nam.style.display = 'none';
+		pass.style.display = 'none';
+		logIn.style.display = 'none';
+		signUp.style.display = 'none';
+		chat.style.display = 'none';
+		send.style.display = 'none';
+		backMenu = false;
 		this.scene.start('menu');
 	}
 
-	// Activa los métodos que deben ser llamados en el lobby a través de timers
-	// Avisar de estar online (onlineConfirmationGet)
-	// Pedir lista de jugadores conectados (onlineUsersGet)
-	activateLobbyMethods()
+	getchat()
 	{
-	  	this.onlineConfirmationTimer = this.time.addEvent({ delay: 1000, callback: onlineConfirmationGet, loop: true});
-	  	this.chatAndUsersTimer = this.time.addEvent({ delay: 1000, callback: this.actualizeChatAndUsers, loop: true, callbackScope: this});
-	  	//this.onlineUsersTimer = this.time.addEvent({ delay: 1000, callback: onlineUsersGet, loop: true});
+		$.get('http://'+URLdomain+'/chat', function(data){
+			dat = " ";
+			for (let j = 0; j < data.length; j++) {
+				let msg = data[j].split('');
+				msg[0] = " ";
+				msg[msg.length-1] = " ";
+				let msgString = msg.join("");
+				dat += msgString + "\n";
+			}
+		});
+		document.getElementById("chatfeed").innerHTML = dat;
 	}
 
-	// Desactiva los métodos que no deben ser llamados cuando se salga del lobby
-	// Quita los temporizadores (no se si es necesario pero por si acaso)
-	deactivateLobbyMethods()
+	getusers()
 	{
-		this.time.removeAllEvents();
+		$.get('http://'+URLdomain+'/users', function(users){
+			if (users!=null){
+				us = users[0];
+				us2 = users[1];
+			}
+		});
+		
+		let connectedText = "";
+		let disconnectedText = "";
+		
+		if (us != null) {
+			for (let i = 0; i < us.length; i++) {
+				connectedText += us[i] + "\n";
+			}
+		}
+		if (us2 != null) {
+			for (let i = 0; i < us2.length; i++) {
+				disconnectedText += us2[i] + "\n";
+			}
+		}
+		
+		this.conected.setText("CONECTADOS:\n"+connectedText+"\nDESCONECTADOS:\n"+disconnectedText);
 	}
 
-	// Realiza los cambios necesarios para cambiar al lobby
-	changeToLobby()
+	// Utilidad por determinar
+	onlineConfirmationGet() {
+		$.get('http://'+URLdomain+'/users/'+user.id, function(){
+			//console.log("Estoy online");
+			failedAttempts = 0;
+		}).fail(function (data) {
+			if (data.status == 0)
+			{
+				if (failedAttempts >= 5) {
+					failedAttempts = 0;
+					backMenu = true;
+					chatFeed.style.display = 'none';
+					chat.style.display = 'none';
+					send.style.display = 'none';
+				}
+				else {
+					failedAttempts++;
+				}
+			}
+		})
+	}
+	
+	// HUD
+	// Activa los elementos de HTML para la pantalla de login
+	enableLogin()
 	{
-		this.reg.setText("");
-		this.log.setText("");
-	  	errorlogin = false;
-		errorregister = false;
-		errorconnected = false;
-	  	disableLogin();
-	  	showOnlineMenu();
-	  	this.activateLobbyMethods();	  	
-	  	this.bt_up.setAlpha(1);
-	  	this.bt_down.setAlpha(1);
-	  	this.bt_up_users.setAlpha(1);
-	  	this.bt_down_users.setAlpha(1);
+		nam.style.display = "inline-block";
+		pass.style.display = "inline-block";
+		logIn.style.display = "inline-block";
+		signUp.style.display = "inline-block";
+	}
+	// Oculta los elementos de HTML para la pantalla de login
+	disableLogin()
+	{
+		nam.style.display = "none";
+		pass.style.display = "none";
+		logIn.style.display = "none";
+		signUp.style.display = "none";
+	}
+	// Activa los elementos de HTML para el lobby online
+	enableOnlineMenu()
+	{
+		chat.style.display = "inline-block";
+		send.style.display = "inline-block";
+	}
+	// Oculta los elementos de HTML para el lobby online
+	disableOnlineMenu()
+	{
+		chat.style.display = "inline-block";
+		send.style.display = "inline-block";
 	}
 }
 
-// --- ACCIONES DE LOS BOTONES ---
 $(document).ready(function()
 {
 	let input1 = $('#name');
 	let input2 = $('#pass');
 	let input3 = $('#chat');
-
-	// Log In button
-	// Almacena los valores de nombre y contraseña y llama a login()
+	
+	//Log In button
 	$("#butLogIn").click(function()
 	{
 		tempUser.name = input1.val();
 		tempUser.pass = input2.val();
 		login();
 	})
-
-	// Sign Up button
-	// Almacena los valores de nombre y contraseña y llama a register()
+	
+	//Sign Up button
 	$("#butSignUp").click(function()
 	{
 		//console.log("Pulsado register");
@@ -277,156 +325,63 @@ $(document).ready(function()
 		tempUser.pass = input2.val();
 		register();
 	})
-
-	// Boton enviar chat
-	// Envía el texto introducido + su nombre de usuario
+	
+	//Boton enviar chat
 	$("#butChat").click(function(){
-		text = user.name + ": " + input3.val();
+		text = user.name + ": " + input3.val() + "<br>";
 		sendText();
 		chat.value = "";
 	})
 })
 
-
-// --- PETICIONES AL SERVIDOR ---
-// Pide el texto del chat
-function getchat()
-{
-	$.get('http://'+URLdomain+'/chat', function(data){
-		dat = data;
-	});
-}
-
-// Pide los usuarios existentes
-function getusers()
-{
-	$.get('http://'+URLdomain+'/users', function(users){
-		us = users[0];
-		us2 = users[1];
-	});
-}
-
-// Envía el mensaje del chat
 function sendText()
 {
+	//console.log(text);
 	$.ajax({
-		 method: "POST",
-		 url:'http://'+URLdomain+'/chat',
-		 data: JSON.stringify(text),
-		 processData: false,
-		 headers: {
-		 "Content-type":"application/json"
-	 	 }
-	})
-}
-
-// Avisa al servidor que está conectado y pide la lista de los usuarios conectados.
-// Si no recibe respuesta después de 5 veces, se desconecta.
-function onlineConfirmationGet() {
-    $.get('http://'+URLdomain+'/users/'+user.id, function(){
-        unableToReachServer = 0;
-    }).fail(function () {
-		unableToReachServer++;
-		if (unableToReachServer > 5)
-		{
-			backMenu = true;				
+		method: "POST",
+		url:'http://'+URLdomain+'/chat',
+		data: JSON.stringify(text),
+		processData: false,
+		headers: {
+			"Content-type":"application/json"
 		}
-    });
-}
-
-function onlineUsersGet() {
-    $.get('http://'+URLdomain+'/users', function(users){
-        //console.log("Lista de conectados:");
-        //console.log(users);
-    }).fail(function (data) {
-        if (data.status == 0)
-        {	
-			backMenu = true;	
-        }
-    })
+	})
 }
 
 function login()
 {
 	$.ajax({
-		 method: "PUT",
-		 url:'http://'+URLdomain+'/users',
-		 data: JSON.stringify(tempUser),
-		 processData: false,
-		 headers: { "Content-type":"application/json" }
+		method: "PUT",
+		url:'http://'+URLdomain+'/users',
+		data: JSON.stringify(tempUser),
+		processData: false,
+		headers: {
+			"Content-type":"application/json"
+		}
 	}).done(function (id) {
 		//console.log("Inicio de sesión correcto");
+		loggedIn = true;
 		user.name = tempUser.name;
 		user.pass = tempUser.pass;
 		user.id = id;
-		loggedIn = true;
-		butSignUp.style.display = 'none';
-		butLogIn.style.display = 'none';
-		nam.style.display = 'none';
-		pass.style.display = 'none';
 	}).fail(function (data) {
 		//console.log("No existe esa combinación de nombre-contraseña");
-		errorlogin = true;
-		errorregister = false;
 		if (data.status == 0)
 		{
-			errorregister = false;
-			errorlogin = false;
-			errorconnected = false;
 			backMenu = true;
-		} else if (data.status == 404){
-			errorlogin = true;
-			errorconnected = false;
-			errorregister = false;			
-			console.log("error 404");
-		} else if (data.status == 401){
-			errorlogin = false;
+		}  
+		else if (data.status == 401)
+		{
 			errorconnected = true;
-			errorregister = false;
-			console.log("error 401");
+			//console.log("error 401");
+		} 
+		else if (data.status == 404) {
+			errorlogin = true;
 		}
 	});
 }
 
-/*
- * Setea a true registerUser si el nombre de usuario no está en uso
- */
 function register()
-{
-	$.ajax({
-		 method: "POST",
-		 url:'http://'+URLdomain+'/users',
-		 data: JSON.stringify(tempUser),
-		 processData: false,
-		 headers: {
-		 "Content-type":"application/json"
-	 	 }
-	}).done(function (id) {
-		//console.log("Usuario creado");
-		unableToReachServer = 0;
-		user.name = tempUser.name;
-		user.pass = tempUser.pass;
-		user.id = id;
-		loggedIn = true;
-		butSignUp.style.display = 'none';
-		butLogIn.style.display = 'none';
-		nam.style.display = 'none';
-		pass.style.display = 'none';
-	}).fail(function (data) {
-		//console.log("Nombre de usuario ya en uso");
-		errorlogin = false;
-		errorregister = true;
-		if (data.status == 0)
-		{
-			errorregister = false;
-			errorlogin = false;
-			errorconnected = false;
-			backMenu = true;
-		}
-	});
-}
-
-function registerUser()
 {
 	$.ajax({
 		method: "POST",
@@ -434,41 +389,23 @@ function registerUser()
 		data: JSON.stringify(tempUser),
 		processData: false,
 		headers: {
-		"Content-type":"application/json"
-		},
-		success: console.log("Registrado")
- 	});
-}
-
-
-// --- FUNCIONES DEL HUD ---
-// Activa los elementos de HTML para la pantalla de login
-function showLogin()
-{
-	nam.style.display = "inline-block";
-	pass.style.display = "inline-block";
-	logIn.style.display = "inline-block";
-	signUp.style.display = "inline-block";
-}
-
-// Oculta los elementos de HTML para la pantalla de login
-function disableLogin()
-{
-	nam.style.display = "none";
-	pass.style.display = "none";
-	logIn.style.display = "none";
-	signUp.style.display = "none";
-}
-
-// Activa los elementos de HTML para el lobby online
-function showOnlineMenu()
-{
-	chat.style.display = "inline-block";
-	send.style.display = "inline-block";
-}
-
-function disableOnlineMenu()
-{
-	chat.style.display = "none";
-	send.style.display = "none";	
+			"Content-type":"application/json"
+		}
+	}).done(function (id) {
+		//console.log("Usuario creado");
+		registered = true;
+		user.name = tempUser.name;
+		user.pass = tempUser.pass;
+		user.id = id;
+	}).fail(function (data) {
+		//console.log("Nombre de usuario ya en uso");
+		
+		if (data.status == 0)
+		{
+			backMenu = true;
+		}
+		else {
+			errorregister = true;
+		}
+	});
 }
