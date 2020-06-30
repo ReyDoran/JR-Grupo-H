@@ -1,4 +1,4 @@
-# ----------------------------- Fase 1 -----------------------------
+# ------------------------ Fase 1 ------------------------
 ![Documento de diseño de juego](https://github.com/ReyDoran/JR-Grupo-H/blob/master/Documento%20de%20dise%C3%B1o%20GDD.docx)
 ## ¿Te acuerdas de...?
 Es un juego de agudeza visual y memoria al estilo mario party en 2 dimensiones, vista cenital y con temática de cazafantasmas.  
@@ -25,39 +25,32 @@ Las posibilidades comienzan en la selección de personaje, ya que hay 4 personaj
 
 ### Flujo 
 
-Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selección, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza. En el lobby online podremos utilizar el chat para hablar con otros jugadores conectados.
+Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selección, pasaremos a ver el vídeo e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza. En el lobby online podremos utilizar el chat para hablar con otros jugadores conectados.
   
 ![](ENLACE DE LA IMAGEN 1)  
 
 Las escenas son las siguientes:
 
 ![](https://i.imgur.com/Mz7RBgp.png)
-
-Pantalla de t�tulo.
+Pantalla de título.
 
 ![](https://i.imgur.com/a9vqgm9.png)
-
 Menu principal en el que se puede escoger entre jugar local, jugar online o leer el manual.
 
 ![](https://i.imgur.com/byDtPdc.png)
-
 En el manual se puede ver el funcionamiento y las mecanicas del juego. 
 
 ![](https://i.imgur.com/QBTqkMe.png)
-
 Si escogemos jugar deberemos primero elegir personaje.
 
 ![](https://i.imgur.com/0Tv4DHE.png)
-
 Tambien deberemos elegir las habilidades que tendra este.
 
 ![](https://i.imgur.com/bb3vPbb.png)
-
-Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harán una pregunta.
+Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harÃ¡n una pregunta.
 
 ![](https://i.imgur.com/zoeGQvD.png)
-
-Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrá formulado intentando a su vez que el otro jugador no lo consiga.
+Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrÃ¡ formulado intentando a su vez que el otro jugador no lo consiga.
 
 ### REST
 
@@ -65,18 +58,18 @@ Diagrama de clases:
 
 ![](ENLACE DE LA IMAGEN 2)
 
-M�todos REST:
+Métodos REST:
 - GET (/users): devuelve la lista de los usuarios conectados y de los usuarios desconectados.
-- GET (/users/{id}): actualiza la hora de �ltima conexi�n del usuario identificado con el valor id.
-- POST (/users): registra a un nuevo usuario con las credenciales recibidas siempre que el nombre no est� ya en uso. En este caso devuelve error.
-- LOGIN (/users): inicia sesi�n con un usuario si las credenciales son las correctas y si no est� ya conectado, en otro caso devuelve error.
+- GET (/users/{id}): actualiza la hora de última conexión del usuario identificado con el valor id.
+- POST (/users): registra a un nuevo usuario con las credenciales recibidas siempre que el nombre no esté ya en uso. En este caso devuelve error.
+- LOGIN (/users): inicia sesión con un usuario si las credenciales son las correctas y si no está ya conectado, en otro caso devuelve error.
 - GET (/chat): devuelve los mensajes del chat.
-- POST (/chat): a�ade un nuevo mensaje al chat.
+- POST (/chat): añade un nuevo mensaje al chat.
 
 
-### Instrucciones ejecuci�n
+### Instrucciones ejecución
 
-Para iniciar el servidor ejecutar el archivo tad.jar mediante el comando de cmd "java -jar tad.jar" siendo tad.jar la ubicaci�n del archivo. Para ejecutarlo como cliente introducir en el navegador "localhost:8080/"
+Para iniciar el servidor ejecutar el archivo tad.jar mediante el comando de cmd "java -jar tad.jar" siendo tad.jar la ubicación del archivo. Para ejecutarlo como cliente introducir en el navegador "localhost:8080/"
 
 
 ### Equipo
