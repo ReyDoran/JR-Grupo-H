@@ -56,10 +56,10 @@ var characters = [9];
 var correctTombstones = [3];
 var roundQuestions = [3];
 
-var xAccelWS
-var yAccelWS
-var xAcceleration
-var yAcceleration
+var ax;
+var ay;
+var aex;
+var aey;
 
 var sincro=0;
 
