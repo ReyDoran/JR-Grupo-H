@@ -81,8 +81,7 @@ send.style.display = 'none';
 var connection = new WebSocket('ws://'+URLdomain+'/juego');
 connection.onopen = function()
 {
-	console.log("WS abierto");
-	conectado = true;
+	console.log("WS abierto");	
 }
 connection.onerror = function(e)
 {
@@ -100,6 +99,7 @@ connection.onmessage = function(msg)
 			playerj = info.player;
 			match = true;
 			session = info.session;
+			conectado = true;
 			break;
 		}
 		case 1:
