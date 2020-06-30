@@ -146,7 +146,7 @@ class CutsceneOnline extends Phaser.Scene {
 
 	//Esta funcion genera 1 actor que pasa por la pantalla, con posicion inicial, sprite y velocidad aleatorios.
 	randomCharGen() {
-		let randomPos = Math.floor(Math.random()*2); //Indice de la posicion inicial aleatoria
+		let s_pos = Math.floor(Math.random()*2); //Indice de la posicion inicial aleatoria
 		let velocity = this.velocities[Math.floor(Math.random()*3)]  //Velocidad aleatoria
 		let imageIndex = Math.floor(Math.random()*3); //Indice de imagen aleatoria
 		
@@ -159,12 +159,12 @@ class CutsceneOnline extends Phaser.Scene {
 		let flipX = false;  //Auxiliar para velocidades negativas
 		
 		//Si empieza desde el final velocidad negativa
-		if (randomPos == 1)  {
+		if (s_pos == 1)  {
 			velocity *= -1;
 			flipX = true;
 		}
 		
-		let actor = this.matter.add.sprite(this.start_pos[randomPos], 400, this.names[imageIndex]).setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
+		let actor = this.matter.add.sprite(this.start_pos[s_pos], 400, this.names[imageIndex]).setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
 		//Anima según el actor
 		if (imageIndex == 0)
 		{
@@ -182,7 +182,7 @@ class CutsceneOnline extends Phaser.Scene {
 
 	//imageIndex entre 0 y 2
 	generateChar(imageIndex) {
-		let randomPos = Math.floor(Math.random()*2); 					//Indice de la posicion inicial aleatoria
+		let s_pos = Math.floor(Math.random()*2); 						//Indice de la posicion inicial aleatoria
 		let velocity = this.velocities[Math.floor(Math.random()*3)]  	//Velocidad aleatoria
 		
 		//Si es un cazafantasmas velocidades diferentes
@@ -195,12 +195,12 @@ class CutsceneOnline extends Phaser.Scene {
 		let flipX = false;  //Auxiliar para velocidades negativas
 		
 		//Si empieza desde el final velocidad negativa
-		if (randomPos == 1)  {
+		if (s_pos == 1)  {
 			velocity *= -1;
 			flipX = true;
 		}
 		
-		let actor = this.matter.add.sprite(this.start_pos[randomPos], 400, this.names[imageIndex]).setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
+		let actor = this.matter.add.sprite(this.start_pos[s_pos], 400, this.names[imageIndex]).setOrigin(0.5).setVelocityX(velocity).setCollisionGroup(-1).setFrictionAir(0).setFlip(flipX);
 		//Anima según el actor
 		if (imageIndex == 0)
 		{
