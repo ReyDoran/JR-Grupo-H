@@ -164,7 +164,7 @@ class SeleccionPJH extends Phaser.Scene {
 		}, this);
 		
 		this.returnMenu.on('pointerdown', function (pointer){
-			this.scene.start('menu');
+			this.Scene.start('menu');
 		}, this);
 		
 		//SELECCION DE HABILIDADES
