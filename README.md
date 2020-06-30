@@ -25,37 +25,61 @@ Las posibilidades comienzan en la selecciÃ³n de personaje, ya que hay 4 personaj
 
 ### Flujo 
 
-Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selecciÃ³n, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza.  
+Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selecciÃ³n, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza. En el lobby online podremos utilizar el chat para hablar con otros jugadores conectados.
   
-![](https://imgur.com/n2GgkOC.png)  
+![](ENLACE DE LA IMAGEN 1)  
 
-# ----------------------------- Fase 2 -----------------------------
+Las escenas son las siguientes:
 
-![](https://imgur.com/gPbqT3C.jpeg)
+![](https://i.imgur.com/Mz7RBgp.png)
+
+Pantalla de título.
+
+![](https://i.imgur.com/a9vqgm9.png)
 
 Menu principal en el que se puede escoger entre jugar local, jugar online o leer el manual.
 
-![](https://imgur.com/QmrAiac.jpeg)
+![](https://i.imgur.com/byDtPdc.png)
 
 En el manual se puede ver el funcionamiento y las mecanicas del juego. 
 
-![](https://imgur.com/YIodtMt.jpeg)
+![](https://i.imgur.com/QBTqkMe.png)
 
 Si escogemos jugar deberemos primero elegir personaje.
 
-![](https://imgur.com/R3s066c.jpeg)
+![](https://i.imgur.com/0Tv4DHE.png)
 
 Tambien deberemos elegir las habilidades que tendra este.
 
-![](https://imgur.com/7tlzCjm.jpeg)
+![](https://i.imgur.com/bb3vPbb.png)
 
 Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harÃ¡n una pregunta.
 
-![](https://imgur.com/iCOjhpE.jpeg)
+![](https://i.imgur.com/zoeGQvD.png)
 
 Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrÃ¡ formulado intentando a su vez que el otro jugador no lo consiga.
 
-![](https://imgur.com/rmsEi1W.png)
+### REST
+
+Diagrama de clases:
+
+![](ENLACE DE LA IMAGEN 2)
+
+Métodos REST:
+- GET (/users): devuelve la lista de los usuarios conectados y de los usuarios desconectados.
+- GET (/users/{id}): actualiza la hora de última conexión del usuario identificado con el valor id.
+- POST (/users): registra a un nuevo usuario con las credenciales recibidas siempre que el nombre no esté ya en uso. En este caso devuelve error.
+- LOGIN (/users): inicia sesión con un usuario si las credenciales son las correctas y si no está ya conectado, en otro caso devuelve error.
+- GET (/chat): devuelve los mensajes del chat.
+- POST (/chat): añade un nuevo mensaje al chat.
+
+
+### Instrucciones ejecución
+
+Para iniciar el servidor ejecutar el archivo tad.jar mediante el comando de cmd "java -jar tad.jar" siendo tad.jar la ubicación del archivo. Para ejecutarlo como cliente introducir en el navegador "localhost:8080/"
+
+
+### Equipo
 
 JesÃºs de Pando GalÃ¡n - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
 TomÃ¡s PÃ©rez MartÃ­nez - tomas22tomas@gmail.com - t.perez.2016@alumnos.urjc.es - Tovilu  
