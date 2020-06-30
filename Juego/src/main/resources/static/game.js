@@ -15,7 +15,7 @@ var config = {
         }
     },
     //Orden de escenas
-    scene: [Intro,Menu,Login,Cutscene,Battle,BattleOnline,CutsceneOnline,SeleccionPJH]
+    scene: [Intro,Menu,Login,Cutscene,Battle]
 };
 
 var game = new Phaser.Game(config);

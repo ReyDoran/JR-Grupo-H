@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>rest</name>
+	<name>rest_ejer1_con_ui</name>
 	<description>Backend y frontend para el ejercicio de gesti�n de items</description>
 
 	<parent>

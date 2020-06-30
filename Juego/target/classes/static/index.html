@@ -6,10 +6,12 @@
         <script src = "http://code.jquery.com/jquery-2.2.0.min.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Caveat+Brush&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="icon" href="\assets\favicon.ico" type="image/ico"/>
+		<link rel="shortcut icon" href="\assets\favicon.ico" type="image/ico"/>
   		<title>TeAcuerdasDe</title>
     </head>
     <body>
-      <div class="loginScene">
+    <div class="loginScene">
         <div class="login">
           <input type="text" id="name" placeholder="Usuario" name="name" required>
   	      <input type="password" id="pass" placeholder="Contraseña" name="pass" required>
@@ -22,14 +24,14 @@
         </div>
         <div id="chatfeed"></div>
       </div>
-      <script src = "intro.js"></script>
-      <script src = "menu.js"></script>
-      <script src = "login.js"></script>
-      <script src = "cutscene.js"></script>
-      <script src = "battle.js"></script>
-      <script src = "cutsceneOnline.js"></script>
-      <script src = "battleOnline.js"></script>
-      <script src = "selecciónPJH.js"></script>
-      <script src = "game.js"></script>
+			<video id="introHTML" style="position: absolute; top: window.innerHeight/2; left: window.innerWidth/2;" width="1280" height="720" autoplay>
+			<source src="/assets/video/intro.mp4" type="video/mp4">
+			</video> 
+			<script src = "intro.js"></script>
+			<script src = "menu.js"></script>
+			<script src = "login.js"></script>
+			<script src = "cutscene.js"></script>
+			<script src = "battle.js"></script>
+			<script src = "game.js"></script>
     </body>
 </html>
