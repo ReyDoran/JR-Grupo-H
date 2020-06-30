@@ -31,26 +31,40 @@ Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, coger
 
 Las escenas son las siguientes:
 
+
+
 ![](https://i.imgur.com/Mz7RBgp.png)
 Pantalla de título.
+
+
 
 ![](https://i.imgur.com/a9vqgm9.png)
 Menu principal en el que se puede escoger entre jugar local, jugar online o leer el manual.
 
+
+
 ![](https://i.imgur.com/byDtPdc.png)
 En el manual se puede ver el funcionamiento y las mecanicas del juego. 
+
+
 
 ![](https://i.imgur.com/QBTqkMe.png)
 Si escogemos jugar deberemos primero elegir personaje.
 
+
+
 ![](https://i.imgur.com/0Tv4DHE.png)
 Tambien deberemos elegir las habilidades que tendra este.
 
+
+
 ![](https://i.imgur.com/bb3vPbb.png)
-Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harÃ¡n una pregunta.
+Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harán una pregunta.
+
+
 
 ![](https://i.imgur.com/zoeGQvD.png)
-Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrÃ¡ formulado intentando a su vez que el otro jugador no lo consiga.
+Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrá formulado intentando a su vez que el otro jugador no lo consiga.
 
 ### REST
 
