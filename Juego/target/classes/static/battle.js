@@ -324,7 +324,7 @@ class Battle extends Phaser.Scene
 		if(habil == 0){
 			this.slow(j);
 		} else if(habil == 1){
-			this.force(player);
+            player.setBounce(4.0);
 		} else if(habil == 2){
 			this.reverse(j);
 		} else if(habil == 3){
@@ -383,9 +383,9 @@ class Battle extends Phaser.Scene
 	//Esta función devuelve si el jugador pasado como parámetro está dentro de la base pasada como parámetro en booleano
 	checkPosition(player, base){
 		let ret = false;
-		if (player.x < base.x + base.width/2*0.05 && player.x > base.x - base.width/2*0.05){ //Comprueba x
+		if (player.x < base.x + base.height/2*0.05 && player.x > base.x - base.height/2*0.05){ //Comprueba x
 			ret = true;
-		} if (player.y < base.y + base.height/2*0.05 && player.y > base.y - base.height/2*0.05){ //Comprueba y
+		} if (player.y < base.y + base.width/2*0.04 && player.y > base.y - base.width/2*0.04){ //Comprueba y
 			ret = ret && true;
 		} else {
 			ret = false;
