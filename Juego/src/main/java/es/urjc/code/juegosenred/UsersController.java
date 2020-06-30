@@ -205,8 +205,7 @@ public class UsersController {
 		// Variables para iterar
 		Collection<User> usersCollection = users.values();
 		Iterator<User> iter = usersCollection.iterator();
-		Date actualTime = new Date(); // Momento actual
-		User userAux = new User();
+		User userAux;
 		// Fin variables para iterar
 		// Itera por todos los usuarios hasta que termine o encuentre un nombre y
 		// contraseñas igual
@@ -221,24 +220,6 @@ public class UsersController {
 			i++;
 		}
 
-		/*
-					if (user.getLastOnline() != null) {
-				// Si han pasado menos de 3000 milisegundos de diferencia añadir
-				if (actualTime.getTime() - user.getLastOnline().getTime() < 3000) {
-					usersOnline.add(user.getName());
-				} else {
-					usersDisconnected.add(user.getName());
-				}
-			} else {
-				usersDisconnected.add(user.getName());
-			}
-		*/
-		if (match == true && userAux.getLastOnline() != null) {
-			if (actualTime.getTime() - userAux.getLastOnline().getTime() < 3000) {
-				return new ResponseEntity<Long>(HttpStatus.UNAUTHORIZED);
-			}
-		}
-		
 		// Si ha hecho match
 		if (match == true) {
 			return new ResponseEntity<Long>(id, HttpStatus.OK);

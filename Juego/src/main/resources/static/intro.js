@@ -43,7 +43,6 @@ class Intro extends Phaser.Scene {
 		this.load.image('img_tutorial1', 'assets/images/img_tutorial1.png');
 		this.load.image('img_tutorial2', 'assets/images/img_tutorial2.png');
 		
-		/*
 		//CUTSCENE
 		//Actors
 		this.load.spritesheet('ch_blueGhostL', 'assets/characters/ch_blueGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
@@ -74,7 +73,6 @@ class Intro extends Phaser.Scene {
 		//Escenario
 		this.load.image('sp_tombstone', 'assets/props/sp_tombstone.png');
 		this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
-		*/
 	}
 
 	create() {

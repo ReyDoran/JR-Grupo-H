@@ -9,39 +9,7 @@ class CutsceneOnline extends Phaser.Scene {
 		super({key:"CutsceneOnline"});
 	}
 
-	preload() {
-		//CUTSCENE
-		//Actors
-		this.load.spritesheet('ch_blueGhostL', 'assets/characters/ch_blueGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-		this.load.spritesheet('ch_redGhostL', 'assets/characters/ch_redGhostLateral.png', { frameWidth: 4000/5, frameHeight: 4000/5});
-		this.load.spritesheet('ch_ghostbusterL', 'assets/characters/ch_ghostbusterLateral.png',{ frameWidth: 3460/4, frameHeight: 5910/8});
-		
-		//Background
-		this.load.image('interior', 'assets/background/bg_interior.png');
-		this.load.image('frame', 'assets/background/bg_frame.png');
-		
-		//BATTLE
-		//Cartas
-		this.load.image('cd_force_ig', 'assets/cards/cd_force_ig.png');
-		this.load.image('cd_reverse_ig', 'assets/cards/cd_reverse_ig.png');
-		this.load.image('cd_slow_ig', 'assets/cards/cd_slow_ig.png');
-		this.load.image('img_cross','assets/images/img_cross.png');
-		
-		//Personajes
-		this.load.image('ch_ghostbusterMFace', 'assets/characters/ch_ghostbusterMFace.png');
-		this.load.image('ch_ghostbusterWFace', 'assets/characters/ch_ghostbusterWFace.png');
-		this.load.image('ch_blueGhostFace', 'assets/characters/ch_blueGhostFace.png');
-		this.load.image('ch_redGhostFace', 'assets/characters/ch_redGhostFace.png');
-		this.load.spritesheet('ch_ghostbusterM', 'assets/characters/ch_ghostbusterM.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-		this.load.spritesheet('ch_ghostbusterW', 'assets/characters/ch_ghostbusterW.png',{ frameWidth: 3480/4, frameHeight: 5214/6 });
-		this.load.spritesheet('ch_blueGhost', 'assets/characters/ch_blueGhost.png',{ frameWidth: 950/4, frameHeight: 1422/6 });
-		this.load.spritesheet('ch_redGhost', 'assets/characters/ch_redGhost.png',{ frameWidth: 950/4, frameHeight: 1428/6 });
-		
-		//Escenario
-		this.load.image('sp_tombstone', 'assets/props/sp_tombstone.png');
-		this.load.image('bg_cemetery', 'assets/background/bg_cemetery.png');
-		
-	}
+	preload() {}
 
 	create() {
 		round++;  //Actualizamos la variable global de ronda
