@@ -152,7 +152,7 @@ class Cutscene extends Phaser.Scene {
     //Cambia la escena y acutaliza el valor de la variable global round con la respuesta
     changeScene() {
         answer = this.answers[this.questionIndex];
-        console.log(this.answers[this.questionIndex] + ' = ' + answer);
+        //console.log(this.answers[this.questionIndex] + ' = ' + answer);
         this.scene.start("battle");
     }
 

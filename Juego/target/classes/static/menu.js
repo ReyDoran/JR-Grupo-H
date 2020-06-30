@@ -345,8 +345,8 @@ class Menu extends Phaser.Scene {
   }
 
   disableMainMenu() {
-    console.log("Salgo de menu");
-    console.log(this.iter);
+    //console.log("Salgo de menu");
+    //console.log(this.iter);
     this.bt_play.disableInteractive();
     this.bt_play.setAlpha(0);
     this.bt_online.disableInteractive();
@@ -356,8 +356,8 @@ class Menu extends Phaser.Scene {
   }
 
   showCharSelectMenu() {
-    console.log("Estoy en equipos");
-    console.log(this.iter);
+    //console.log("Estoy en equipos");
+    //console.log(this.iter);
     this.teamSelect.setAlpha(1);
     this.ghostbusterM.setAlpha(1);
     this.ghostbusterM.setInteractive();
@@ -379,8 +379,8 @@ class Menu extends Phaser.Scene {
   }
 
   disableCharSelectMenu() {
-    console.log("Salgo de equipos");
-    console.log(this.iter);
+    //console.log("Salgo de equipos");
+    //console.log(this.iter);
     this.teamSelect.setAlpha(0);
     this.ghostbusterM.setAlpha(0);
     this.ghostbusterM.disableInteractive();
@@ -399,8 +399,8 @@ class Menu extends Phaser.Scene {
   }
 
   showAbilitiesSelectMenu() {
-    console.log("Entro en habilidades");
-    console.log(this.iter);
+    //console.log("Entro en habilidades");
+    //console.log(this.iter);
     //Reinicia las variables auxiliares
     this.abilitiesSelected = 0;
     this.abilities = [false, false, false];
@@ -420,8 +420,8 @@ class Menu extends Phaser.Scene {
   }
 
   disableAbilitiesSelectMenu() {
-    console.log("Salgo de habilidades");
-    console.log(this.iter);
+    //console.log("Salgo de habilidades");
+    //console.log(this.iter);
     this.abilitiesMenu = false;
     this.abilitySelect.setAlpha(0);
     this.ability0.setAlpha(0);
