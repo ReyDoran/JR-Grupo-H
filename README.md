@@ -27,7 +27,7 @@ Las posibilidades comienzan en la selección de personaje, ya que hay 4 personaj
 
 Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos personaje y orden de habilidades. Al acabar la selección, pasaremos a ver el vídeo e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza. En el lobby online podremos utilizar el chat para hablar con otros jugadores conectados.
   
-![](https://imgur.com/gXpEmyl)  
+![](https://imgur.com/gXpEmyl.png)  
 
 Las escenas son las siguientes:
 
@@ -70,7 +70,7 @@ Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habr
 
 Diagrama de clases:
 
-![](https://imgur.com/nmznR5m)
+![](https://imgur.com/nmznR5m.png)
 
 Métodos REST:
 - GET (/users): devuelve la lista de los usuarios conectados y de los usuarios desconectados.
