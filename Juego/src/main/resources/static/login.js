@@ -55,8 +55,8 @@ var characters = [9];
 var correctTombstones = [3];
 var roundQuestions = [3];
 
-var xAccelWS
-var yAccelWS
+var ax
+var ay
 var xAcceleration
 var yAcceleration
 
@@ -129,7 +129,6 @@ connection.onmessage = function(msg)
 		case 2:
 		{
 			//Se llegan los datos del contrario
-			t = info.t;
 			x = info.x;
 			y = info.y;
 			ax = info.ax;

@@ -141,7 +141,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			// habilidad
 			ObjectNode responseNode = mapper.createObjectNode();
 			responseNode.put("code", 2);
-			responseNode.put("t", h.getTiempo());
 			responseNode.put("x", x);
 			responseNode.put("y", y);
 			responseNode.put("ax", ax);
