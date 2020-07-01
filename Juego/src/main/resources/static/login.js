@@ -175,6 +175,7 @@ class Login extends Phaser.Scene
 	{
 		this.onlineConfirmationTimer;
 		this.backMenuFuncTimer;
+		this.registerTimer;
 		
 		this.square1 = this.make.image({
 			x: gameWidth*(5/20),
@@ -212,7 +213,7 @@ class Login extends Phaser.Scene
 			connection.close();
 			this.scene.start('menu');
 		}, this);
-		
+	
 		// Partida online
 		this.online.on('pointerdown', function (pointer){
 			this.closeLobby();
@@ -244,6 +245,7 @@ class Login extends Phaser.Scene
 			chatFeed.style.display = 'initial';
 			this.log.setText("");
 			this.reg.setText("");
+			this.userCreatedText.setText("");
 			this.onlineConfirmationTimer = this.time.addEvent({ delay: 500, callback: this.onlineConfirmationGet, loop: true, callbackScope: this});
 			this.getChatTimer = this.time.addEvent({ delay: 250, callback: this.getchat, loop: true, callbackScope: this});
 			this.getUsersTimer = this.time.addEvent({ delay: 500, callback: this.getusers, loop: true, callbackScope: this});
@@ -260,9 +262,7 @@ class Login extends Phaser.Scene
 			this.userCreatedText.setText("");
 			this.userCreatedText.setText("Usuario creado. Iniciando sesión");
 			this.disableLogin();
-			this.enableOnlineMenu();
-			document.getElementById("chat_div").style.visibility = "visible";
-			document.getElementById("chatfeed").style.visibility = "visible";
+			this.registerTimer = this.time.addEvent({ delay: 2000, callback: this.loggedInToTrue, loop: false, callbackScope: this});
 			registered = false;
 		}
 		// Muestra al jugador el error al conectarse
@@ -296,11 +296,17 @@ class Login extends Phaser.Scene
 			this.fall.setText("El servidor se ha caido");
 			this.backMenuFuncTimer = this.time.addEvent({ delay: 4000, callback: this.backMenuFunc, loop: false, callbackScope: this});
 		}
+
 		// Cambia de escena para online
 		if(match)
 		{
 			this.scene.start("seleccionpjh");
 		}
+		
+	}
+	
+	loggedInToTrue() {
+		loggedIn = true;
 	}
 	
 	closeLobby() {
@@ -318,6 +324,12 @@ class Login extends Phaser.Scene
 		this.conected.setText("");
 		this.fall.setText("");
 		this.time.removeAllEvents();
+		nam.style.display = 'none';
+		pass.style.display = 'none';
+		logIn.style.display = 'none';
+		signUp.style.display = 'none';
+		chat.style.display = 'none';
+		send.style.display = 'none';
 		backMenu = false;
 		this.scene.start('menu');
 	}
@@ -373,11 +385,10 @@ class Login extends Phaser.Scene
 			{
 				if (failedAttempts >= 5) {
 					failedAttempts = 0;
-					disableLogin();
+					backMenu = true;
 					chatFeed.style.display = 'none';
 					chat.style.display = 'none';
 					send.style.display = 'none';
-					backMenu = true;
 				}
 				else {
 					failedAttempts++;
@@ -408,6 +419,7 @@ class Login extends Phaser.Scene
 	{
 		chat.style.display = "inline-block";
 		send.style.display = "inline-block";
+		this.online.setInteractive();
 		this.online.setAlpha(1);
 	}
 	// Oculta los elementos de HTML para el lobby online
@@ -415,6 +427,7 @@ class Login extends Phaser.Scene
 	{
 		chat.style.display = "inline-block";
 		send.style.display = "inline-block";
+		this.online.disableInteractive();
 		this.online.setAlpha(0);
 	}
 }
