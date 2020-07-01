@@ -39,7 +39,7 @@ class SeleccionPJH extends Phaser.Scene {
 		*/
 		if(conectado)
 		{
-			if(playerj=1)
+			if(playerj == 1)
 			{
 				this.ghostbusterM.on('pointerdown', function (pointer){
 					player1Config[0] = 0;
