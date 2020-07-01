@@ -97,30 +97,36 @@ class Battle extends Phaser.Scene
 		//Añade le texto a la tumba escogiendo aleatoriamente los numeros del array en las tumbas.
 		let aux;
 		aux = Math.trunc(Math.random()*numbers.length);
+		
 		if (numbers[aux] == answer){
 		    this.correctTombstone = this.tombstones[0];
 		}
+		
 		this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
 		numbers.splice(aux, 1); //Elimina del array para no volver a escogerlo
 		aux = Math.trunc(Math.random()*numbers.length);
+		
 		if (numbers[aux] == answer){
 		    this.correctTombstone = this.tombstones[1];
 		}
+		
 		this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
 		numbers.splice(aux, 1);
 		aux = Math.trunc(Math.random()*numbers.length);
+		
 		if (numbers[aux] == answer){
 		    this.correctTombstone = this.tombstones[2];
 		}
+		
 		this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
 	}
 
 	create(){
 		//1 Inicialización de variables
 		//1.1 Variables configurables
-		this.roundDuration = 20;  //En segundos
+		this.roundDuration = 20;  	//En segundos
 		this.answerVariation = 2;   //Variacion entre números de las tumbas respecto al correcto NO VALE NUMERO MENOR A DOS
-		this.force = 0.0025;    //Fuerza con la que se mueven los jugadores
+		this.force = 0.0025;    	//Fuerza con la que se mueven los jugadores
 		
 		//1.2 Variables no configurables
 		this.roundEnd = false;  //Almacena si se ha terminado el tiempo de la ronda

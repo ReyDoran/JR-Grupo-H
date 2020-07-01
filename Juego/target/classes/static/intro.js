@@ -6,10 +6,6 @@ class Intro extends Phaser.Scene {
 	}
 
 	preload() {
-		this.load.on('complete', function () {
-			console.log('complete');
-		});
-		
 		//INTRO
 		this.load.image('img_title','assets/images/img_title.png')
 		

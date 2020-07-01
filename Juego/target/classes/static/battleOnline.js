@@ -126,20 +126,14 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){
-		aex = 0;
-		aey = 0;
+		xAcceleration = 0;
+		yAcceleration = 0;
 		angle = 0;
-		ax = 0;
-		ay = 0;
+		xAccelWS = 0;
+		yAccelWS = 0;
 		
-		if(playerj==2)
-		{
-			x = gameWidth*5.5/14;
-		}
-		else
-		{
-			x = gameWidth*8.5/14;
-		}
+		if(playerj==2){ x = gameWidth*5.5/14; }
+		else{ x = gameWidth*8.5/14; }
 		
 		y= gameHeight/2
 		
@@ -388,8 +382,8 @@ class BattleOnline extends Phaser.Scene
 		if(efect == 5){
 			let modulo = Math.sqrt(dist[0]*dist[0] + dist[1]*dist[1]);
 			acceleration = [this.force*dist[0]/modulo, force*dist[1]/modulo];
-			aex = acceleration[0];
-			aey = acceleration[1];
+			xAcceleration = acceleration[0];
+			yAcceleration = acceleration[1];
 		}
 		// Convierte el vector en un Vector2 de phaser
 		let accelerationVec = new Phaser.Math.Vector2(acceleration[0], acceleration[1]);
@@ -493,7 +487,7 @@ class BattleOnline extends Phaser.Scene
 				this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 				
 				// Convierte el vector en un Vector2 de phaser
-				let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+				let accelerationVec = new Phaser.Math.Vector2(xAccelWS, ay);
 				this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
 				this.player2.setAngle(angle);
 				this.player2.x = x;
@@ -513,7 +507,7 @@ class BattleOnline extends Phaser.Scene
 					this.used2=true;
 				}
 				// Convierte el vector en un Vector2 de phaser
-				let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+				let accelerationVec = new Phaser.Math.Vector2(xAccelWS, ay);
 				this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
 				this.player1.setAngle(angle);
 				this.player1.x = x;
@@ -529,8 +523,8 @@ class BattleOnline extends Phaser.Scene
 					code : "2",
 					x: this.player1.x,
 					y: this.player1.y,
-					ax: aex,
-					ay: aey,
+					xAccelWS: xAcceleration,
+					yAccelWS: yAcceleration,
 					rotation: this.player1.angle,
 					hability: this.used1,
 					sess: session
@@ -542,8 +536,8 @@ class BattleOnline extends Phaser.Scene
 					code: "2",
 					x: this.player2.x,
 					y: this.player2.y,
-					ax: aex,
-					ay: aey,
+					xAccelWS: xAcceleration,
+					yAccelWS: yAcceleration,
 					rotation: this.player2.angle,
 					hability: this.used2,
 					sess: session
