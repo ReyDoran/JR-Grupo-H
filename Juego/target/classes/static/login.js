@@ -91,7 +91,7 @@ class Login extends Phaser.Scene
 		this.chatmes = 			this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
 		this.conected = 		this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
 		this.log = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
-		this.reg = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.reg = 				this.add.text(gameWidth*(35/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 		
@@ -149,7 +149,7 @@ class Login extends Phaser.Scene
 		// Muestra al jugador el error al conectarse
 		if(errorlogin)
 		{
-			this.log.setText("Error, usuario o contraseña incorrecta");
+			this.log.setText("Usuario o contraseña incorrecta");
 			this.reg.setText("");
 			this.userCreatedText.setText("");
 			errorlogin = false;
@@ -159,7 +159,7 @@ class Login extends Phaser.Scene
 		{
 			this.userCreatedText.setText("");
 			this.log.setText("");
-			this.reg.setText("Error usuario ya conectado");
+			this.reg.setText("Usuario ya conectado");
 			errorconnected = false;
 		}
 		// Muestra al jugador el error al registrarse
@@ -167,7 +167,7 @@ class Login extends Phaser.Scene
 		{
 			this.userCreatedText.setText("");
 			this.log.setText("");
-			this.reg.setText("Error nombre de usuario ya en uso");
+			this.reg.setText("Nombre de usuario ya en uso");
 			errorregister = false;
 		}
 		// Cambia de escena para menú

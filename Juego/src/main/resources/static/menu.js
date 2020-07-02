@@ -142,8 +142,8 @@ class Menu extends Phaser.Scene {
         this.disableCharSelectMenu();
         this.showAbilitiesSelectMenu();
       }, this);
-      this.redGhost.on('pointerover', function (pointer) { this.redGhost.setScale(1.1); }, this);
-      this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);
+      this.redGhost.on('pointerover', function (pointer) { /*console.log("over");*/ this.redGhost.setScale(1.1); }, this);
+      this.redGhost.on('pointerout', function (pointer) { this.redGhost.setScale(0.9); }, this);	
 
       //Son return to ___
       this.returnChar.on('pointerdown', function (pointer){
@@ -367,6 +367,7 @@ class Menu extends Phaser.Scene {
     this.blueGhost.setInteractive();
     this.redGhost.setAlpha(1);
     this.redGhost.setInteractive();
+    
     if (this.iter == 0){
       this.player1Selecting.setAlpha(1);
       this.returnMenu.setAlpha(1);
