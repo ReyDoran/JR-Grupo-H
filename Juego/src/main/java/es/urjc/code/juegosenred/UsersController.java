@@ -228,8 +228,10 @@ public class UsersController {
 			i++;
 		}
 		
-		if (actualTime.getTime() - userAux.getLastOnline().getTime() < disconnectTime) {
-			isOnline = true;
+		if (match) {
+			if (actualTime.getTime() - userAux.getLastOnline().getTime() < disconnectTime) {
+				isOnline = true;
+			}			
 		}
 		
 		//Si ha hecho match
