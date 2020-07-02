@@ -39,7 +39,7 @@ var registered = false;
 var msg;
 var match=false;
 var playerj;
-var session;
+var matchIndex;
 var t;
 var x;
 var y;
@@ -98,7 +98,7 @@ connection.onmessage = function(msg)
 			//Emparejamiento
 			playerj = info.player;
 			match = true;
-			session = info.session;
+			matchIndex = info.match;
 			conectado = true;
 			break;
 		}

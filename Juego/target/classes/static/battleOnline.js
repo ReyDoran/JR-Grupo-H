@@ -527,7 +527,7 @@ class BattleOnline extends Phaser.Scene
 					ay: yAcceleration,
 					rotation: this.player1.angle,
 					hability: this.used1,
-					sess: session
+					match: matchIndex
 				}
 			}
 			else
@@ -540,7 +540,7 @@ class BattleOnline extends Phaser.Scene
 					ay: yAcceleration,
 					rotation: this.player2.angle,
 					hability: this.used2,
-					sess: session
+					match: matchIndex
 				}
 			}
 			connection.send(JSON.stringify(msg));

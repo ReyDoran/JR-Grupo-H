@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -14,9 +15,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler {
+	final int MAX_MATCHES = 10;
 	private ObjectMapper mapper = new ObjectMapper();
 	BlockingQueue<WebSocketSession> matchmaking = new ArrayBlockingQueue<>(100); // Los jugadores que estan buscando se emparejan por orden de llegada
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
+	Match[] matches = new Match[MAX_MATCHES];
+	int matchesIndex = 0;
+	private Semaphore sem = new Semaphore(1);
 	
 	int num = 0;
 	Random rand = new Random();
@@ -26,6 +31,12 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 
 	Hilo h = new Hilo();
 
+	public WebsocketEchoHandler() {
+		for (int i = 0; i < MAX_MATCHES; i++) {
+			matches[i] = new Match();
+		}
+	}
+	
 	public void setNum(int h) {
 		num = h;
 	}
@@ -34,6 +45,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 		return num;
 	}
 
+	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("Message recibido: " + message.getPayload());
@@ -43,123 +55,142 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 
 		// El codigo marca de que va el mensaje
 		switch (code) {
-		// Buscar Partida
-		case "0": {
-			matchmaking.add(session);
-			users.put(session.getId(), session);
-
-			if (matchmaking.size() > 1) {
-				// Al jugador a se le envia el id de la session de b y al b la de a
-				WebSocketSession a = matchmaking.poll();
-				WebSocketSession b = matchmaking.poll();
-
-				for (int i = 0; i < 9; i++) {
-					r1[i] = rand.nextInt(5);
+			
+			// Buscar Partida
+			case "0": {
+				// PONER BAJO EM
+				sem.acquire();
+				// metemos al nuevo jugador en la sala
+				if (matches[matchesIndex].GetNumPlayers() == 2) {
+					matchesIndex++;
+					if (matchesIndex == MAX_MATCHES) {	// Caso no quedan salas libres
+						ObjectNode response = mapper.createObjectNode();
+						response.put("code", 9);
+						System.out.println("Message sent: " + response.toString());
+						session.sendMessage(new TextMessage(response.toString()));
+					}
 				}
-				for (int i = 0; i < 3; i++) {
-					r2[i] = rand.nextInt(3);
+				matches[matchesIndex].AddPlayer(session);	// Añade el jugador
+				sem.release();				
+				// FIN BAJO EM
+				
+				System.out.println("Jugadores: " + matches[matchesIndex].GetNumPlayers());
+				// si está lleno comenzamos partida
+				if (matches[matchesIndex].GetNumPlayers() == 2) {
+					matches[matchesIndex].GenerateValues();
+					ObjectNode response1 = mapper.createObjectNode();
+					response1.put("code", 0);
+					response1.put("player", 1);
+					response1.put("match", matchesIndex);
+					matches[matchesIndex].player1.sendMessage(new TextMessage(response1.toString()));
+					System.out.println("Message sent: " + response1.toString());
+					ObjectNode response2 = mapper.createObjectNode();
+					response2.put("code", 0);
+					response2.put("player", 2);
+					response2.put("match", matchesIndex);
+					matches[matchesIndex].player2.sendMessage(new TextMessage(response2.toString()));
+					System.out.println("Message sent: " + response2.toString());
 				}
-				for (int i = 0; i < 3; i++) {
-					r3[i] = rand.nextInt(3);
-				}
-
-				System.out.println(a.getId());
-				System.out.println(b.getId());
-
-				ObjectNode responseNode1 = mapper.createObjectNode();
-				responseNode1.put("code", 0);
-				responseNode1.put("player", 2);
-				responseNode1.put("session", a.getId());// Se le envia la id del otro para saber donde enviar
-														// informacion
-				System.out.println("Mensaje enviado: " + responseNode1.toString());
-				b.sendMessage(new TextMessage(responseNode1.toString()));
-
-				ObjectNode responseNode2 = mapper.createObjectNode();
-				responseNode2.put("code", 0);
-				responseNode2.put("player", 1);
-				responseNode2.put("session", b.getId());// Se le envia la id del otro para saber donde enviar
-														// informacion
-				System.out.println("Mensaje enviado: " + responseNode2.toString());
-				a.sendMessage(new TextMessage(responseNode2.toString()));
+				break;
 			}
-			break;
-		}
-		// Eleccion de personajes y de habilidades
-		case "1": {
-			this.setNum(this.getNum() + 1);
-			// Se elijen los personajes
-			String p = node.get("p").asText();
-			String h1 = node.get("h1").asText();
-			String h2 = node.get("h2").asText();
-			String h3 = node.get("h3").asText();
-			String enemigo = node.get("sess").asText();
-
-			// Respuesta
-			ObjectNode responseNode = mapper.createObjectNode();
-			responseNode.put("code", 1);
-			responseNode.put("p", p);
-			responseNode.put("h1", h1);
-			responseNode.put("h2", h2);
-			responseNode.put("h3", h3);
-			responseNode.put("ch1", r1[0]);
-			responseNode.put("ch2", r1[1]);
-			responseNode.put("ch3", r1[2]);
-			responseNode.put("ch4", r1[3]);
-			responseNode.put("ch5", r1[4]);
-			responseNode.put("ch6", r1[5]);
-			responseNode.put("ch7", r1[6]);
-			responseNode.put("ch8", r1[7]);
-			responseNode.put("ch9", r1[8]);
-			responseNode.put("rQ1", r2[0]);
-			responseNode.put("rQ2", r2[1]);
-			responseNode.put("rQ3", r2[2]);
-			responseNode.put("cT1", r3[0]);
-			responseNode.put("cT2", r3[1]);
-			responseNode.put("cT3", r3[2]);
-			System.out.println("Mensaje enviado: " + responseNode.toString());
-			users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
-
-			if (num > 1) {
-				ObjectNode responseNode1 = mapper.createObjectNode();
-				responseNode1.put("code", 4);
-				users.get(enemigo).sendMessage(new TextMessage(responseNode1.toString()));
-				session.sendMessage(new TextMessage(responseNode1.toString()));
-				h.start();
+			
+			// Eleccion de personajes y de habilidades
+			case "1": {
+				// Se elijen los personajes
+				String character = node.get("p").asText();
+				String ability1 = node.get("h1").asText();
+				String ability2 = node.get("h2").asText();
+				String ability3 = node.get("h3").asText();
+				String matchIndex = node.get("match").asText();
+				
+				Match match = matches[Integer.valueOf(matchIndex)];
+				WebSocketSession oponent;
+				if (match.player1.getId() == session.getId()) {
+					oponent = match.player2; 
+				} else {
+					oponent = match.player1;
+				}
+	
+				// Respuesta
+				ObjectNode responseInfo = mapper.createObjectNode();
+				responseInfo.put("code", 1);
+				responseInfo.put("p", character);
+				responseInfo.put("h1", ability1);
+				responseInfo.put("h2", ability2);
+				responseInfo.put("h3", ability3);
+				responseInfo.put("ch1", match.cutsceneActors1[0]);
+				responseInfo.put("ch2", match.cutsceneActors1[1]);
+				responseInfo.put("ch3", match.cutsceneActors1[2]);
+				responseInfo.put("ch4", match.cutsceneActors2[0]);
+				responseInfo.put("ch5", match.cutsceneActors2[1]);
+				responseInfo.put("ch6", match.cutsceneActors2[2]);
+				responseInfo.put("ch7", match.cutsceneActors3[0]);
+				responseInfo.put("ch8", match.cutsceneActors3[1]);
+				responseInfo.put("ch9", match.cutsceneActors3[2]);
+				responseInfo.put("rQ1", match.questions[0]);
+				responseInfo.put("rQ2", match.questions[1]);
+				responseInfo.put("rQ3", match.questions[2]);
+				responseInfo.put("cT1", match.correctTombstone[0]);
+				responseInfo.put("cT2", match.correctTombstone[1]);
+				responseInfo.put("cT3", match.correctTombstone[2]);
+				//System.out.println("Mensaje enviado: " + responseInfo.toString());
+				oponent.sendMessage(new TextMessage(responseInfo.toString()));
+				System.out.println("Message sent: " + responseInfo.toString());
+				match.ReadyPlayer();
+				System.out.println("Listos = " + match.playersReady);
+				if (match.AreReady()) {
+					ObjectNode responseReady = mapper.createObjectNode();
+					responseReady.put("code", 4);
+					match.player1.sendMessage(new TextMessage(responseReady.toString()));
+					match.player2.sendMessage(new TextMessage(responseReady.toString()));
+					match.ResetReady();
+				}
+				break;
 			}
-			break;
-		}
-		// Gameplay
-		case "2": {
-			String x = node.get("x").asText();
-			String y = node.get("y").asText();
-			String ax = node.get("ax").asText();
-			String ay = node.get("ay").asText();
-			String r = node.get("rotation").asText();
-			String hability = node.get("hability").asText();
-			String enemigo = node.get("sess").asText();
-			// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
-			// habilidad
-			ObjectNode responseNode = mapper.createObjectNode();
-			responseNode.put("code", 2);
-			responseNode.put("x", x);
-			responseNode.put("y", y);
-			responseNode.put("ax", ax);
-			responseNode.put("ay", ay);
-			responseNode.put("rotation", r);
-			responseNode.put("hability", hability);
-			System.out.println("Mensaje enviado: " + responseNode.toString());
-			users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
-			break;
-		}
-		// Final partida
-		case "3": {
-			String enemigo = node.get("session").asText();
-			ObjectNode responseNode = mapper.createObjectNode();
-			responseNode.put("code", 3);
-			System.out.println("Mensaje enviado: " + responseNode.toString());
-			users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
-			break;
-		}
+			
+			// Gameplay
+			case "2": {
+				String x = node.get("x").asText();
+				String y = node.get("y").asText();
+				String ax = node.get("ax").asText();
+				String ay = node.get("ay").asText();
+				String r = node.get("rotation").asText();
+				String hability = node.get("hability").asText();
+				String matchIndex = node.get("match").asText();
+				
+				Match match = matches[Integer.valueOf(matchIndex)];
+				WebSocketSession oponent;
+				
+				if (match.player1.getId() == session.getId()) {
+					oponent = match.player2; 
+				} else {
+					oponent = match.player1;
+				}
+				
+				// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
+				// habilidad
+				ObjectNode responseNode = mapper.createObjectNode();
+				responseNode.put("code", 2);
+				responseNode.put("x", x);
+				responseNode.put("y", y);
+				responseNode.put("ax", ax);
+				responseNode.put("ay", ay);
+				responseNode.put("rotation", r);
+				responseNode.put("hability", hability);
+				System.out.println("Mensaje enviado: " + responseNode.toString());
+				oponent.sendMessage(new TextMessage(responseNode.toString()));
+				break;
+			}
+			
+			// Final partida
+			case "3": {
+				String enemigo = node.get("session").asText();
+				ObjectNode responseNode = mapper.createObjectNode();
+				responseNode.put("code", 3);
+				System.out.println("Mensaje enviado: " + responseNode.toString());
+				users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
+				break;
+			}
 		}
 	}
 }

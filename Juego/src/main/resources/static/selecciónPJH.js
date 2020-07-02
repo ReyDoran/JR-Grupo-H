@@ -287,7 +287,7 @@ class SeleccionPJH extends Phaser.Scene {
 								h1: player1Config[1],
 								h2: player1Config[2],
 								h3: player1Config[3],
-								sess: session
+								match: matchIndex
 							}
 							connection.send(JSON.stringify(msg));
 						}
@@ -304,7 +304,7 @@ class SeleccionPJH extends Phaser.Scene {
 									h1: player2Config[1],
 									h2: player2Config[2],
 									h3: player2Config[3],
-									sess: session
+									match: matchIndex
 								}
 								connection.send(JSON.stringify(msg));
 							}		
