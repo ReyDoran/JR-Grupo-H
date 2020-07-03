@@ -126,6 +126,9 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){
+		this.timersCreated = false;
+		this.readySent = false;
+		
 		xAcceleration = 0;
 		yAcceleration = 0;
 		angle = 0;
@@ -275,13 +278,7 @@ class BattleOnline extends Phaser.Scene
 		d:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
 		esp:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 		};
-		
-		// 4 Temporizadores
-		// Llama a una función al terminarse el tiempo de ronda
-		this.timer = this.time.addEvent({ delay: 1000 * this.roundDuration, callback: this.endFunc, callbackScope: this});
-		
-		// 5 Interfaz: texto tiempo que queda y puntos
-		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), /* this.timer.getElapsed() */t/100, { font: '64px Caveat Brush', fill: '#ffffff' });
+	
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -465,149 +462,169 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	update(){
-		// Mientras no haya terminado la ronda
-		if (!this.roundEnd)
-		{
-			this.tiempo.setText(t); // Actualiza el contador
-			if(playerj==1)
-			{
-				if(this.used1==false && this.moveKeys.esp.isDown)
-				{
-					// Se llama a la fucnión habilidad con el identificador de habilidad, el
-					// número de jugador y el jugador
-					this.ability(this.ability1, 1, this.player1);
-					this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
-				}
-				if(h && !used)
-				{
-					used=true;
-					this.ability(this.ability2, 2, this.player2);
-				}
-				this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
-				this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
+		if (sincroRound == true) {
+			if (this.timersCreated == false) {
+				// 4 Temporizadores
+				// Llama a una función al terminarse el tiempo de ronda
+				this.timer = this.time.addEvent({ delay: 1000 * this.roundDuration, callback: this.endFunc, callbackScope: this});
 				
-				// Convierte el vector en un Vector2 de phaser
-				let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-				this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
-				this.player2.setAngle(angle);
-				this.player2.x = x;
-				this.player2.y = y;
+				// 5 Interfaz: texto tiempo que queda y puntos
+				this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), this.timer.getElapsed()/100, { font: '64px Caveat Brush', fill: '#ffffff' });
+				
+				this.timersCreated = true;
 			}
-			else
+			// Mientras no haya terminado la ronda
+			if (!this.roundEnd)
 			{
-				if(h && !used)
+				this.tiempo.setText(t); // Actualiza el contador
+				if(playerj==1)
 				{
-					used=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
-					// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
-					this.ability(this.ability1, 1, this.player1);
+					if(this.used1==false && this.moveKeys.esp.isDown)
+					{
+						// Se llama a la fucnión habilidad con el identificador de habilidad, el
+						// número de jugador y el jugador
+						this.ability(this.ability1, 1, this.player1);
+						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
+					}
+					if(h && !used)
+					{
+						used=true;
+						this.ability(this.ability2, 2, this.player2);
+					}
+					this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
+					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
+					
+					// Convierte el vector en un Vector2 de phaser
+					let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+					this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
+					this.player2.setAngle(angle);
+					this.player2.x = x;
+					this.player2.y = y;
 				}
-				if(this.used2==false && this.moveKeys.esp.isDown)
+				else
 				{
-					this.ability(this.ability2, 2, this.player2);
-					this.used2=true;
+					if(h && !used)
+					{
+						used=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
+						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
+						this.ability(this.ability1, 1, this.player1);
+					}
+					if(this.used2==false && this.moveKeys.esp.isDown)
+					{
+						this.ability(this.ability2, 2, this.player2);
+						this.used2=true;
+					}
+					// Convierte el vector en un Vector2 de phaser
+					let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+					this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
+					this.player1.setAngle(angle);
+					this.player1.x = x;
+					this.player1.y = y;
+					this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
+					this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
 				}
-				// Convierte el vector en un Vector2 de phaser
-				let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-				this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
-				this.player1.setAngle(angle);
-				this.player1.x = x;
-				this.player1.y = y;
-				this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
-				this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
+				
+				// Enviamos websocket
+				if(playerj==1)
+				{
+					msg = {
+						code : "2",
+						x: this.player1.x,
+						y: this.player1.y,
+						ax: xAcceleration,
+						ay: yAcceleration,
+						rotation: this.player1.angle,
+						hability: this.used1,
+						match: matchIndex
+					}
+				}
+				else
+				{
+					msg = {
+						code: "2",
+						x: this.player2.x,
+						y: this.player2.y,
+						ax: xAcceleration,
+						ay: yAcceleration,
+						rotation: this.player2.angle,
+						hability: this.used2,
+						match: matchIndex
+					}
+				}
+				connection.send(JSON.stringify(msg));
 			}
 			
-			// Enviamos websocket
-			if(playerj==1)
-			{
-				msg = {
-					code : "2",
-					x: this.player1.x,
-					y: this.player1.y,
-					ax: xAcceleration,
-					ay: yAcceleration,
-					rotation: this.player1.angle,
-					hability: this.used1,
-					match: matchIndex
+			// Control de animación
+			if(player1Config[0]==0){
+				// Si hay movimiento seguir con la animación
+				if (!this.ghostbusterManim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+					this.ghostbusterManim.resume();
 				}
-			}
-			else
-			{
-				msg = {
-					code: "2",
-					x: this.player2.x,
-					y: this.player2.y,
-					ax: xAcceleration,
-					ay: yAcceleration,
-					rotation: this.player2.angle,
-					hability: this.used2,
-					match: matchIndex
+				// Si el movimiento es muy bajo parar la animación
+				if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+					this.ghostbusterManim.pause();
 				}
-			}
-			connection.send(JSON.stringify(msg));
-		}
-		
-		// Control de animación
-		if(player1Config[0]==0){
-			// Si hay movimiento seguir con la animación
-			if (!this.ghostbusterManim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-				this.ghostbusterManim.resume();
-			}
-			// Si el movimiento es muy bajo parar la animación
-			if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-				this.ghostbusterManim.pause();
-			}
-		} else if (player1Config[0]==1) {
-			if (!this.ghostbusterWanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-				this.ghostbusterWanim.resume();
-			}
-			if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-				this.ghostbusterWanim.pause();
-			}
-		} else if (player1Config[0]==2) {
-		if (!this.blueGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-			this.blueGhostanim.resume();
-		}
-		if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-			this.blueGhostanim.pause();
-		}
-		} else if (player1Config[0]==3) {
-			if (!this.redGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
-				this.redGhostanim.resume();
-			}
-			if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
-				this.redGhostanim.pause();
-			}
-		}
-		
-		if(player2Config[0]==0){
-			// Si hay movimiento seguir con la animación
-			if (!this.ghostbusterManim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
-				this.ghostbusterManim.resume();
-			}
-			// Si el movimiento es muy bajo parar la animación
-			if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
-				this.ghostbusterManim.pause();
-			}
-		} else if (player2Config[0]==1) {
-			if (!this.ghostbusterWanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
-				this.ghostbusterWanim.resume();
-			}
-			if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
-				this.ghostbusterWanim.pause();
-			}
-		} else if (player2Config[0]==2) {
-			if (!this.blueGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+			} else if (player1Config[0]==1) {
+				if (!this.ghostbusterWanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+					this.ghostbusterWanim.resume();
+				}
+				if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+					this.ghostbusterWanim.pause();
+				}
+			} else if (player1Config[0]==2) {
+			if (!this.blueGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
 				this.blueGhostanim.resume();
 			}
-			if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+			if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
 				this.blueGhostanim.pause();
 			}
-		} else if (player2Config[0]==3) {
-			if (!this.redGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
-				this.redGhostanim.resume();
+			} else if (player1Config[0]==3) {
+				if (!this.redGhostanim.isPlaying && (this.player1.body.velocity.x != 0 || this.player1.body.velocity.y != 0)) {
+					this.redGhostanim.resume();
+				}
+				if ((this.player1.body.velocity.x < 0.6 && this.player1.body.velocity.x > -0.6) && (this.player1.body.velocity.y < 0.6 && this.player1.body.velocity.y > -0.6)) {
+					this.redGhostanim.pause();
+				}
 			}
-			if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
-				this.redGhostanim.pause();
+			
+			if(player2Config[0]==0){
+				// Si hay movimiento seguir con la animación
+				if (!this.ghostbusterManim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+					this.ghostbusterManim.resume();
+				}
+				// Si el movimiento es muy bajo parar la animación
+				if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+					this.ghostbusterManim.pause();
+				}
+			} else if (player2Config[0]==1) {
+				if (!this.ghostbusterWanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+					this.ghostbusterWanim.resume();
+				}
+				if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+					this.ghostbusterWanim.pause();
+				}
+			} else if (player2Config[0]==2) {
+				if (!this.blueGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+					this.blueGhostanim.resume();
+				}
+				if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+					this.blueGhostanim.pause();
+				}
+			} else if (player2Config[0]==3) {
+				if (!this.redGhostanim.isPlaying && (this.player2.body.velocity.x != 0 || this.player2.body.velocity.y != 0)) {
+					this.redGhostanim.resume();
+				}
+				if ((this.player2.body.velocity.x < 0.6 && this.player2.body.velocity.x > -0.6) && (this.player2.body.velocity.y < 0.6 && this.player2.body.velocity.y > -0.6)) {
+					this.redGhostanim.pause();
+				}
+			}
+		} else {
+			if (!this.readySent) {
+				msg = {
+						code: "3",
+						match: matchIndex 
+				}
+				connection.send(JSON.stringify(msg));
 			}
 		}
 	}

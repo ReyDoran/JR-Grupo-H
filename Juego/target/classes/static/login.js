@@ -36,6 +36,7 @@ var loggedIn = false;
 var registered = false;
 
 //Variables websockets
+var sincroRound = false;
 var msg;
 var match=false;
 var playerj;
@@ -135,17 +136,18 @@ connection.onmessage = function(msg)
 			ay = info.ay;
 			angle = info.rotation;
 			h = info.hability;
-		break;
+			break;
 		}
 		case 3:
 		{
-			//Termina partida
-		break;
+			console.log("ready to start");
+			sincroRound = true;
+			break;
 		}
 		case 4:
 		{
 			sincro = 2;
-		break;
+			break;
 		}
 		case 5:
 		{

@@ -20,17 +20,11 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 {
 	final int MAX_MATCHES = 10;
 	private ObjectMapper mapper = new ObjectMapper();
-	BlockingQueue<WebSocketSession> matchmaking = new ArrayBlockingQueue<>(100); // Los jugadores que estan buscando se emparejan por orden de llegada
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
 	ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
 	int matchesIndex = 0;
 	private Semaphore sem = new Semaphore(1);
-	
-	int num = 0;
-	Random rand = new Random();
-	int[] r1 = new int[9];
-	int[] r2 = new int[3];
-	int[] r3 = new int[3];
+	private Semaphore semRound = new Semaphore(1);
 
 	public WebsocketEchoHandler() 
 	{
@@ -39,17 +33,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			matches.add(new Match());
 		}
 	}
-	
-	public void setNum(int h) 
-	{
-		num = h;
-	}
-
-	public int getNum() 
-	{
-		return num;
-	}
-
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception 
@@ -196,11 +179,18 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			// Final partida
 			case "3": 
 			{
-				String enemigo = node.get("session").asText();
-				ObjectNode responseNode = mapper.createObjectNode();
-				responseNode.put("code", 3);
-				System.out.println("Mensaje enviado: " + responseNode.toString());
-				users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
+				Match currentMatch = matches.get(Integer.valueOf(node.get("match").asText()));
+				semRound.acquire();
+				currentMatch.ReadyPlayer();
+				System.out.println("Ready?" + currentMatch.playersReady);
+				if (currentMatch.AreReady()) {
+					ObjectNode startRound = mapper.createObjectNode();
+					startRound.put("code", 3);
+					currentMatch.player1.sendMessage(new TextMessage(startRound.toString()));
+					currentMatch.player2.sendMessage(new TextMessage(startRound.toString()));
+					System.out.println("Mensaje enviado: " + startRound.toString());
+				}
+				semRound.release();
 				break;
 			}
 			
