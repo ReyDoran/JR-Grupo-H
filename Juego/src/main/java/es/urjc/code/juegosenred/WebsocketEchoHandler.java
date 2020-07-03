@@ -1,11 +1,13 @@
 package es.urjc.code.juegosenred;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -14,12 +16,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class WebsocketEchoHandler extends TextWebSocketHandler {
+public class WebsocketEchoHandler extends TextWebSocketHandler 
+{
 	final int MAX_MATCHES = 10;
 	private ObjectMapper mapper = new ObjectMapper();
 	BlockingQueue<WebSocketSession> matchmaking = new ArrayBlockingQueue<>(100); // Los jugadores que estan buscando se emparejan por orden de llegada
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
-	Match[] matches = new Match[MAX_MATCHES];
+	ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
 	int matchesIndex = 0;
 	private Semaphore sem = new Semaphore(1);
 	
@@ -29,73 +32,85 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 	int[] r2 = new int[3];
 	int[] r3 = new int[3];
 
-	Hilo h = new Hilo();
-
-	public WebsocketEchoHandler() {
-		for (int i = 0; i < MAX_MATCHES; i++) {
-			matches[i] = new Match();
+	public WebsocketEchoHandler() 
+	{
+		for (int i = 0; i < MAX_MATCHES; i++) 
+		{
+			matches.add(new Match());
 		}
 	}
 	
-	public void setNum(int h) {
+	public void setNum(int h) 
+	{
 		num = h;
 	}
 
-	public int getNum() {
+	public int getNum() 
+	{
 		return num;
 	}
 
 	
 	@Override
-	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception 
+	{
 		System.out.println("Message recibido: " + message.getPayload());
 		// Leemos mensaje
 		JsonNode node = mapper.readTree(message.getPayload());
 		String code = node.get("code").asText();
 
 		// El codigo marca de que va el mensaje
-		switch (code) {
+		switch (code) 
+		{
 			
 			// Buscar Partida
-			case "0": {
+			case "0": 
+			{
 				// PONER BAJO EM
 				sem.acquire();
 				// metemos al nuevo jugador en la sala
-				if (matches[matchesIndex].GetNumPlayers() == 2) {
+				if (matches.get(matchesIndex).GetNumPlayers() == 2)
+				{
 					matchesIndex++;
-					if (matchesIndex == MAX_MATCHES) {	// Caso no quedan salas libres
+					if (matchesIndex == MAX_MATCHES) // Caso no quedan salas libres
+					{	
 						ObjectNode response = mapper.createObjectNode();
 						response.put("code", 9);
 						System.out.println("Message sent: " + response.toString());
 						session.sendMessage(new TextMessage(response.toString()));
 					}
 				}
-				matches[matchesIndex].AddPlayer(session);	// Añade el jugador
+				matches.get(matchesIndex).AddPlayer(session);	// Añade el jugador
+				while (matches.get(matchesIndex).GetNumPlayers() == 2)
+				{
+					matchesIndex++;
+				}
 				sem.release();				
 				// FIN BAJO EM
 				
-				System.out.println("Jugadores: " + matches[matchesIndex].GetNumPlayers());
+				System.out.println("Jugadores: " + matches.get(matchesIndex).GetNumPlayers());
 				// si está lleno comenzamos partida
-				if (matches[matchesIndex].GetNumPlayers() == 2) {
-					matches[matchesIndex].GenerateValues();
+				if (matches.get(matchesIndex).GetNumPlayers() == 2) {
+					matches.get(matchesIndex).GenerateValues();
 					ObjectNode response1 = mapper.createObjectNode();
 					response1.put("code", 0);
 					response1.put("player", 1);
 					response1.put("match", matchesIndex);
-					matches[matchesIndex].player1.sendMessage(new TextMessage(response1.toString()));
+					matches.get(matchesIndex).player1.sendMessage(new TextMessage(response1.toString()));
 					System.out.println("Message sent: " + response1.toString());
 					ObjectNode response2 = mapper.createObjectNode();
 					response2.put("code", 0);
 					response2.put("player", 2);
 					response2.put("match", matchesIndex);
-					matches[matchesIndex].player2.sendMessage(new TextMessage(response2.toString()));
+					matches.get(matchesIndex).player2.sendMessage(new TextMessage(response2.toString()));
 					System.out.println("Message sent: " + response2.toString());
 				}
 				break;
 			}
 			
 			// Eleccion de personajes y de habilidades
-			case "1": {
+			case "1": 
+			{
 				// Se elijen los personajes
 				String character = node.get("p").asText();
 				String ability1 = node.get("h1").asText();
@@ -103,13 +118,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				String ability3 = node.get("h3").asText();
 				String matchIndex = node.get("match").asText();
 				
-				Match match = matches[Integer.valueOf(matchIndex)];
+				Match match = matches.get(Integer.valueOf(matchIndex));
+				
 				WebSocketSession oponent;
-				if (match.player1.getId() == session.getId()) {
-					oponent = match.player2; 
-				} else {
+				if (match.player1.getId() == session.getId()) 
+					oponent = match.player2;  
+				else 
 					oponent = match.player1;
-				}
 	
 				// Respuesta
 				ObjectNode responseInfo = mapper.createObjectNode();
@@ -149,7 +164,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			}
 			
 			// Gameplay
-			case "2": {
+			case "2": 
+			{
 				String x = node.get("x").asText();
 				String y = node.get("y").asText();
 				String ax = node.get("ax").asText();
@@ -158,14 +174,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				String hability = node.get("hability").asText();
 				String matchIndex = node.get("match").asText();
 				
-				Match match = matches[Integer.valueOf(matchIndex)];
+				Match match = matches.get(Integer.valueOf(matchIndex));
 				WebSocketSession oponent;
 				
-				if (match.player1.getId() == session.getId()) {
+				if (match.player1.getId() == session.getId()) 
 					oponent = match.player2; 
-				} else {
+				else 
 					oponent = match.player1;
-				}
 				
 				// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
 				// habilidad
@@ -183,7 +198,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 			}
 			
 			// Final partida
-			case "3": {
+			case "3": 
+			{
 				String enemigo = node.get("session").asText();
 				ObjectNode responseNode = mapper.createObjectNode();
 				responseNode.put("code", 3);
@@ -191,6 +207,40 @@ public class WebsocketEchoHandler extends TextWebSocketHandler {
 				users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
 				break;
 			}
+			
 		}
 	}
+	
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		users.remove(session.getId());
+		
+		String enemigo = null;
+		ObjectNode responseNode = mapper.createObjectNode();
+		responseNode.put("code", 5);
+		int i = 0;
+		boolean encontrado = false;
+		while (!encontrado)
+		{
+			if(matches.get(i).player1 == session)
+			{
+				enemigo = matches.get(i).player2.getId();
+				matches.remove(i);
+				encontrado = true;
+				matches.add(new Match());
+				matchesIndex--;
+			}
+			else if(matches.get(i).player2 == session)
+			{
+				enemigo = matches.get(i).player1.getId();
+				matches.remove(i);
+				encontrado = true;
+				matches.add(new Match());
+				matchesIndex--;
+			}
+			i++;
+		}
+		users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
+	}
+
 }
