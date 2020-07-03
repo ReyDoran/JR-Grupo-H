@@ -279,6 +279,12 @@ class BattleOnline extends Phaser.Scene
 		esp:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 		};
 	
+		
+		msg = {
+				code: "3",
+				match: matchIndex 
+		}
+		connection.send(JSON.stringify(msg));
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -620,11 +626,7 @@ class BattleOnline extends Phaser.Scene
 			}
 		} else {
 			if (!this.readySent) {
-				msg = {
-						code: "3",
-						match: matchIndex 
-				}
-				connection.send(JSON.stringify(msg));
+
 			}
 		}
 	}
