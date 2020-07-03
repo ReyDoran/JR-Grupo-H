@@ -43,7 +43,7 @@ class CutsceneOnline extends Phaser.Scene {
 		
 	}
 
-	create() {
+	create() {		
 		round++;  //Actualizamos la variable global de ronda
 		//Añadimos background
 		let background = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'interior').setOrigin(0.5);

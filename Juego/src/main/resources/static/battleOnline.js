@@ -126,6 +126,18 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){
+		if (playerj == 1){
+			player2Config[0] = p;
+			player2Config[1] = h1;
+			player2Config[2] = h2;
+			player2Config[3] = h3;
+		} else {
+			player1Config[0] = p;
+			player1Config[1] = h1;
+			player1Config[2] = h2;
+			player1Config[3] = h3;
+		}
+		
 		this.timersCreated = false;
 		this.readySent = false;
 		
