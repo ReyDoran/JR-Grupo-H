@@ -81,10 +81,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					}
 				}
 				matches.get(matchesIndex).AddPlayer(session);	// Añade el jugador
-				while (matches.get(matchesIndex).GetNumPlayers() == 2)
-				{
-					matchesIndex++;
-				}
 				sem.release();				
 				// FIN BAJO EM
 				

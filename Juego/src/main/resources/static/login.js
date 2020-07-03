@@ -147,6 +147,11 @@ connection.onmessage = function(msg)
 			sincro = 2;
 		break;
 		}
+		case 5:
+		{
+			this.scene.start("login");
+		break;
+		}
 		default:
 		{
 			console.log("default");
