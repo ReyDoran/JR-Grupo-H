@@ -8,6 +8,9 @@ class SeleccionPJH extends Phaser.Scene {
 	preload() {}
 
 	create() {
+		//Mensaje de espera
+		this.waiting = this.add.text(gameWidth*(14/50), gameHeight*(1/2),"",{ font: '40px Courier', fill: '#ffffff' });
+
 		//Variables auxiliares del menú de habilidades
 		this.abilities = [false, false, false]; //Guarda si una carta está seleccionada (indice coincide con posición en pantalla)
 		/*
@@ -276,6 +279,7 @@ class SeleccionPJH extends Phaser.Scene {
 				{
 					if(conectado)
 					{
+						this.waiting.setText("Esperando al contrincante");
 						if(playerj == 1)
 						{
 							player1Config[1] = this.abilitiesIndex[0];

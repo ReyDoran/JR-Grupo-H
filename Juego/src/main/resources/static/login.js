@@ -202,6 +202,7 @@ class Login extends Phaser.Scene
 		this.userCreatedText = 	this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
 		this.chatmes = 			this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
 		this.conected = 		this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
+		this.waiting = 			this.add.text(gameWidth*(14/50), gameHeight*(1/2),"",{ font: '40px Courier', fill: '#ffffff' });
 		this.log = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.reg = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
@@ -219,6 +220,7 @@ class Login extends Phaser.Scene
 			this.closeLobby();
 			msg = { code: "0" }
 			connection.send(JSON.stringify(msg));
+			this.waiting.setText("Esperando al contrincante");
 		}, this);
 		
 		this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
