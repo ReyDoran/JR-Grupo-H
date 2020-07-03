@@ -23,6 +23,8 @@ public class Match {
 	Random rand = new Random();
 	// Variable para sincronizaciones
 	int playersReady = 0;
+	// Para medir el tiempo
+	long startTime;
 	
 	Match() {
 		numPlayers = 0;
@@ -69,5 +71,13 @@ public class Match {
 	// Devuelve el número de jugadores en la partida
 	public int GetNumPlayers() {
 		return numPlayers;
+	}
+	
+	public void StartMatch() {
+		startTime = System.currentTimeMillis();
+	}
+	
+	public long GetStartTime() {
+		return startTime;
 	}
 }

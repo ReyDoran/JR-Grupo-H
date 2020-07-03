@@ -99,7 +99,6 @@ class BattleOnline extends Phaser.Scene
 		
 		// Añade le texto a la tumba escogiendo aleatoriamente los numeros del array en las tumbas.
 		let aux;
-		console.log(round);
 		aux = correctTombstones[round];
 		
 		if (numbers[aux] == answer){
@@ -297,6 +296,7 @@ class BattleOnline extends Phaser.Scene
 				match: matchIndex 
 		}
 		connection.send(JSON.stringify(msg));
+		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -461,6 +461,7 @@ class BattleOnline extends Phaser.Scene
 		}
 		// En caso de no ser la última ronda pone otra cinemática
 		else {
+			roundFinished = false;
 			this.scene.start('cutsceneOnline');
 		}
 	}
@@ -468,6 +469,7 @@ class BattleOnline extends Phaser.Scene
 	// Reinicia el juego poniendo a 0 el contador de ronda y llamando a la escena de menú principal
 	restart(){
 		round = 0;
+		roundFinished = false;
 		this.scene.start('menu');
 	}
 	
@@ -481,20 +483,11 @@ class BattleOnline extends Phaser.Scene
 	
 	update(){
 		if (sincroRound == true) {
-			if (this.timersCreated == false) {
-				// 4 Temporizadores
-				// Llama a una función al terminarse el tiempo de ronda
-				this.timer = this.time.addEvent({ delay: 1000 * this.roundDuration, callback: this.endFunc, callbackScope: this});
-				
-				// 5 Interfaz: texto tiempo que queda y puntos
-				this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), this.timer.getElapsed()/100, { font: '64px Caveat Brush', fill: '#ffffff' });
-				
-				this.timersCreated = true;
-			}
 			// Mientras no haya terminado la ronda
-			if (!this.roundEnd)
+			if (!this.roundFinished)
 			{
-				this.tiempo.setText(t); // Actualiza el contador
+				this.tiempo.setText(roundTime);
+				console.log(roundTime);
 				if(playerj==1)
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
@@ -570,6 +563,11 @@ class BattleOnline extends Phaser.Scene
 					}
 				}
 				connection.send(JSON.stringify(msg));
+			} else {
+				if (this.endFuncCalled = false) {
+					this.endFunc();
+					this.endFuncCalled = true;
+				}
 			}
 			
 			// Control de animación
@@ -636,10 +634,6 @@ class BattleOnline extends Phaser.Scene
 					this.redGhostanim.pause();
 				}
 			}
-		} else {
-			if (!this.readySent) {
-
-			}
-		}
+		} 
 	}
 }

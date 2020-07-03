@@ -37,7 +37,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception 
 	{
-		System.out.println("Message recibido: " + message.getPayload());
+		//System.out.println("Message recibido: " + message.getPayload());
 		// Leemos mensaje
 		JsonNode node = mapper.readTree(message.getPayload());
 		String code = node.get("code").asText();
@@ -162,21 +162,33 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					oponent = match.player1;
 				
 				// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
-				// habilidad
-				ObjectNode responseNode = mapper.createObjectNode();
-				responseNode.put("code", 2);
-				responseNode.put("x", x);
-				responseNode.put("y", y);
-				responseNode.put("ax", ax);
-				responseNode.put("ay", ay);
-				responseNode.put("rotation", r);
-				responseNode.put("hability", hability);
-				System.out.println("Mensaje enviado: " + responseNode.toString());
-				oponent.sendMessage(new TextMessage(responseNode.toString()));
+				// habilidad y el tiempo
+				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
+				//System.out.println(" now= " + System.currentTimeMillis() + " start=" + match.GetStartTime() + " elapsedTime = " + elapsedTime);
+				String elapsedTimeString = String.valueOf(elapsedTime);
+				if (elapsedTime <= 0) {	// Caso se acabó el tiempo
+					ObjectNode responseNode = mapper.createObjectNode();
+					responseNode.put("code", 6);
+					session.sendMessage(new TextMessage(responseNode.toString()));
+					oponent.sendMessage(new TextMessage(responseNode.toString()));
+				} else {	// Caso normal
+					ObjectNode responseNode = mapper.createObjectNode();
+					responseNode.put("code", 2);
+					responseNode.put("x", x);
+					responseNode.put("y", y);
+					responseNode.put("ax", ax);
+					responseNode.put("ay", ay);
+					responseNode.put("rotation", r);
+					responseNode.put("hability", hability);
+					responseNode.put("time", elapsedTimeString);
+					System.out.println("Mensaje enviado: " + responseNode.toString());
+					oponent.sendMessage(new TextMessage(responseNode.toString()));	
+				}
+				System.out.println("tiempo: " + elapsedTimeString);
 				break;
 			}
 			
-			// Final partida
+			// Comienzo de ronda
 			case "3": 
 			{
 				Match currentMatch = matches.get(Integer.valueOf(node.get("match").asText()));
@@ -189,6 +201,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					currentMatch.player1.sendMessage(new TextMessage(startRound.toString()));
 					currentMatch.player2.sendMessage(new TextMessage(startRound.toString()));
 					System.out.println("Mensaje enviado: " + startRound.toString());
+					currentMatch.StartMatch();
 				}
 				semRound.release();
 				break;
