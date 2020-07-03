@@ -37,6 +37,7 @@ var registered = false;
 
 //Variables websockets
 var sincroRound = false;
+var roundFinished = false;
 var msg;
 var match=false;
 var playerj;
@@ -56,10 +57,11 @@ var characters = [9];
 var correctTombstones = [3];
 var roundQuestions = [3];
 
-var ax
-var ay
-var xAcceleration
-var yAcceleration
+var ax;
+var ay;
+var xAcceleration;
+var yAcceleration;
+var roundTime = 20;
 
 var sincro=0;
 
@@ -136,6 +138,7 @@ connection.onmessage = function(msg)
 			ay = info.ay;
 			angle = info.rotation;
 			h = info.hability;
+			roundTime = info.time;
 			break;
 		}
 		case 3:
@@ -153,6 +156,11 @@ connection.onmessage = function(msg)
 		{
 			this.scene.start("login");
 		break;
+		}
+		case 6:	// Se acabó el tiempo de ronda
+		{
+			roundFinished = true;
+			roundTime = 0;
 		}
 		default:
 		{
