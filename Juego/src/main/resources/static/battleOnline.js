@@ -486,6 +486,11 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	update(){
+		if (escapar == true)
+		{
+			this.scene.start("login");
+			escapar = false;
+		}
 		if (sincroRound == true) {
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
@@ -546,7 +551,7 @@ class BattleOnline extends Phaser.Scene
 							this.crossH1P2.setAlpha(1);
 							break;
 						case 2:
-							this.crossH2p2.setAlpha(1);
+							this.crossH2P2.setAlpha(1);
 							break;
 						case 3:
 							this.crossh3P2.setAlpha(1);

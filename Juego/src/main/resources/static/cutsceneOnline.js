@@ -248,5 +248,12 @@ class CutsceneOnline extends Phaser.Scene {
 		}
 	}
 
-	update(){}
+	update()
+	{
+		if (escapar == true)
+		{
+			this.scene.start("login");
+			escapar = false;
+		}
+	}
 }

@@ -64,6 +64,7 @@ var yAcceleration;
 var roundTime = 20;
 
 var sincro=0;
+var escapar = false;
 
 var chatFeed = document.getElementById('chatfeed');
 var nam = document.getElementById('name');
@@ -154,7 +155,7 @@ connection.onmessage = function(msg)
 		}
 		case 5:
 		{
-			this.scene.start("login");
+			escapar = true;
 			break;
 		}
 		case 6:	// Se acabó el tiempo de ronda
@@ -169,8 +170,6 @@ connection.onmessage = function(msg)
 		}
 		break;
 	}
-	
-	match=true;
 }
 connection.onclose = function()
 {
@@ -319,6 +318,7 @@ class Login extends Phaser.Scene
 		if(match)
 		{
 			this.scene.start("seleccionpjh");
+			match = false;
 		}
 		
 	}

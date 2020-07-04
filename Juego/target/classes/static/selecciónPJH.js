@@ -446,6 +446,11 @@ class SeleccionPJH extends Phaser.Scene {
 	}
 	
 	update() {
+		if (escapar == true)
+		{
+			this.scene.start("login");
+			escapar = false;
+		}
 		//Cuando está seleccionada, una carta se tiñe de rojo
 		if (this.abilities[0] == true) this.ability0.setTint(0xCD0000);
 		else this.ability0.clearTint();

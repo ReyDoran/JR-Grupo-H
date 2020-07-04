@@ -224,7 +224,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		users.remove(session.getId());
 		
-		String enemigo = null;
+		WebSocketSession enemigo = null;
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", 5);
 		int i = 0;
@@ -233,7 +233,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		{
 			if(matches.get(i).player1 == session)
 			{
-				enemigo = matches.get(i).player2.getId();
+				enemigo = matches.get(i).player2;
 				matches.remove(i);
 				encontrado = true;
 				matches.add(new Match());
@@ -241,7 +241,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			}
 			else if(matches.get(i).player2 == session)
 			{
-				enemigo = matches.get(i).player1.getId();
+				enemigo = matches.get(i).player1;
 				matches.remove(i);
 				encontrado = true;
 				matches.add(new Match());
@@ -249,7 +249,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			}
 			i++;
 		}
-		users.get(enemigo).sendMessage(new TextMessage(responseNode.toString()));
+		enemigo.sendMessage(new TextMessage(responseNode.toString()));
 	}
 
 }
