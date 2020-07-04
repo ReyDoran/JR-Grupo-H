@@ -224,7 +224,7 @@ class SeleccionPJH extends Phaser.Scene {
 				*/
 				this.abilitiesIndex[this.abilitiesSelected] = 0;
 				this.abilitiesSelected++;
-				//this.ability0.text.setText(this.abilitiesSelected);
+				this.ability0.text.setText(this.abilitiesSelected);
 				this.ability0.text.setAlpha(1);
 			}
 			//Cambiamos el estado de la selección de la carta

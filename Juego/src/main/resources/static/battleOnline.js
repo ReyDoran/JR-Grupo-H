@@ -185,13 +185,6 @@ class BattleOnline extends Phaser.Scene
 		let habPos = [0, gameWidth/14, gameWidth*2.5/14, gameWidth*4/14, 0, gameWidth*10/14, gameWidth*11.5/14, gameWidth*13/14];
 		let cardsHeight = gameHeight/9;
 		
-		this.crossH1P1 = this.add.image(habPos[1], cardsHeight, 'img_cross').setAlpha(0);
-		this.crossH2p1 = this.add.image(habPos[2], cardsHeight, 'img_cross').setAlpha(0);
-		this.crossh3P1 = this.add.image(habPos[3], cardsHeight, 'img_cross').setAlpha(0);
-		this.crossH1P2 = this.add.image(habPos[5], cardsHeight, 'img_cross').setAlpha(0);
-		this.crossH2P2 = this.add.image(habPos[6], cardsHeight, 'img_cross').setAlpha(0);
-		this.crossH3P2 = this.add.image(habPos[7], cardsHeight, 'img_cross').setAlpha(0);
-		
 		let i;
 		for (i=1; i<4; i++) {
 			if(player1Config[i]==0){
@@ -210,6 +203,13 @@ class BattleOnline extends Phaser.Scene
 				this.reverseCardP2 = this.add.image(habPos[i+4], cardsHeight, 'cd_reverse_ig').setScale(0.3);
 			}
 		}
+		
+		this.crossH1P1 = this.add.image(habPos[1], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH2p1 = this.add.image(habPos[2], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossh3P1 = this.add.image(habPos[3], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH1P2 = this.add.image(habPos[5], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH2P2 = this.add.image(habPos[6], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH3P2 = this.add.image(habPos[7], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
 		
 		// 2.2 Animaciones
 		if(player1Config[0]==0 || player2Config[0]==0){
@@ -496,6 +496,19 @@ class BattleOnline extends Phaser.Scene
 						// número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
+						
+						switch (round){
+						case 1:
+							this.crossH1P1.setAlpha(1);
+							break;
+						case 2:
+							this.crossH2p1.setAlpha(1);
+							break;
+						case 3:
+							this.crossh3P1.setAlpha(1);
+						default:
+							break;
+						}
 					}
 					if(h && !used)
 					{
@@ -524,6 +537,19 @@ class BattleOnline extends Phaser.Scene
 					{
 						this.ability(this.ability2, 2, this.player2);
 						this.used2=true;
+						
+						switch (round){
+						case 1:
+							this.crossH1P2.setAlpha(1);
+							break;
+						case 2:
+							this.crossH2p2.setAlpha(1);
+							break;
+						case 3:
+							this.crossh3P2.setAlpha(1);
+						default:
+							break;
+						}
 					}
 					// Convierte el vector en un Vector2 de phaser
 					let accelerationVec = new Phaser.Math.Vector2(ax, ay);
