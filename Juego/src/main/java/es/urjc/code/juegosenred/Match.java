@@ -25,6 +25,8 @@ public class Match {
 	int playersReady = 0;
 	// Para medir el tiempo
 	long startTime;
+	// Para saber si está en el combate
+	public boolean isMatchActive = false;
 	
 	Match() {
 		numPlayers = 0;

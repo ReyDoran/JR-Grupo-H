@@ -166,11 +166,17 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
 				//System.out.println(" now= " + System.currentTimeMillis() + " start=" + match.GetStartTime() + " elapsedTime = " + elapsedTime);
 				String elapsedTimeString = String.valueOf(elapsedTime);
-				if (elapsedTime <= 0) {	// Caso se acabó el tiempo
-					ObjectNode responseNode = mapper.createObjectNode();
-					responseNode.put("code", 6);
-					session.sendMessage(new TextMessage(responseNode.toString()));
-					oponent.sendMessage(new TextMessage(responseNode.toString()));
+				if (match.isMatchActive && elapsedTime <= 0) {	// Caso se acabó el tiempo
+					if (!match.AreReady()) {
+						ObjectNode responseNode = mapper.createObjectNode();
+						responseNode.put("code", 6);
+						session.sendMessage(new TextMessage(responseNode.toString()));
+						oponent.sendMessage(new TextMessage(responseNode.toString()));
+						match.ReadyPlayer();
+						match.ReadyPlayer();
+						match.ResetReady();
+						match.isMatchActive = false;
+					}
 				} else {	// Caso normal
 					ObjectNode responseNode = mapper.createObjectNode();
 					responseNode.put("code", 2);
@@ -181,10 +187,10 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					responseNode.put("rotation", r);
 					responseNode.put("hability", hability);
 					responseNode.put("time", elapsedTimeString);
-					System.out.println("Mensaje enviado: " + responseNode.toString());
+					//System.out.println("Mensaje enviado: " + responseNode.toString());
 					oponent.sendMessage(new TextMessage(responseNode.toString()));	
 				}
-				System.out.println("tiempo: " + elapsedTimeString);
+				//System.out.println("tiempo: " + elapsedTimeString);
 				break;
 			}
 			
@@ -196,12 +202,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				currentMatch.ReadyPlayer();
 				System.out.println("Ready?" + currentMatch.playersReady);
 				if (currentMatch.AreReady()) {
+					currentMatch.StartMatch();
+					System.out.println(currentMatch.GetStartTime());
 					ObjectNode startRound = mapper.createObjectNode();
 					startRound.put("code", 3);
 					currentMatch.player1.sendMessage(new TextMessage(startRound.toString()));
 					currentMatch.player2.sendMessage(new TextMessage(startRound.toString()));
 					System.out.println("Mensaje enviado: " + startRound.toString());
 					currentMatch.StartMatch();
+					currentMatch.ResetReady();
+					currentMatch.isMatchActive = true;
 				}
 				semRound.release();
 				break;

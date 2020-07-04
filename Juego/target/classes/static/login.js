@@ -127,7 +127,7 @@ connection.onmessage = function(msg)
 			correctTombstones[0] = info.cT1;
 			correctTombstones[1] = info.cT2;
 			correctTombstones[2] = info.cT3;
-		break;
+			break;
 		}
 		case 2:
 		{
@@ -155,12 +155,13 @@ connection.onmessage = function(msg)
 		case 5:
 		{
 			this.scene.start("login");
-		break;
+			break;
 		}
 		case 6:	// Se acabó el tiempo de ronda
 		{
 			roundFinished = true;
 			roundTime = 0;
+			break;
 		}
 		default:
 		{

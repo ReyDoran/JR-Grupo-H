@@ -125,6 +125,7 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){
+		this.endFuncCalled = false;
 		if (playerj == 1){
 			player2Config[0] = p;
 			player2Config[1] = h1;
@@ -438,12 +439,14 @@ class BattleOnline extends Phaser.Scene
 		this.freeze();  // Congela a los jugadores
 		this.actualizePoints(); // Actualiza los puntos y avisa de quien ha ganado
 		this.time.addEvent({ delay: 4000, callback: this.changeScene, callbackScope: this});    // Pone un temporizador para la llamada a la función de cambio de escena
+		console.log("llamamos a changescene");
 	}
 	
 	// Cambia de escena dependiendo de si es la útlima ronda o no y avisa del ganador en caso de que haya.
 	changeScene(){
 		let msge;
 		if (round == 3){
+			console.log("ronda final");
 			// Borra los mensajes anteriores de final de ronda
 			if (this.roundEndText0 != undefined) this.roundEndText0.setAlpha(0);
 			if (this.roundEndText1 != undefined) this.roundEndText1.setAlpha(0);
@@ -462,7 +465,8 @@ class BattleOnline extends Phaser.Scene
 		// En caso de no ser la última ronda pone otra cinemática
 		else {
 			roundFinished = false;
-			this.scene.start('cutsceneOnline');
+			console.log("empezamos cutsceneonline");
+			this.scene.start('CutsceneOnline');
 		}
 	}
 	
@@ -484,10 +488,9 @@ class BattleOnline extends Phaser.Scene
 	update(){
 		if (sincroRound == true) {
 			// Mientras no haya terminado la ronda
-			if (!this.roundFinished)
+			if (!roundFinished)
 			{
 				this.tiempo.setText(roundTime);
-				console.log(roundTime);
 				if(playerj==1)
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
@@ -589,10 +592,12 @@ class BattleOnline extends Phaser.Scene
 					}
 				}
 				connection.send(JSON.stringify(msg));
+				console.log("enviao (roundfinished=" + roundFinished);
 			} else {
-				if (this.endFuncCalled = false) {
+				if (this.endFuncCalled == false) {
 					this.endFunc();
 					this.endFuncCalled = true;
+					console.log("llamamos a endFUnc");
 				}
 			}
 			
