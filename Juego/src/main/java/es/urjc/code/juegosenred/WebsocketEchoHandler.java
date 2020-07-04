@@ -216,7 +216,13 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				semRound.release();
 				break;
 			}
-			
+			case "10":	//ping
+			{
+				ObjectNode pingMessage = mapper.createObjectNode();
+				pingMessage.put("code", 10);
+				session.sendMessage(new TextMessage(pingMessage.toString()));
+				break;				
+			}
 		}
 	}
 	

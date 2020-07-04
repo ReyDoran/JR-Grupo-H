@@ -164,6 +164,11 @@ connection.onmessage = function(msg)
 			roundTime = 0;
 			break;
 		}
+		case 10:	// Ping
+		{
+			break;
+		}
+	
 		default:
 		{
 			console.log("default");
@@ -175,6 +180,13 @@ connection.onclose = function()
 {
 	console.log("Closing socket");
 	conectado = false;
+}
+
+setInterval(ping, 9000);
+
+function ping() {
+	var pingMsg = { code: "10" }
+	connection.send(JSON.stringify(pingMsg));
 }
 
 class Login extends Phaser.Scene
