@@ -153,7 +153,7 @@ class SeleccionPJH extends Phaser.Scene {
 		//Son return to ___
 		this.returnChar = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
 		this.returnAbi = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(0).setScale(0.7);
-		this.returnMenu = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setScale(0.7);
+		this.returnMenu = this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setScale(0.7).setInteractive();
 		
 		this.returnChar.on('pointerdown', function (pointer){
 			this.disableAbilitiesSelectMenu();
@@ -168,6 +168,7 @@ class SeleccionPJH extends Phaser.Scene {
 		
 		this.returnMenu.on('pointerdown', function (pointer){
 			this.scene.start('menu');
+			console.log("pal menu");
 		}, this);
 		
 		//SELECCION DE HABILIDADES

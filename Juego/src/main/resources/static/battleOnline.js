@@ -124,7 +124,7 @@ class BattleOnline extends Phaser.Scene
 		this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
 	}
 	
-	create(){
+	create(){		
 		this.endFuncCalled = false;
 		if (playerj == 1){
 			player2Config[0] = p;
@@ -206,11 +206,23 @@ class BattleOnline extends Phaser.Scene
 		}
 		
 		this.crossH1P1 = this.add.image(habPos[1], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
-		this.crossH2p1 = this.add.image(habPos[2], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
-		this.crossh3P1 = this.add.image(habPos[3], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH2P1 = this.add.image(habPos[2], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		this.crossH3P1 = this.add.image(habPos[3], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
 		this.crossH1P2 = this.add.image(habPos[5], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
 		this.crossH2P2 = this.add.image(habPos[6], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
 		this.crossH3P2 = this.add.image(habPos[7], cardsHeight, 'img_cross').setAlpha(0).setScale(0.2);
+		
+		switch (round){
+		case 2:
+			this.crossH1P1.setAlpha(1);
+			this.crossH1P2.setAlpha(1);
+			break;
+		case 3:
+			this.crossH2P1.setAlpha(1);
+			this.crossH2P2.setAlpha(1);
+		default:
+			break;
+		}
 		
 		// 2.2 Animaciones
 		if(player1Config[0]==0 || player2Config[0]==0){
@@ -510,10 +522,10 @@ class BattleOnline extends Phaser.Scene
 							this.crossH1P1.setAlpha(1);
 							break;
 						case 2:
-							this.crossH2p1.setAlpha(1);
+							this.crossH2P1.setAlpha(1);
 							break;
 						case 3:
-							this.crossh3P1.setAlpha(1);
+							this.crossH3P1.setAlpha(1);
 						default:
 							break;
 						}
@@ -554,7 +566,7 @@ class BattleOnline extends Phaser.Scene
 							this.crossH2P2.setAlpha(1);
 							break;
 						case 3:
-							this.crossh3P2.setAlpha(1);
+							this.crossH3P2.setAlpha(1);
 						default:
 							break;
 						}
@@ -670,6 +682,8 @@ class BattleOnline extends Phaser.Scene
 					this.redGhostanim.pause();
 				}
 			}
-		} 
+		}
+		
+		
 	}
 }
