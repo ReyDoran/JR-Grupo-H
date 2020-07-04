@@ -36,6 +36,7 @@ var loggedIn = false;
 var registered = false;
 
 //Variables websockets
+var newMsg = false;	// Indica si el mensaje del oponente ya se ha aplicado en battleOnline
 var sincroRound = false;
 var roundFinished = false;
 var msg;
@@ -93,7 +94,7 @@ connection.onerror = function(e)
 }
 connection.onmessage = function(msg)
 {
-	console.log("WS message: " + msg.data);
+	//console.log("WS message: " + msg.data);
 	var info = JSON.parse(msg.data);
 	switch(info.code)
 	{
@@ -140,6 +141,7 @@ connection.onmessage = function(msg)
 			angle = info.rotation;
 			h = info.hability;
 			roundTime = info.time;
+			newMsg = true;
 			break;
 		}
 		case 3:

@@ -311,6 +311,7 @@ class BattleOnline extends Phaser.Scene
 		}
 		connection.send(JSON.stringify(msg));
 		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
+		// Temporizador de envío de mensaje de posición y aceleración
 		this.sendWebSocketsTimer = this.time.addEvent({ delay: 33, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
 	}
 	
@@ -453,14 +454,12 @@ class BattleOnline extends Phaser.Scene
 		this.freeze();  // Congela a los jugadores
 		this.actualizePoints(); // Actualiza los puntos y avisa de quien ha ganado
 		this.time.addEvent({ delay: 4000, callback: this.changeScene, callbackScope: this});    // Pone un temporizador para la llamada a la función de cambio de escena
-		console.log("llamamos a changescene");
 	}
 	
 	// Cambia de escena dependiendo de si es la útlima ronda o no y avisa del ganador en caso de que haya.
 	changeScene(){
 		let msge;
 		if (round == 3){
-			console.log("ronda final");
 			// Borra los mensajes anteriores de final de ronda
 			if (this.roundEndText0 != undefined) this.roundEndText0.setAlpha(0);
 			if (this.roundEndText1 != undefined) this.roundEndText1.setAlpha(0);
@@ -479,7 +478,6 @@ class BattleOnline extends Phaser.Scene
 		// En caso de no ser la última ronda pone otra cinemática
 		else {
 			roundFinished = false;
-			console.log("empezamos cutsceneonline");
 			this.scene.start('CutsceneOnline');
 		}
 	}
@@ -543,7 +541,7 @@ class BattleOnline extends Phaser.Scene
 			if (!roundFinished)
 			{
 				this.tiempo.setText(roundTime);
-				if(playerj==1)
+				if(playerj==1)	// Caso el jugador local es el 1
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
 					{
@@ -573,12 +571,15 @@ class BattleOnline extends Phaser.Scene
 					this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
 					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 					
-					// Convierte el vector en un Vector2 de phaser
-					let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-					this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
-					this.player2.setAngle(angle);
-					this.player2.x = x;
-					this.player2.y = y;
+					// Asignamos la nueva posición y velocidad si ha llegado
+					if (newMsg == true) {
+						let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+						this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
+						this.player2.setAngle(angle);
+						this.player2.x = x;
+						this.player2.y = y;
+						newMsg = false;	// Marcamos el mensaje como leído
+					}					
 				}
 				else
 				{
@@ -606,20 +607,24 @@ class BattleOnline extends Phaser.Scene
 							break;
 						}
 					}
-					// Convierte el vector en un Vector2 de phaser
-					let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-					this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
-					this.player1.setAngle(angle);
-					this.player1.x = x;
-					this.player1.y = y;
 					this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
 					this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
+					
+					// Asignamos la nueva posición y velocidad si ha llegado
+					if (newMsg == true) {
+						// Convierte el vector en un Vector2 de phaser
+						let accelerationVec = new Phaser.Math.Vector2(ax, ay);
+						this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
+						this.player1.setAngle(angle);
+						this.player1.x = x;
+						this.player1.y = y;
+						newMsg = false;	// Marcamos el mensaje como leído
+					}
 				}
 			} else {
 				if (this.endFuncCalled == false) {
 					this.endFunc();
 					this.endFuncCalled = true;
-					console.log("llamamos a endFUnc");
 				}
 			}
 			

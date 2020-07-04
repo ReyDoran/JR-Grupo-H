@@ -235,7 +235,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		responseNode.put("code", 5);
 		int i = 0;
 		boolean encontrado = false;
-		while (!encontrado)
+		while (!encontrado && i < matches.size())
 		{
 			if(matches.get(i).player1 == session)
 			{
@@ -255,7 +255,9 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			}
 			i++;
 		}
-		enemigo.sendMessage(new TextMessage(responseNode.toString()));
+		if (enemigo != null) {
+			enemigo.sendMessage(new TextMessage(responseNode.toString()));			
+		}
 	}
 
 }
