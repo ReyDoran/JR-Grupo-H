@@ -125,6 +125,7 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){		
+		sincroRound = false;
 		this.endFuncCalled = false;
 		if (playerj == 1){
 			player2Config[0] = p;
