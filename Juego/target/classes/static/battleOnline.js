@@ -311,6 +311,7 @@ class BattleOnline extends Phaser.Scene
 		}
 		connection.send(JSON.stringify(msg));
 		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
+		this.sendWebSocketsTimer = this.time.addEvent({ delay: 33, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -498,13 +499,46 @@ class BattleOnline extends Phaser.Scene
 		this.player2.setAngularVelocity(0);
 	}
 	
+	sendWebSocketsMessage() {
+		if (!roundFinished){			
+			// Enviamos websocket
+			if(playerj==1)
+			{
+				msg = {
+						code : "2",
+						x: this.player1.x,
+						y: this.player1.y,
+						ax: xAcceleration,
+						ay: yAcceleration,
+						rotation: this.player1.angle,
+						hability: this.used1,
+						match: matchIndex
+				}
+			}
+			else
+			{
+				msg = {
+						code: "2",
+						x: this.player2.x,
+						y: this.player2.y,
+						ax: xAcceleration,
+						ay: yAcceleration,
+						rotation: this.player2.angle,
+						hability: this.used2,
+						match: matchIndex
+				}
+			}
+			connection.send(JSON.stringify(msg));
+		}
+	}
+	
 	update(){
 		if (escapar == true)
 		{
 			this.scene.start("login");
 			escapar = false;
 		}
-		if (sincroRound == true) {
+		if (sincroRound == true) {			
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
 			{
@@ -581,36 +615,6 @@ class BattleOnline extends Phaser.Scene
 					this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
 					this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
 				}
-				
-				// Enviamos websocket
-				if(playerj==1)
-				{
-					msg = {
-						code : "2",
-						x: this.player1.x,
-						y: this.player1.y,
-						ax: xAcceleration,
-						ay: yAcceleration,
-						rotation: this.player1.angle,
-						hability: this.used1,
-						match: matchIndex
-					}
-				}
-				else
-				{
-					msg = {
-						code: "2",
-						x: this.player2.x,
-						y: this.player2.y,
-						ax: xAcceleration,
-						ay: yAcceleration,
-						rotation: this.player2.angle,
-						hability: this.used2,
-						match: matchIndex
-					}
-				}
-				connection.send(JSON.stringify(msg));
-				console.log("enviao (roundfinished=" + roundFinished);
 			} else {
 				if (this.endFuncCalled == false) {
 					this.endFunc();
