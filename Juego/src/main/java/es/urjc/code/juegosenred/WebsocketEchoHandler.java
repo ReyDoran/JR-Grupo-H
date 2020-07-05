@@ -155,7 +155,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				
 				Match match = matches.get(Integer.valueOf(matchIndex));
 				WebSocketSession oponent;
-				
+								
 				if (match.player1.getId() == session.getId()) 
 					oponent = match.player2; 
 				else 

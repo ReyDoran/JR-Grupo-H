@@ -1,7 +1,5 @@
 'use strict'
 
-var used = false;
-
 /*
  * Escena que contiene el juego. Es llamada por cutscene y este la llama hasta
  * que se cumplan las rondas indicadas. Después vuelve al menú.
@@ -219,6 +217,8 @@ class BattleOnline extends Phaser.Scene
 			this.crossH1P2.setAlpha(1);
 			break;
 		case 3:
+			this.crossH1P1.setAlpha(1);
+			this.crossH1P2.setAlpha(1);
 			this.crossH2P1.setAlpha(1);
 			this.crossH2P2.setAlpha(1);
 		default:
@@ -563,10 +563,23 @@ class BattleOnline extends Phaser.Scene
 							break;
 						}
 					}
-					if(h && !used)
+					if(h=="true" && !this.used2)
 					{
-						used=true;
+						this.used2=true;
 						this.ability(this.ability2, 2, this.player2);
+						
+						switch (round){
+						case 1:
+							this.crossH1P2.setAlpha(1);
+							break;
+						case 2:
+							this.crossH2P2.setAlpha(1);
+							break;
+						case 3:
+							this.crossH3P2.setAlpha(1);
+						default:
+							break;
+						}
 					}
 					this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
 					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
@@ -583,11 +596,24 @@ class BattleOnline extends Phaser.Scene
 				}
 				else
 				{
-					if(h && !used)
+					if(h=="true" && !this.used1)
 					{
-						used=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
+						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
+						
+						switch (round){
+						case 1:
+							this.crossH1P1.setAlpha(1);
+							break;
+						case 2:
+							this.crossH2P1.setAlpha(1);
+							break;
+						case 3:
+							this.crossH3P1.setAlpha(1);
+						default:
+							break;
+						}
 					}
 					if(this.used2==false && this.moveKeys.esp.isDown)
 					{
