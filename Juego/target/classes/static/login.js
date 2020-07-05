@@ -64,6 +64,11 @@ var xAcceleration;
 var yAcceleration;
 var roundTime = 20;
 
+var colisionForceX = 0;
+var colisionForceY = 0;
+var colisionApplied = true;
+
+
 var sincro=0;
 var escapar = false;
 
@@ -164,6 +169,14 @@ connection.onmessage = function(msg)
 		{
 			roundFinished = true;
 			roundTime = 0;
+			break;
+		}
+		case 7:
+		{
+			console.log("me ha llegado mensaje de chocarme");
+			colisionForceX = info.forceX;
+			colisionForceY = info.forceY;
+			colisionApplied = false;
 			break;
 		}
 		case 10:	// Ping

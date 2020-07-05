@@ -52,11 +52,11 @@ class BattleOnline extends Phaser.Scene
 		// Añadir colisión circular
 		this.player1.setBody({
 			type: 'circle',
-			radius: 42*0.8
+			radius: 1
 		});
 		this.player2.setBody({
 			type: 'circle',
-			radius: 42*0.8
+			radius: 1
 		});
 		
 		// Añadir bounce y fricción
@@ -155,7 +155,7 @@ class BattleOnline extends Phaser.Scene
 		// 1.1 Variables configurables
 		this.roundDuration = 20;  	// En segundos
 		this.answerVariation = 2;   // Variacion entre números de las tumbas respecto al correcto NO VALE NUMERO MENOR A DOS
-		this.force = 0.0025;    	// Fuerza con la que se mueven los jugadores
+		this.force = 0.000003;    	// Fuerza con la que se mueven los jugadores
 		
 		// 1.2 Variables no configurables
 		this.roundEnd = false;  	// Almacena si se ha terminado el tiempo de la ronda
@@ -312,7 +312,7 @@ class BattleOnline extends Phaser.Scene
 		connection.send(JSON.stringify(msg));
 		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
 		// Temporizador de envío de mensaje de posición y aceleración
-		this.sendWebSocketsTimer = this.time.addEvent({ delay: 33, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
+		this.sendWebSocketsTimer = this.time.addEvent({ delay: 50, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -585,6 +585,18 @@ class BattleOnline extends Phaser.Scene
 					this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
 					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 					
+					if (colisionApplied == false) {
+						console.log("chocamos");
+						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX) * 0.0001, parseFloat(colisionForceY) * 0.0001);
+						console.log(colisionForceX + ", " + colisionForceY);
+						console.log(forceToApply[0] + ", " + forceToApply[1]);
+						this.player1.applyForce(forceToApply);
+						//this.player1.x = 150;
+						//this.player1.y = 150;
+						colisionApplied = true;
+					}
+
+					
 					// Asignamos la nueva posición y velocidad si ha llegado
 					if (newMsg == true) {
 						let accelerationVec = new Phaser.Math.Vector2(ax, ay);
@@ -636,6 +648,17 @@ class BattleOnline extends Phaser.Scene
 					}
 					this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
 					this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
+					
+					if (colisionApplied == false) {
+						console.log("chocamos");
+						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX)* 0.0001, parseFloat(colisionForceY) * 0.0001);
+						this.player2.applyForce(forceToApply);
+						console.log(colisionForceX + ", " + colisionForceY);
+						console.log(forceToApply[0] + ", " + forceToApply[1]);
+						//this.player2.x = 400;
+						//this.player2.y = 400;
+						colisionApplied = true;
+					}
 					
 					// Asignamos la nueva posición y velocidad si ha llegado
 					if (newMsg == true) {

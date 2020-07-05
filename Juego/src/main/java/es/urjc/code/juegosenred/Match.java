@@ -27,11 +27,61 @@ public class Match {
 	long startTime;
 	// Para saber si está en el combate
 	public boolean isMatchActive = false;
+	// Almacena la última ubicación de cada jugador
+	int[] posP1 = new int[2];
+	int[] posP2 = new int[2];
+	float[] speedP1 = new float[2];
+	float[] speedP2 = new float[2];
+	// Guarda en que segundo hubo la ultima colision
+	public long lastColision = 20;
 	
 	Match() {
 		numPlayers = 0;
+		// Inicializamos posiciones para que no colisione
+		posP1[0] = 0;
+		posP1[1] = 0;
+		posP2[0] = 100;
+		posP2[1] = 100;
+		speedP1[0] = 0;
+		speedP1[1] = 0;
+		speedP2[0] = 0;
+		speedP2[1] = 0;
 	}
 	
+	
+	public int[] getPosP1() {
+		return posP1;
+	}
+	
+	public int[] getPosP2() {
+		return posP2;
+	}
+	
+	public float[] getSpeedP1() {
+		return speedP1;
+	}
+	
+	public float[] getSpeedP2() {
+		return speedP2;
+	}
+	
+	public void setPosP1(int[] newPos) {
+		posP1 = newPos;
+	}
+	
+	public void setPosP2(int[] newPos) {
+		posP2 = newPos;
+	}
+	
+	public void setSpeedP1(float[] newSpeed) {
+		speedP1 = newSpeed;
+	}
+	
+	public void setSpeedP2(float[] newSpeed) {
+		speedP2 = newSpeed;
+	}
+	
+		
 	// Añade una sesión (si no esta lleno) y actualiza numPlayers
 	public void AddPlayer(WebSocketSession player) {
 		if (numPlayers == 0) {

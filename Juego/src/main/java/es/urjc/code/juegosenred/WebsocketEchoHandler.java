@@ -155,15 +155,67 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				
 				Match match = matches.get(Integer.valueOf(matchIndex));
 				WebSocketSession oponent;
-								
-				if (match.player1.getId() == session.getId()) 
-					oponent = match.player2; 
-				else 
+				
+				int[] newPos = new int[2];
+				newPos[0] = (int) Float.parseFloat(x);
+				newPos[1] = (int) Float.parseFloat(y);
+				float[] newSpeed = new float[2];
+				newSpeed[0] = Float.parseFloat(ax);
+				newSpeed[1] = Float.parseFloat(ay);
+				
+				if (match.player1.getId() == session.getId()) {
+					oponent = match.player2;
+					match.setPosP1(newPos);
+					match.setSpeedP1(newSpeed);
+				} 
+				else {
 					oponent = match.player1;
+					match.setPosP2(newPos);
+					match.setSpeedP2(newSpeed);
+				}
+				
+				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
+				
+				// Comprueba si ha habido colisión
+				int[] posP1 = match.getPosP1();
+				int[] posP2 = match.getPosP2();
+				int dist = Math.abs(posP1[0] - posP2[0]) + Math.abs(posP1[1] - posP2[1]);
+				if (dist < 85 && (System.currentTimeMillis() - match.lastColision > 700)) {
+					match.lastColision = System.currentTimeMillis();
+					// Calculamos las fuerzas aplicadas a cada jugador
+					float[] forceP1 = new float[2];
+					forceP1[0] = (posP1[0] - posP2[0]); /* * MASS + speedP1[0];*/
+					forceP1[1] = (posP1[1] - posP2[1]); /* * MASS + speedP1[1];*/
+					float[] previousForceP1 = {forceP1[0], forceP1[1]}; 
+					forceP1[0] = forceP1[0] / Math.abs(previousForceP1[0] + previousForceP1[1]);
+					forceP1[1] = forceP1[1] / Math.abs(previousForceP1[0] + previousForceP1[1]);
+					
+					float[] forceP2 = new float[2];
+					forceP2[0] = (posP2[0] - posP1[0]); /* * MASS + speedP2[0]; */ 
+					forceP2[1] = (posP2[1] - posP1[1]); /* * MASS + speedP2[1]; */
+					float[] previousForceP2 = {forceP2[0], forceP2[1]};
+					forceP2[0] = forceP2[0] / Math.abs(previousForceP2[0] + previousForceP2[1]);
+					forceP2[1] = forceP2[1] / Math.abs(previousForceP2[0] + previousForceP2[1]);
+					
+					System.out.println("COLISION");
+					ObjectNode colisionNode1 = mapper.createObjectNode();
+					colisionNode1.put("code", 7);
+					colisionNode1.put("forceX", forceP1[0]);
+					colisionNode1.put("forceY", forceP1[1]);
+					session.sendMessage(new TextMessage(colisionNode1.toString()));	// da error
+					System.out.println(forceP1[0] + ", " + forceP1[1]);
+					
+					ObjectNode colisionNode2 = mapper.createObjectNode();
+					colisionNode2.put("code", 7); 
+					colisionNode2.put("forceX", forceP2[0]);
+					colisionNode2.put("forceY", forceP2[1]);
+					oponent.sendMessage(new TextMessage(colisionNode2.toString()));
+					System.out.println(forceP2[0] + ", " + forceP2[1]);
+				}
 				
 				// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
 				// habilidad y el tiempo
-				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
+
 				//System.out.println(" now= " + System.currentTimeMillis() + " start=" + match.GetStartTime() + " elapsedTime = " + elapsedTime);
 				String elapsedTimeString = String.valueOf(elapsedTime);
 				if (match.isMatchActive && elapsedTime <= 0) {	// Caso se acabó el tiempo
