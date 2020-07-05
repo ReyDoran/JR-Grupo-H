@@ -50,7 +50,7 @@ public class Match {
 			cutsceneActors1[i] = rand.nextInt(5);
 			cutsceneActors2[i] = rand.nextInt(5);
 			cutsceneActors3[i] = rand.nextInt(5);
-			questions[i] = rand.nextInt(3);
+			questions[i] = rand.nextInt(4);
 			correctTombstone[i] = rand.nextInt(3);
 		}
 	}

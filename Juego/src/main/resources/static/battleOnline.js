@@ -74,9 +74,9 @@ class BattleOnline extends Phaser.Scene
 	//Función que añade al mapa tumbas con numeros diferentes, asignando la correcta a base buena
 	initTombstones(){
 		// Creamos el texto de cada tumba
-		this.tombstones = [this.add.image(gameWidth*(1/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
-		this.add.image(gameWidth*(3/4),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
-		this.add.image(gameWidth*(1/2),gameHeight*(2/5),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90)];
+		this.tombstones = [this.add.image(gameWidth*(5/20),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
+		this.add.image(gameWidth*(15/20),gameHeight*(2/3),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90),
+		this.add.image(gameWidth*(10/20),gameHeight*(2/5),'sp_tombstone').setOrigin(0.5).setScale(0.05).setAngle(90)];
 		
 		/*
 		 * Creo un array con 2 números dentro de un rango diferentes a la respuesta (y
@@ -97,29 +97,35 @@ class BattleOnline extends Phaser.Scene
 		
 		// Añade le texto a la tumba escogiendo aleatoriamente los numeros del array en las tumbas.
 		let aux;
-		aux = correctTombstones[round];
 		
-		if (numbers[aux] == answer){
-			this.correctTombstone = this.tombstones[0];
-		}
+		this.correctTombstone = this.tombstones[correctTombstones[round-1]];
+		this.add.text(this.tombstones[correctTombstones[round-1]].x, this.tombstones[correctTombstones[round-1]].y, answer, { font: '42px Caveat Brush', fill: '#ffffff' });
 		
-		this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
-		numbers.splice(aux, 1);							 // Elimina del array para no volver a escogerlo
 		aux = Math.trunc(Math.random()*numbers.length);
-		
-		if (numbers[aux] == answer){
-			this.correctTombstone = this.tombstones[1];
+		if (numbers[aux]==answer){
+			numbers[aux] += 3;
+		}
+		if (this.tombstones[0] != this.correctTombstone){
+			this.add.text(this.tombstones[0].x, this.tombstones[0].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
+			numbers.splice(aux, 1); //Elimina del array para no volver a escogerlo
 		}
 		
-		this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
-		numbers.splice(aux, 1);
 		aux = Math.trunc(Math.random()*numbers.length);
-		
-		if (numbers[aux] == answer){
-			this.correctTombstone = this.tombstones[2];
+		if (numbers[aux]==answer){
+			numbers[aux] += 3;
+		}
+		if (this.tombstones[1] != this.correctTombstone){
+			this.add.text(this.tombstones[1].x, this.tombstones[1].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
+			numbers.splice(aux, 1);
 		}
 		
-		this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
+		aux = Math.trunc(Math.random()*numbers.length);
+		if (numbers[aux]==answer){
+			numbers[aux] += 3;
+		}
+		if (this.tombstones[2] != this.correctTombstone){
+			this.add.text(this.tombstones[2].x, this.tombstones[2].y, numbers[aux], { font: '42px Caveat Brush', fill: '#ffffff' });
+		}
 	}
 	
 	create(){		
@@ -437,10 +443,10 @@ class BattleOnline extends Phaser.Scene
 	// Actualiza los puntos y avisa por pantalla del ganador de la ronda.
 	actualizePoints(){
 		if (this.checkPosition(this.player1, this.correctTombstone)){
-			this.roundEndText1 = this.add.text(gameWidth*(2/60), gameHeight*(3/5), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
+			this.roundEndText1 = this.add.text(gameWidth*(12/60), gameHeight*(3/5), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
 			points[0]++;
 		} if (this.checkPosition(this.player2, this.correctTombstone)){
-			this.roundEndText2 = this.add.text(gameWidth*(2/60), gameHeight*(4/5), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
+			this.roundEndText2 = this.add.text(gameWidth*(12/60), gameHeight*(4/5), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
 			points[1]++;
 		}
 	}
@@ -449,7 +455,7 @@ class BattleOnline extends Phaser.Scene
 	endFunc(){
 		this.tiempo.setText(0); // Mostrar contador a 0
 		// Muestra el mensaje de fin de ronda
-		this.roundEndText0 = this.add.text(gameWidth*(1/6), gameHeight*(2/5), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
+		this.roundEndText0 = this.add.text(gameWidth*(2/6), gameHeight*(6/10), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
 		this.roundEnd = true;
 		this.freeze();  // Congela a los jugadores
 		this.actualizePoints(); // Actualiza los puntos y avisa de quien ha ganado

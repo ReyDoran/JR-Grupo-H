@@ -86,7 +86,7 @@ class CutsceneOnline extends Phaser.Scene {
 		//PREGUNTAS
 		//Las preguntas coinciden con el índice de answers que lleva su cuenta (actualizado en schedulePlaner())
 		this.questions = ["¿Cuántos fantasmas azules pasaron?", "¿Cuántos fantasmas rojos pasaron?", "¿Cuántos cazafantasmas pasaron?", "¿Cuántos personajes pasaron en total?"];
-		this.questionIndex = round;
+		this.questionIndex = round-1;
 		this.answers = [0, 0, 0, 0];
 		
 		//Timers para enseñar la pregunta y cambiar de escena.
