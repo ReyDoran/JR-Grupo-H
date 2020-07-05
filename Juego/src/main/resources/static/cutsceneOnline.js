@@ -116,7 +116,7 @@ class CutsceneOnline extends Phaser.Scene {
 
 	//Enseña la pregunta
 	showQuestion() {
-		this.add.text(gameWidth*3/20, gameHeight/2, roundQuestions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
+		this.add.text(gameWidth*3/20, gameHeight/2, this.questions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
 	}
 
 	//Cambia la escena y actualiza el valor de la variable global round con la respuesta
@@ -129,49 +129,17 @@ class CutsceneOnline extends Phaser.Scene {
 	//Función para hacer x llamadas a la generación de actores con un delay aleatorio
 	schedulePlanner() {
 		//Llama a randomCharGen x veces, dependiendo de base(dif) y extra(maximumActors).
-		switch (round) {
-			case 0:
-				while (characters[0] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(0), callbackScope: this, loop: false});
-					characters[0]--;
-				}
-				while (characters[1] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(1), callbackScope: this, loop: false});
-					characters[1]--;
-				}
-				while (characters[2] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(2), callbackScope: this, loop: false});
-					characters[2]--;
-				}
-			break;
-			case 1:
-				while (characters[3] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(0), callbackScope: this, loop: false});
-					characters[3]--;
-				}
-				while (characters[4] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(1), callbackScope: this, loop: false});
-					characters[4]--;
-				}
-				while (characters[5] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(2), callbackScope: this, loop: false});
-					characters[5]--;
-				}
-			break;
-			case 2:
-				while (characters[6] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(0), callbackScope: this, loop: false});
-					characters[6]--;
-				}
-				while (characters[7] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(1), callbackScope: this, loop: false});
-					characters[7]--;
-				}
-				while (characters[8] > 0) {
-					this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(2), callbackScope: this, loop: false});
-					characters[8]--;
-				}
-			break;
+		while (characters[(round-1)*3] > 0) {
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(0), callbackScope: this, loop: false});
+			characters[(round-1)*3]--;
+		}
+		while (characters[(round-1)*3+1] > 0) {
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(1), callbackScope: this, loop: false});
+			characters[(round-1)*3+1]--;
+		}
+		while (characters[(round-1)*3+2] > 0) {
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(2), callbackScope: this, loop: false});
+			characters[(round-1)*3+2]--;
 		}
 	}
 

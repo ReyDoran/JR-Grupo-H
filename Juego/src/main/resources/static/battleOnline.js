@@ -485,8 +485,9 @@ class BattleOnline extends Phaser.Scene
 	// Reinicia el juego poniendo a 0 el contador de ronda y llamando a la escena de menú principal
 	restart(){
 		round = 0;
+		sincro = 0;
 		roundFinished = false;
-		this.scene.start('menu');
+		this.scene.start('login');
 	}
 	
 	// Para el movimiento de los jugadores
@@ -533,8 +534,8 @@ class BattleOnline extends Phaser.Scene
 	update(){
 		if (escapar == true)
 		{
-			this.scene.start("login");
 			escapar = false;
+			this.restart();
 		}
 		if (sincroRound == true) {			
 			// Mientras no haya terminado la ronda
