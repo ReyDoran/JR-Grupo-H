@@ -25,6 +25,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	ConcurrentHashMap<Integer, Match> matches = new ConcurrentHashMap<>(MAX_MATCHES);
 	int matchesIndex = 0;
 	private Semaphore sem = new Semaphore(1);
+	// Semaforo para envío de mensajes a cada usuario (da error si se envian dos a la vez)
+	private Semaphore[] playerSem = new Semaphore[MAX_MATCHES*2];
 	private Semaphore[] matchSem = new Semaphore[MAX_MATCHES];
 	private Semaphore semRound = new Semaphore(1);
 
@@ -34,6 +36,9 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		{
 			matches.put(i, new Match());
 			matchSem[i] = new Semaphore(1);
+		}
+		for (int i = 0; i < MAX_MATCHES * 2; i++) {
+			playerSem[i] = new Semaphore(1);
 		}
 	}
 	
@@ -83,13 +88,18 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					response1.put("code", 0);
 					response1.put("player", 1);
 					response1.put("match", matchesIndex);
+					playerSem[matchesIndex * 2].acquire();					// EM para enviar el mensaje
 					matches.get(matchesIndex).player1.sendMessage(new TextMessage(response1.toString()));
+					playerSem[matchesIndex * 2].release();
 					System.out.println("Message sent: " + response1.toString());
+					
 					ObjectNode response2 = mapper.createObjectNode();
 					response2.put("code", 0);
 					response2.put("player", 2);
 					response2.put("match", matchesIndex);
+					playerSem[matchesIndex * 2 + 1].acquire();					// EM para enviar el mensaje
 					matches.get(matchesIndex).player2.sendMessage(new TextMessage(response2.toString()));
+					playerSem[matchesIndex * 2 + 1].release();
 					System.out.println("Message sent: " + response2.toString());
 				}
 				break;
@@ -163,6 +173,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				
 				Match match = matches.get(Integer.valueOf(matchIndex));
 				WebSocketSession oponent;
+				int playerIndex = 0;	// Almacena si el jugador que envía es el 1 o el 2
 				
 				int[] newPos = new int[2];
 				newPos[0] = (int) Float.parseFloat(x);
@@ -179,6 +190,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					match.setSpeedP1(newSpeed);
 					posSession = match.getPosP1();
 					posOpponent = match.getPosP2();
+					playerIndex = 0;
 				} 
 				else {
 					oponent = match.player1;
@@ -186,6 +198,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					match.setSpeedP2(newSpeed);
 					posOpponent = match.getPosP1();
 					posSession = match.getPosP2();
+					playerIndex = 1;
 				}
 				
 				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
@@ -215,14 +228,38 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					colisionNode1.put("code", 7);
 					colisionNode1.put("forceX", forceP1[0]);
 					colisionNode1.put("forceY", forceP1[1]);
-					session.sendMessage(new TextMessage(colisionNode1.toString()));	// da error
+					if (playerIndex == 0) {	// EM para enviar mensaje
+						playerSem[Integer.valueOf(matchIndex)].acquire();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+					}
+					session.sendMessage(new TextMessage(colisionNode1.toString()));
+					if (playerIndex == 0) {	// Liberamos EM
+						playerSem[Integer.valueOf(matchIndex)].release();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex) + 1].release();
+					}
 					System.out.println(forceP1[0] + ", " + forceP1[1]);
 					
 					ObjectNode colisionNode2 = mapper.createObjectNode();
 					colisionNode2.put("code", 7); 
 					colisionNode2.put("forceX", forceP2[0]);
 					colisionNode2.put("forceY", forceP2[1]);
+					if (playerIndex == 0) {	 // EM para enviar mensaje
+						playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex)].acquire();
+					}
 					oponent.sendMessage(new TextMessage(colisionNode2.toString()));
+					if (playerIndex == 0) {	// Liberamos EM
+						playerSem[Integer.valueOf(matchIndex) + 1].release();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex)].release();
+					}
 					System.out.println(forceP2[0] + ", " + forceP2[1]);
 				}
 				
@@ -235,8 +272,32 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					if (!match.AreReady()) {
 						ObjectNode responseNode = mapper.createObjectNode();
 						responseNode.put("code", 6);
+						if (playerIndex == 0) {	// EM para enviar mensaje
+							playerSem[Integer.valueOf(matchIndex)].acquire();
+						}
+						else {
+							playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+						}
 						session.sendMessage(new TextMessage(responseNode.toString()));
+						if (playerIndex == 0) {	// Liberamos EM
+							playerSem[Integer.valueOf(matchIndex)].release();
+						}
+						else {
+							playerSem[Integer.valueOf(matchIndex) + 1].release();
+						}
+						if (playerIndex == 0) {	 // EM para enviar mensaje
+							playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+						}
+						else {
+							playerSem[Integer.valueOf(matchIndex)].acquire();
+						}
 						oponent.sendMessage(new TextMessage(responseNode.toString()));
+						if (playerIndex == 0) {	// Liberamos EM
+							playerSem[Integer.valueOf(matchIndex) + 1].release();
+						}
+						else {
+							playerSem[Integer.valueOf(matchIndex)].release();
+						}
 						match.ReadyPlayer();
 						match.ReadyPlayer();
 						match.ResetReady();
@@ -253,7 +314,19 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					responseNode.put("hability", hability);
 					responseNode.put("time", elapsedTimeString);
 					//System.out.println("Mensaje enviado: " + responseNode.toString());
+					if (playerIndex == 0) {	 // EM para enviar mensaje
+						playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex)].acquire();
+					}
 					oponent.sendMessage(new TextMessage(responseNode.toString()));	
+					if (playerIndex == 0) {	// Liberamos EM
+						playerSem[Integer.valueOf(matchIndex) + 1].release();
+					}
+					else {
+						playerSem[Integer.valueOf(matchIndex)].release();
+					}
 				}
 				//System.out.println("tiempo: " + elapsedTimeString);
 				break;
@@ -283,9 +356,30 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			}
 			case "10":	//ping
 			{
+				int matchIndex = Integer.valueOf(node.get("matchIndex").asText());
+				Match match = matches.get(matchIndex);
+				int playerIndex = 0;
+				if (match.player1.getId() == session.getId()) {
+					playerIndex = 0;
+				} 
+				else {
+					playerIndex = 1;
+				}
 				ObjectNode pingMessage = mapper.createObjectNode();
 				pingMessage.put("code", 10);
+				if (playerIndex == 0) {	// EM para enviar mensaje
+					playerSem[Integer.valueOf(matchIndex)].acquire();
+				}
+				else {
+					playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+				}
 				session.sendMessage(new TextMessage(pingMessage.toString()));
+				if (playerIndex == 0) {	// Liberamos EM
+					playerSem[Integer.valueOf(matchIndex)].release();
+				}
+				else {
+					playerSem[Integer.valueOf(matchIndex) + 1].release();
+				}
 				break;				
 			}
 		}
