@@ -322,6 +322,7 @@ class BattleOnline extends Phaser.Scene
 				match: matchIndex 
 		}
 		connection.send(JSON.stringify(msg));
+		
 		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
 		// Temporizador de envío de mensaje de posición y aceleración
 		this.sendWebSocketsTimer = this.time.addEvent({ delay: 50, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
@@ -544,8 +545,8 @@ class BattleOnline extends Phaser.Scene
 						code : "2",
 						x: this.player1.x,
 						y: this.player1.y,
-						ax: xAcceleration,
-						ay: yAcceleration,
+						ax: this.player1.body.velocity.x,
+						ay: this.player1.body.velocity.y,
 						rotation: this.player1.angle,
 						hability: this.used1,
 						match: matchIndex
@@ -557,8 +558,8 @@ class BattleOnline extends Phaser.Scene
 						code: "2",
 						x: this.player2.x,
 						y: this.player2.y,
-						ax: xAcceleration,
-						ay: yAcceleration,
+						ax: this.player2.body.velocity.x,
+						ay: this.player2.body.velocity.y,
 						rotation: this.player2.angle,
 						hability: this.used2,
 						match: matchIndex
@@ -637,11 +638,11 @@ class BattleOnline extends Phaser.Scene
 					
 					// Asignamos la nueva posición y velocidad si ha llegado
 					if (newMsg == true) {
-						let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-						this.player2.applyForce(accelerationVec); // Aplica la fuerza al personaje
 						this.player2.setAngle(angle);
 						this.player2.x = x;
 						this.player2.y = y;
+						this.player2.setVelocityX(ax);
+						this.player2.setVelocityY(ay);
 						newMsg = false;	// Marcamos el mensaje como leído
 					}					
 				}
@@ -702,12 +703,11 @@ class BattleOnline extends Phaser.Scene
 					
 					// Asignamos la nueva posición y velocidad si ha llegado
 					if (newMsg == true) {
-						// Convierte el vector en un Vector2 de phaser
-						let accelerationVec = new Phaser.Math.Vector2(ax, ay);
-						this.player1.applyForce(accelerationVec); // Aplica la fuerza al personaje
 						this.player1.setAngle(angle);
 						this.player1.x = x;
 						this.player1.y = y;
+						this.player1.setVelocityX(ax);
+						this.player1.setVelocityY(ay);
 						newMsg = false;	// Marcamos el mensaje como leído
 					}
 				}
@@ -783,7 +783,6 @@ class BattleOnline extends Phaser.Scene
 				}
 			}
 		}
-		
 		
 	}
 }

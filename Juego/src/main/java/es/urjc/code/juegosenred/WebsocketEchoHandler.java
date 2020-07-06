@@ -335,7 +335,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			// Comienzo de ronda
 			case "3": 
 			{
-				Match currentMatch = matches.get(Integer.valueOf(node.get("match").asText()));
+				int matchIndex = Integer.valueOf(node.get("match").asText());
+				Match currentMatch = matches.get(matchIndex);
 				semRound.acquire();
 				currentMatch.ReadyPlayer();
 				System.out.println("Ready?" + currentMatch.playersReady);
@@ -344,8 +345,12 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					System.out.println(currentMatch.GetStartTime());
 					ObjectNode startRound = mapper.createObjectNode();
 					startRound.put("code", 3);
+					playerSem[Integer.valueOf(matchIndex)].acquire();			
 					currentMatch.player1.sendMessage(new TextMessage(startRound.toString()));
+					playerSem[Integer.valueOf(matchIndex)].release();
+					playerSem[Integer.valueOf(matchIndex)+1].acquire();	
 					currentMatch.player2.sendMessage(new TextMessage(startRound.toString()));
+					playerSem[Integer.valueOf(matchIndex)+1].release();
 					System.out.println("Mensaje enviado: " + startRound.toString());
 					currentMatch.StartMatch();
 					currentMatch.ResetReady();
