@@ -197,7 +197,7 @@ connection.onclose = function()
 	conectado = false;
 }
 
-setInterval(ping, 9000);
+//setInterval(ping, 9000);
 
 function ping() {
 	if (match == true) {

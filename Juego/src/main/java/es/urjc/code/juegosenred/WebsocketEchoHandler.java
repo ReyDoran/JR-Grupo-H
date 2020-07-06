@@ -353,7 +353,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				}
 				semRound.release();
 				break;
-			}
+			}/*
 			case "10":	//ping
 			{
 				int matchIndex = Integer.valueOf(node.get("matchIndex").asText());
@@ -381,7 +381,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					playerSem[Integer.valueOf(matchIndex) + 1].release();
 				}
 				break;				
-			}
+			}*/
 		}
 		}
 		catch(Exception ex) {
