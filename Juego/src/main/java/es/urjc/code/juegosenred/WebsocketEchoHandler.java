@@ -24,6 +24,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
 	int matchesIndex = 0;
 	private Semaphore sem = new Semaphore(1);
+	private Semaphore[] matchSem = new Semaphore[MAX_MATCHES];
 	private Semaphore semRound = new Semaphore(1);
 
 	public WebsocketEchoHandler() 
@@ -31,6 +32,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		for (int i = 0; i < MAX_MATCHES; i++) 
 		{
 			matches.add(new Match());
+			matchSem[i] = new Semaphore(1);
 		}
 	}
 	
@@ -42,6 +44,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		JsonNode node = mapper.readTree(message.getPayload());
 		String code = node.get("code").asText();
 
+		try {
 		// El codigo marca de que va el mensaje
 		switch (code) 
 		{
@@ -49,22 +52,26 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			// Buscar Partida
 			case "0": 
 			{
-				// PONER BAJO EM
-				sem.acquire();
+				// EM para la sala. Si está llena lo libera y coge turno para la siguiente sala.
+				matchSem[matchesIndex].acquire();
 				// metemos al nuevo jugador en la sala
 				if (matches.get(matchesIndex).GetNumPlayers() == 2)
 				{
+					matchSem[matchesIndex].release();
 					matchesIndex++;
 					if (matchesIndex == MAX_MATCHES) // Caso no quedan salas libres
 					{	
+						// Envía mensaje 9 y se sale del switch
 						ObjectNode response = mapper.createObjectNode();
 						response.put("code", 9);
 						System.out.println("Message sent: " + response.toString());
 						session.sendMessage(new TextMessage(response.toString()));
+						break;
 					}
+					matchSem[matchesIndex].acquire();
 				}
 				matches.get(matchesIndex).AddPlayer(session);	// Añade el jugador
-				sem.release();				
+				matchSem[matchesIndex].release();		// Libera sea cual sea la sala sobre la que operó			
 				// FIN BAJO EM
 				
 				System.out.println("Jugadores: " + matches.get(matchesIndex).GetNumPlayers());
@@ -191,15 +198,16 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					forceP1[0] = (posSession[0] - posOpponent[0]); /* * MASS + speedP1[0];*/
 					forceP1[1] = (posSession[1] - posOpponent[1]); /* * MASS + speedP1[1];*/
 					float[] previousForceP1 = {forceP1[0], forceP1[1]}; 
-					forceP1[0] = forceP1[0] / Math.abs(previousForceP1[0] + previousForceP1[1]);
-					forceP1[1] = forceP1[1] / Math.abs(previousForceP1[0] + previousForceP1[1]);
+					forceP1[0] = forceP1[0] / (float) Math.sqrt(Math.pow(previousForceP1[0],2) + Math.pow(previousForceP1[1],2));
+					forceP1[1] = forceP1[1] / (float) Math.sqrt(Math.pow(previousForceP1[0],2) + Math.pow(previousForceP1[1],2));
+					// limitadores
 					
 					float[] forceP2 = new float[2];
 					forceP2[0] = (posOpponent[0] - posSession[0]); /* * MASS + speedP2[0]; */ 
 					forceP2[1] = (posOpponent[1] - posSession[1]); /* * MASS + speedP2[1]; */
 					float[] previousForceP2 = {forceP2[0], forceP2[1]};
-					forceP2[0] = forceP2[0] / Math.abs(previousForceP2[0] + previousForceP2[1]);
-					forceP2[1] = forceP2[1] / Math.abs(previousForceP2[0] + previousForceP2[1]);
+					forceP2[0] = forceP2[0] / (float)Math.sqrt(Math.pow(previousForceP2[0],2) + Math.pow(previousForceP2[1],2));
+					forceP2[1] = forceP2[1] / (float)Math.sqrt(Math.pow(previousForceP2[0],2) + Math.pow(previousForceP2[1],2));
 					
 					System.out.println("COLISION");
 					ObjectNode colisionNode1 = mapper.createObjectNode();
@@ -279,6 +287,10 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				session.sendMessage(new TextMessage(pingMessage.toString()));
 				break;				
 			}
+		}
+		}
+		catch(Exception ex) {
+			System.out.println("Excepcion: " + ex.toString());
 		}
 	}
 	
