@@ -130,15 +130,15 @@ class CutsceneOnline extends Phaser.Scene {
 	schedulePlanner() {
 		//Llama a randomCharGen x veces, dependiendo de base(dif) y extra(maximumActors).
 		while (characters[(round-1)*3] > 0) {
-			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(0), callbackScope: this, loop: false});
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar, args: [0], callbackScope: this, loop: false});
 			characters[(round-1)*3]--;
 		}
 		while (characters[(round-1)*3+1] > 0) {
-			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(1), callbackScope: this, loop: false});
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar, args: [1], callbackScope: this, loop: false});
 			characters[(round-1)*3+1]--;
 		}
 		while (characters[(round-1)*3+2] > 0) {
-			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar(2), callbackScope: this, loop: false});
+			this.time.addEvent({ delay: Math.random() * this.paradeDuration, callback: this.generateChar, args: [2], callbackScope: this, loop: false});
 			characters[(round-1)*3+2]--;
 		}
 	}
