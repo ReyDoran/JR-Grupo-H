@@ -129,6 +129,10 @@ class BattleOnline extends Phaser.Scene
 	}
 	
 	create(){		
+		this.previousPoints = [0, 0];
+		this.previousPoints[0] = points[0];
+		this.previousPoints[1] = points[1];
+		
 		sincroRound = false;
 		this.endFuncCalled = false;
 		if (playerj == 1){
@@ -321,6 +325,8 @@ class BattleOnline extends Phaser.Scene
 		this.tiempo = this.add.text(gameWidth*(48/100), gameHeight*(3/32), 20, { font: '64px Caveat Brush', fill: '#ffffff' });
 		// Temporizador de envío de mensaje de posición y aceleración
 		this.sendWebSocketsTimer = this.time.addEvent({ delay: 50, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
+		
+		this.marcador = this.add.text(gameWidth*(275/600), gameHeight*(35/200), points[0] + " - " + points[1], { font: '64px Caveat Brush', fill: '#ffffff' }).setAlpha();
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -444,24 +450,43 @@ class BattleOnline extends Phaser.Scene
 	
 	// Actualiza los puntos y avisa por pantalla del ganador de la ronda.
 	actualizePoints(){
-		if (this.checkPosition(this.player1, this.correctTombstone)){
+		if (this.previousPoints[0] != points[0]){
 			this.roundEndText1 = this.add.text(gameWidth*(12/60), gameHeight*(12/20), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
-			points[0]++;
-		} if (this.checkPosition(this.player2, this.correctTombstone)){
+		} if (this.previousPoints[1] != points[1]){
 			this.roundEndText2 = this.add.text(gameWidth*(12/60), gameHeight*(16/20), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
-			points[1]++;
 		}
+		this.marcador.setText(points[0] + " - " + points[1]);
 	}
 	
 	// Llama a actualizar los puntos, para a los jugadores, actualiza variables y pone un temporizador para cambiar de escena
 	endFunc(){
+		let pointAcquired = 0;
+		if (playerj == 1) {
+			if(this.checkPosition(this.player1, this.correctTombstone)) {
+				pointAcquired = 1;
+				points[0]++;
+			}
+		} else {
+			if (this.checkPosition(this.player2, this.correctTombstone)){
+				pointAcquired = 1;
+				points[1]++;
+			}
+		}
+		// Enviamos mensaje de si hemos conseguido punto o no (para desviación entre jugadores)
+		msg = {
+				code: "8",
+				point: pointAcquired,
+				match: matchIndex
+		}
+		connection.send(JSON.stringify(msg));
+		
 		this.tiempo.setText(0); // Mostrar contador a 0
 		// Muestra el mensaje de fin de ronda
 		this.roundEndText0 = this.add.text(gameWidth*(2/6), gameHeight*(6/20), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
 		this.roundEnd = true;
 		this.freeze();  // Congela a los jugadores
-		this.actualizePoints(); // Actualiza los puntos y avisa de quien ha ganado
-		this.time.addEvent({ delay: 4000, callback: this.changeScene, callbackScope: this});    // Pone un temporizador para la llamada a la función de cambio de escena
+		this.time.addEvent({ delay: 2000, callback: this.actualizePoints, callbackScope: this}); // Actualiza los puntos y avisa de quien ha ganado
+		this.time.addEvent({ delay: 6000, callback: this.changeScene, callbackScope: this});    // Pone un temporizador para la llamada a la función de cambio de escena
 	}
 	
 	// Cambia de escena dependiendo de si es la útlima ronda o no y avisa del ganador en caso de que haya.
@@ -550,9 +575,6 @@ class BattleOnline extends Phaser.Scene
 			this.restart();
 		}
 		if (sincroRound == true) {	
-			this.marcador = this.add.text(gameWidth*21.5/56, gameHeight/6, points[0], { font: '48px Caveat Brush', fill: '#ffffff' });
-			this.marcador = this.add.text(gameWidth*33.5/56, gameHeight/6, points[1], { font: '48px Caveat Brush', fill: '#ffffff' });
-
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
 			{

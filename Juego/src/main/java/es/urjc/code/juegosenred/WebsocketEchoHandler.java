@@ -353,7 +353,43 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				}
 				semRound.release();
 				break;
-			}/*
+			}
+			case "8":
+			{
+				String matchIndex = node.get("match").asText();
+				String pointsAcquiredByOpponent = node.get("point").asText();
+				Match match = matches.get(Integer.valueOf(matchIndex));
+				WebSocketSession opponent;
+				int playerIndex = 0;
+				if (match.player1.getId() == session.getId()) {
+					opponent = match.player2;
+					playerIndex = 0;
+				} 
+				else {
+					opponent = match.player1;
+					playerIndex = 1;
+				}
+				// Creamos el mensaje
+				ObjectNode pointsNode = mapper.createObjectNode();
+				pointsNode.put("code", 8);
+				pointsNode.put("pointAcquired", pointsAcquiredByOpponent);
+				pointsNode.put("playerIndex", playerIndex);
+				// Enviamos el mensaje
+				if (playerIndex == 0) {	 // EM para enviar mensaje
+					playerSem[Integer.valueOf(matchIndex) + 1].acquire();
+				}
+				else {
+					playerSem[Integer.valueOf(matchIndex)].acquire();
+				}
+				opponent.sendMessage(new TextMessage(pointsNode.toString()));
+				if (playerIndex == 0) {	// Liberamos EM
+					playerSem[Integer.valueOf(matchIndex) + 1].release();
+				}
+				else {
+					playerSem[Integer.valueOf(matchIndex)].release();
+				}
+			}
+			/*
 			case "10":	//ping
 			{
 				int matchIndex = Integer.valueOf(node.get("matchIndex").asText());

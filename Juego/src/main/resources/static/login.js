@@ -99,7 +99,7 @@ connection.onerror = function(e)
 }
 connection.onmessage = function(msg)
 {
-	console.log("WS message: " + msg.data);
+	//console.log("WS message: " + msg.data);
 	var info = JSON.parse(msg.data);
 	switch(info.code)
 	{
@@ -177,6 +177,15 @@ connection.onmessage = function(msg)
 			colisionForceX = info.forceX;
 			colisionForceY = info.forceY;
 			colisionApplied = false;
+			break;
+		}
+		case 8:
+		{
+			console.log("points antes = " + points[info.playerIndex]);
+			if (info.pointAcquired == 1) {
+				points[info.playerIndex] ++;				
+			}
+			console.log("points despues = " + points[info.playerIndex]);
 			break;
 		}
 		case 10:	// Ping
