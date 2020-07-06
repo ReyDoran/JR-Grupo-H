@@ -494,6 +494,8 @@ class BattleOnline extends Phaser.Scene
 	restart(){
 		round = 0;
 		sincro = 0;
+		points[0] = 0;
+		points[1] = 0;
 		roundFinished = false;
 		this.used1 = false;
 		this.used2 = false;
@@ -547,7 +549,9 @@ class BattleOnline extends Phaser.Scene
 			escapar = false;
 			this.restart();
 		}
-		if (sincroRound == true) {			
+		if (sincroRound == true) {	
+			this.marcador = this.add.text(gameWidth*(275/600), gameHeight*(35/200), points[0] + " - " + points[1], { font: '64px Caveat Brush', fill: '#ffffff' }).setAlpha();
+
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
 			{
