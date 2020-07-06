@@ -328,6 +328,10 @@ class BattleOnline extends Phaser.Scene
 		this.sendWebSocketsTimer = this.time.addEvent({ delay: 50, callback: this.sendWebSocketsMessage, callbackScope: this, loop: true});
 		
 		this.marcador = this.add.text(gameWidth*(275/600), gameHeight*(35/200), points[0] + " - " + points[1], { font: '64px Caveat Brush', fill: '#ffffff' }).setAlpha();
+		
+		// Mensaje de faltan jugadores por llegar a la ronda
+		this.waitingText = this.add.text(gameWidth*(2/6), gameHeight*(6/20), 'Esperando al oponente...', { font: '64px Caveat Brush', fill: '#ffffff' });
+		this.erasedText = false;	// borra el texto de waitingText
 	}
 	
 	// Resetea el multiplicador y el rebote del j1
@@ -576,6 +580,12 @@ class BattleOnline extends Phaser.Scene
 			this.restart();
 		}
 		if (sincroRound == true) {	
+			// Borramos el mensaje de esperando al oponente
+			if (this.erasedText == false) {
+				this.erasedText = true;
+				this.waitingText.setText("");
+			}
+			
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
 			{
@@ -783,6 +793,5 @@ class BattleOnline extends Phaser.Scene
 				}
 			}
 		}
-		
 	}
 }
