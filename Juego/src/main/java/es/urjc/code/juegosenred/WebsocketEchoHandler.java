@@ -21,7 +21,8 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	final int MAX_MATCHES = 10;
 	private ObjectMapper mapper = new ObjectMapper();
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
-	ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
+	//ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
+	ConcurrentHashMap<Integer, Match> matches = new ConcurrentHashMap<>(MAX_MATCHES);
 	int matchesIndex = 0;
 	private Semaphore sem = new Semaphore(1);
 	private Semaphore[] matchSem = new Semaphore[MAX_MATCHES];
@@ -31,7 +32,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	{
 		for (int i = 0; i < MAX_MATCHES; i++) 
 		{
-			matches.add(new Match());
+			matches.put(i, new Match());
 			matchSem[i] = new Semaphore(1);
 		}
 	}
@@ -39,7 +40,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception 
 	{
-		//System.out.println("Message recibido: " + message.getPayload());
+		System.out.println("Message recibido: " + message.getPayload());
 		// Leemos mensaje
 		JsonNode node = mapper.readTree(message.getPayload());
 		String code = node.get("code").asText();
@@ -310,7 +311,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				enemigo = matches.get(i).player2;
 				matches.remove(i);
 				encontrado = true;
-				matches.add(new Match());
+				matches.put(i, new Match());
 				matchesIndex--;
 			}
 			else if(matches.get(i).player2 == session)
@@ -318,7 +319,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				enemigo = matches.get(i).player1;
 				matches.remove(i);
 				encontrado = true;
-				matches.add(new Match());
+				matches.put(i, new Match());
 				matchesIndex--;
 			}
 			i++;

@@ -1,6 +1,7 @@
 package es.urjc.code.juegosenred;
 
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.web.socket.WebSocketSession;
 
@@ -34,6 +35,9 @@ public class Match {
 	float[] speedP2 = new float[2];
 	// Guarda en que segundo hubo la ultima colision
 	public long lastColision = 20;
+	// Semaforo para velocidad y posicion de jugadores
+	private Semaphore[] posSem = new Semaphore[2];
+	private Semaphore[] speedSem = new Semaphore[2];
 	
 	Match() {
 		numPlayers = 0;
@@ -46,39 +50,63 @@ public class Match {
 		speedP1[1] = 0;
 		speedP2[0] = 0;
 		speedP2[1] = 0;
+		for (int i = 0; i < 2; i++) {
+			posSem[i] = new Semaphore(1);
+			speedSem[i] = new Semaphore(1);
+		}
 	}
 	
 	
-	public int[] getPosP1() {
-		return posP1;
+	public int[] getPosP1() throws InterruptedException {
+		posSem[0].acquire();
+		int[] ret = posP1;
+		posSem[0].release();
+		return ret;
 	}
 	
-	public int[] getPosP2() {
-		return posP2;
+	public int[] getPosP2() throws InterruptedException {
+		posSem[1].acquire();
+		int[] ret = posP2;
+		posSem[1].release();
+		return ret;
 	}
 	
-	public float[] getSpeedP1() {
-		return speedP1;
+	public float[] getSpeedP1() throws InterruptedException {
+		speedSem[0].acquire();
+		float[] ret = speedP1;
+		speedSem[0].release();
+		return ret;
 	}
 	
-	public float[] getSpeedP2() {
-		return speedP2;
+	public float[] getSpeedP2() throws InterruptedException {
+		speedSem[1].acquire();
+		float[] ret = speedP2;
+		speedSem[1].release();
+		return ret;
 	}
 	
-	public void setPosP1(int[] newPos) {
+	public void setPosP1(int[] newPos) throws InterruptedException {
+		posSem[0].acquire();
 		posP1 = newPos;
+		posSem[0].release();
 	}
 	
-	public void setPosP2(int[] newPos) {
+	public void setPosP2(int[] newPos) throws InterruptedException {
+		posSem[1].acquire();
 		posP2 = newPos;
+		posSem[1].release();
 	}
 	
-	public void setSpeedP1(float[] newSpeed) {
+	public void setSpeedP1(float[] newSpeed) throws InterruptedException {
+		speedSem[0].acquire();
 		speedP1 = newSpeed;
+		speedSem[0].release();
 	}
 	
-	public void setSpeedP2(float[] newSpeed) {
+	public void setSpeedP2(float[] newSpeed) throws InterruptedException {
+		speedSem[1].acquire();
 		speedP2 = newSpeed;
+		speedSem[1].release();
 	}
 	
 		
