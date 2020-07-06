@@ -163,36 +163,40 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				newSpeed[0] = Float.parseFloat(ax);
 				newSpeed[1] = Float.parseFloat(ay);
 				
+				int[] posSession = new int[2];
+				int[] posOpponent = new int[2];
 				if (match.player1.getId() == session.getId()) {
 					oponent = match.player2;
 					match.setPosP1(newPos);
 					match.setSpeedP1(newSpeed);
+					posSession = match.getPosP1();
+					posOpponent = match.getPosP2();
 				} 
 				else {
 					oponent = match.player1;
 					match.setPosP2(newPos);
 					match.setSpeedP2(newSpeed);
+					posOpponent = match.getPosP1();
+					posSession = match.getPosP2();
 				}
 				
 				int elapsedTime = 20 - (int)((System.currentTimeMillis() - match.GetStartTime())/1000);
 				
 				// Comprueba si ha habido colisión
-				int[] posP1 = match.getPosP1();
-				int[] posP2 = match.getPosP2();
-				int dist = Math.abs(posP1[0] - posP2[0]) + Math.abs(posP1[1] - posP2[1]);
+				int dist = Math.abs(posSession[0] - posOpponent[0]) + Math.abs(posSession[1] - posOpponent[1]);
 				if (dist < 85 && (System.currentTimeMillis() - match.lastColision > 700)) {
 					match.lastColision = System.currentTimeMillis();
 					// Calculamos las fuerzas aplicadas a cada jugador
 					float[] forceP1 = new float[2];
-					forceP1[0] = (posP1[0] - posP2[0]); /* * MASS + speedP1[0];*/
-					forceP1[1] = (posP1[1] - posP2[1]); /* * MASS + speedP1[1];*/
+					forceP1[0] = (posSession[0] - posOpponent[0]); /* * MASS + speedP1[0];*/
+					forceP1[1] = (posSession[1] - posOpponent[1]); /* * MASS + speedP1[1];*/
 					float[] previousForceP1 = {forceP1[0], forceP1[1]}; 
 					forceP1[0] = forceP1[0] / Math.abs(previousForceP1[0] + previousForceP1[1]);
 					forceP1[1] = forceP1[1] / Math.abs(previousForceP1[0] + previousForceP1[1]);
 					
 					float[] forceP2 = new float[2];
-					forceP2[0] = (posP2[0] - posP1[0]); /* * MASS + speedP2[0]; */ 
-					forceP2[1] = (posP2[1] - posP1[1]); /* * MASS + speedP2[1]; */
+					forceP2[0] = (posOpponent[0] - posSession[0]); /* * MASS + speedP2[0]; */ 
+					forceP2[1] = (posOpponent[1] - posSession[1]); /* * MASS + speedP2[1]; */
 					float[] previousForceP2 = {forceP2[0], forceP2[1]};
 					forceP2[0] = forceP2[0] / Math.abs(previousForceP2[0] + previousForceP2[1]);
 					forceP2[1] = forceP2[1] / Math.abs(previousForceP2[0] + previousForceP2[1]);
