@@ -220,6 +220,11 @@ class CutsceneOnline extends Phaser.Scene {
 	{
 		if (escapar == true)
 		{
+			round = 0;
+			sincro = 0;
+			points[0] = 0;
+			points[1] = 0;
+			roundFinished = false;
 			this.scene.start("login");
 			escapar = false;
 		}

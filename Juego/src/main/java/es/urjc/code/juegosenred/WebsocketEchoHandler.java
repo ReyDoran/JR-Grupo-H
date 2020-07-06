@@ -406,7 +406,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				matches.remove(i);
 				encontrado = true;
 				matches.put(i, new Match());
-				matchesIndex--;
 			}
 			else if(matches.get(i).player2 == session)
 			{
@@ -414,7 +413,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				matches.remove(i);
 				encontrado = true;
 				matches.put(i, new Match());
-				matchesIndex--;
 			}
 			i++;
 		}
