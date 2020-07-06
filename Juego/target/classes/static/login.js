@@ -99,7 +99,7 @@ connection.onerror = function(e)
 }
 connection.onmessage = function(msg)
 {
-	//console.log("WS message: " + msg.data);
+	console.log("WS message: " + msg.data);
 	var info = JSON.parse(msg.data);
 	switch(info.code)
 	{
@@ -200,8 +200,10 @@ connection.onclose = function()
 setInterval(ping, 9000);
 
 function ping() {
-	var pingMsg = { code: "10", match: matchIndex }
-	connection.send(JSON.stringify(pingMsg));
+	if (match == true) {
+		var pingMsg = { code: "10", match: matchIndex }
+		connection.send(JSON.stringify(pingMsg));		
+	}
 }
 
 class Login extends Phaser.Scene
