@@ -550,7 +550,8 @@ class BattleOnline extends Phaser.Scene
 			this.restart();
 		}
 		if (sincroRound == true) {	
-			this.marcador = this.add.text(gameWidth*(275/600), gameHeight*(35/200), points[0] + " - " + points[1], { font: '64px Caveat Brush', fill: '#ffffff' }).setAlpha();
+			this.marcador = this.add.text(gameWidth*21.5/56, gameHeight/6, points[0], { font: '48px Caveat Brush', fill: '#ffffff' });
+			this.marcador = this.add.text(gameWidth*33.5/56, gameHeight/6, points[1], { font: '48px Caveat Brush', fill: '#ffffff' });
 
 			// Mientras no haya terminado la ronda
 			if (!roundFinished)
