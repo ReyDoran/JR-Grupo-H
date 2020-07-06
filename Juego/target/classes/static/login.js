@@ -200,7 +200,7 @@ connection.onclose = function()
 setInterval(ping, 9000);
 
 function ping() {
-	var pingMsg = { code: "10" }
+	var pingMsg = { code: "10", match: matchIndex }
 	connection.send(JSON.stringify(pingMsg));
 }
 
