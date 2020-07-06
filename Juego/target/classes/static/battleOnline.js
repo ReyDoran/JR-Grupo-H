@@ -146,6 +146,8 @@ class BattleOnline extends Phaser.Scene
 		this.timersCreated = false;
 		this.readySent = false;
 		
+		h = "false";
+		
 		xAcceleration = 0;
 		yAcceleration = 0;
 		angle = 0;
@@ -179,8 +181,8 @@ class BattleOnline extends Phaser.Scene
 		this.ability2Duration = 5;
 		
 		// Boolean que dice si la habilidad ha sido usada o no
-		this.used1=false;
-		this.used2=false;
+		this.used1 = false;
+		this.used2 = false;
 		
 		// 2 Creacion de sprites. Los instanciados más tarde se pintarán por encima.
 		// 2.1 Estáticos
@@ -493,6 +495,8 @@ class BattleOnline extends Phaser.Scene
 		round = 0;
 		sincro = 0;
 		roundFinished = false;
+		this.used1 = false;
+		this.used2 = false;
 		this.scene.start('login');
 	}
 	
@@ -552,6 +556,7 @@ class BattleOnline extends Phaser.Scene
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
 					{
+						console.log("PJ1 " + this.used1)
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
@@ -637,6 +642,7 @@ class BattleOnline extends Phaser.Scene
 					}
 					if(this.used2==false && this.moveKeys.esp.isDown)
 					{
+						console.log("PJ2 " + this.used2)
 						this.ability(this.ability2, 2, this.player2);
 						this.used2=true;
 						
