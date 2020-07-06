@@ -443,10 +443,10 @@ class BattleOnline extends Phaser.Scene
 	// Actualiza los puntos y avisa por pantalla del ganador de la ronda.
 	actualizePoints(){
 		if (this.checkPosition(this.player1, this.correctTombstone)){
-			this.roundEndText1 = this.add.text(gameWidth*(12/60), gameHeight*(3/5), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
+			this.roundEndText1 = this.add.text(gameWidth*(12/60), gameHeight*(12/20), 'Un punto para el jugador 1', { font: '64px Caveat Brush', fill: '#ffffff' });
 			points[0]++;
 		} if (this.checkPosition(this.player2, this.correctTombstone)){
-			this.roundEndText2 = this.add.text(gameWidth*(12/60), gameHeight*(4/5), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
+			this.roundEndText2 = this.add.text(gameWidth*(12/60), gameHeight*(16/20), 'Un punto para el jugador 2', { font: '64px Caveat Brush', fill: '#ffffff' });
 			points[1]++;
 		}
 	}
@@ -455,7 +455,7 @@ class BattleOnline extends Phaser.Scene
 	endFunc(){
 		this.tiempo.setText(0); // Mostrar contador a 0
 		// Muestra el mensaje de fin de ronda
-		this.roundEndText0 = this.add.text(gameWidth*(2/6), gameHeight*(6/10), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
+		this.roundEndText0 = this.add.text(gameWidth*(2/6), gameHeight*(6/20), 'Se acabó el tiempo', { font: '64px Caveat Brush', fill: '#ffffff' });
 		this.roundEnd = true;
 		this.freeze();  // Congela a los jugadores
 		this.actualizePoints(); // Actualiza los puntos y avisa de quien ha ganado
@@ -478,7 +478,7 @@ class BattleOnline extends Phaser.Scene
 			} else {
 				msge = 'Ha habido un empate';
 			}
-			this.add.text(gameWidth*(4/10), gameHeight/2, msge, { font: '60px Caveat Brush', fill: '#ffffff' });
+			this.add.text(gameWidth*(7/20), gameHeight/2, msge, { font: '60px Caveat Brush', fill: '#ffffff' });
 			this.time.addEvent({delay:4000, callback: this.restart, callbackScope: this});  // Prepara la función de cambio de/ escena
 		}
 		// En caso de no ser la última ronda pone otra cinemática
@@ -552,8 +552,7 @@ class BattleOnline extends Phaser.Scene
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
 					{
-						// Se llama a la fucnión habilidad con el identificador de habilidad, el
-						// número de jugador y el jugador
+						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
 						
@@ -572,6 +571,7 @@ class BattleOnline extends Phaser.Scene
 					}
 					if(h=="true" && !this.used2)
 					{
+						console.log("J2 a J1");
 						this.used2=true;
 						this.ability(this.ability2, 2, this.player2);
 						
@@ -617,9 +617,10 @@ class BattleOnline extends Phaser.Scene
 				{
 					if(h=="true" && !this.used1)
 					{
-						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
+						console.log("J1 a J2");
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
+						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
 						
 						switch (round){
 						case 1:
