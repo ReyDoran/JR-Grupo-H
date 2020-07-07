@@ -31,33 +31,42 @@ Al iniciar el juego tendremos 3 opciones a disposición: Jugar, Online y Tutoria
 
 Las escenas son las siguientes:
 
-![](https://i.imgur.com/Mz7RBgp.png)
+![](https://i.imgur.com/KiMUU1x.png)
 Pantalla de título.
 
 
-![](https://i.imgur.com/a9vqgm9.png)
-Menu principal en el que se puede escoger entre jugar local, jugar online o leer el manual.
+![](https://i.imgur.com/JmvY2cE.png)
+Menu principal en el que se puede escoger entre jugar local, jugar online o leer el tutorial.
 
 
-![](https://i.imgur.com/byDtPdc.png)
-En el manual se puede ver el funcionamiento y las mecanicas del juego. 
+![](https://i.imgur.com/RVaUCxv.png)
+En el tutorial se puede ver el funcionamiento y las mecanicas del juego. 
 
 
-![](https://i.imgur.com/QBTqkMe.png)
+![](https://i.imgur.com/yr2Ydil.png)
+Al pulsar Online pasaremos a la pantalla de login.
+
+
+![](https://i.imgur.com/YIF7XjX.png)
+Una vez logeados o registrados veremos el chat, los usuarios y la opción de jugar online.
+
+
+![](https://i.imgur.com/HJstNZ7.png)
 Si escogemos jugar deberemos primero elegir personaje.
 
 
-
-![](https://i.imgur.com/0Tv4DHE.png)
-Tambien deberemos elegir las habilidades que tendra este.
-
-
-![](https://i.imgur.com/bb3vPbb.png)
-Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque nos harán una pregunta.
+![](https://i.imgur.com/DjaVPuP.png)
+![](https://i.imgur.com/fv1AJB7.png)
+También deberemos elegir las habilidades.
 
 
-![](https://i.imgur.com/zoeGQvD.png)
-Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrá formulado intentando a su vez que el otro jugador no lo consiga.
+![](https://i.imgur.com/LAyV9Gb.png)
+![](https://i.imgur.com/NSi3uRb.png)
+Después, aparecerá el vídeo en el cuál deberemos memorizar bien los personajes que pasan porque nos harán una pregunta sobre ello.
+
+
+![](https://i.imgur.com/qkUednw.png)
+Por último, tendremos que mover a nuestro personaje a la tumba en la que creamos que esté la respuesta y expulsar al otro jugador con las habilidades y choques.
 
 ### REST
 
