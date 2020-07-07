@@ -93,7 +93,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					if (avaliableMatchIndex == -1) {
 						ObjectNode response = mapper.createObjectNode();
 						response.put("code", 9);
-						System.out.println("Message sent: " + response.toString());
+						//System.out.println("Message sent: " + response.toString());
 						session.sendMessage(new TextMessage(response.toString()));
 						semJoinMatch.release();
 						break;
@@ -120,7 +120,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					playerSem[avaliableMatchIndex * 2].acquire();					// EM para enviar el mensaje
 					matches.get(avaliableMatchIndex).player1.sendMessage(new TextMessage(response1.toString()));
 					playerSem[avaliableMatchIndex * 2].release();
-					System.out.println("Message sent: " + response1.toString());
+					//System.out.println("Message sent: " + response1.toString());
 					
 					ObjectNode response2 = mapper.createObjectNode();
 					response2.put("code", 0);
@@ -129,7 +129,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					playerSem[avaliableMatchIndex * 2 + 1].acquire();					// EM para enviar el mensaje
 					matches.get(avaliableMatchIndex).player2.sendMessage(new TextMessage(response2.toString()));
 					playerSem[avaliableMatchIndex * 2 + 1].release();
-					System.out.println("Message sent: " + response2.toString());
+					//System.out.println("Message sent: " + response2.toString());
 				}
 				
 				PrintAllMatches();
@@ -179,9 +179,9 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				responseInfo.put("cT3", match.correctTombstone[2]);
 				//System.out.println("Mensaje enviado: " + responseInfo.toString());
 				oponent.sendMessage(new TextMessage(responseInfo.toString()));
-				System.out.println("Message sent: " + responseInfo.toString());
+				//System.out.println("Message sent: " + responseInfo.toString());
 				match.ReadyPlayer();
-				System.out.println("Listos = " + match.playersReady);
+				//System.out.println("Listos = " + match.playersReady);
 				if (match.AreReady()) {
 					ObjectNode responseReady = mapper.createObjectNode();
 					responseReady.put("code", 4);
@@ -255,7 +255,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					forceP2[0] = forceP2[0] / (float)Math.sqrt(Math.pow(previousForceP2[0],2) + Math.pow(previousForceP2[1],2));
 					forceP2[1] = forceP2[1] / (float)Math.sqrt(Math.pow(previousForceP2[0],2) + Math.pow(previousForceP2[1],2));
 					
-					System.out.println("COLISION");
+					//System.out.println("COLISION");
 					ObjectNode colisionNode1 = mapper.createObjectNode();
 					colisionNode1.put("code", 7);
 					colisionNode1.put("forceX", forceP1[0]);
@@ -273,7 +273,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					else {
 						playerSem[Integer.valueOf(matchIndex) + 1].release();
 					}
-					System.out.println(forceP1[0] + ", " + forceP1[1]);
+					//System.out.println(forceP1[0] + ", " + forceP1[1]);
 					
 					ObjectNode colisionNode2 = mapper.createObjectNode();
 					colisionNode2.put("code", 7); 
@@ -292,7 +292,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					else {
 						playerSem[Integer.valueOf(matchIndex)].release();
 					}
-					System.out.println(forceP2[0] + ", " + forceP2[1]);
+					//System.out.println(forceP2[0] + ", " + forceP2[1]);
 				}
 				
 				// Envia las posiciones,la aceleracion, la rotacion, si se ha pulsado alguna
@@ -371,10 +371,10 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 				Match currentMatch = matches.get(matchIndex);
 				semRound.acquire();
 				currentMatch.ReadyPlayer();
-				System.out.println("Ready?" + currentMatch.playersReady);
+				//System.out.println("Ready?" + currentMatch.playersReady);
 				if (currentMatch.AreReady()) {
 					currentMatch.StartMatch();
-					System.out.println(currentMatch.GetStartTime());
+					//System.out.println(currentMatch.GetStartTime());
 					ObjectNode startRound = mapper.createObjectNode();
 					startRound.put("code", 3);
 					playerSem[Integer.valueOf(matchIndex)].acquire();			
@@ -383,7 +383,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					playerSem[Integer.valueOf(matchIndex)+1].acquire();	
 					currentMatch.player2.sendMessage(new TextMessage(startRound.toString()));
 					playerSem[Integer.valueOf(matchIndex)+1].release();
-					System.out.println("Mensaje enviado: " + startRound.toString());
+					//System.out.println("Mensaje enviado: " + startRound.toString());
 					currentMatch.StartMatch();
 					currentMatch.ResetReady();
 					currentMatch.isMatchActive = true;
@@ -465,7 +465,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		try {
-		System.out.println(session.getId());
+		//System.out.println(session.getId());
 		WebSocketSession opponent = null;
 		semJoinMatch.acquire();
 		for(int i = 0; i < MAX_MATCHES; i++) {	// recorre las salas en busca del desconectado
