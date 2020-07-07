@@ -167,6 +167,7 @@ class SeleccionPJH extends Phaser.Scene {
 		}, this);
 		
 		this.returnMenu.on('pointerdown', function (pointer){
+			connection.close();
 			this.scene.start('menu');
 			console.log("pal menu");
 		}, this);

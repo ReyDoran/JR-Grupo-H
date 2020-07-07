@@ -307,6 +307,7 @@ class Login extends Phaser.Scene
 		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
 		
 		if (oppDisc == true) {
+			connection.close();
 			oppDisc = false;
 			this.oppDiscText.setText("El oponente se ha desconectado");
 			this.time.addEvent({ delay: 2000, callback: this.removeDiscText, loop: false, callbackScope: this});
