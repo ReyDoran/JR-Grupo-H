@@ -36,6 +36,7 @@ var loggedIn = false;
 var registered = false;
 
 //Variables websockets
+var oppDisc = false;
 var newMsg = false;	// Indica si el mensaje del oponente ya se ha aplicado en battleOnline
 var sincroRound = false;
 var roundFinished = false;
@@ -165,6 +166,7 @@ function startConnection() {
 			case 5:
 			{
 				escapar = true;
+				oppDisc = true;
 				break;
 			}
 			case 6:	// Se acabó el tiempo de ronda
@@ -264,6 +266,7 @@ class Login extends Phaser.Scene
 		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 		this.online = 			this.add.image(gameWidth*35/50, gameHeight*35/50, 'bt_play').setAlpha(0).setScale(0.5).setInteractive();
+		this.oppDiscText = this.add.text(gameWidth*(10/100), gameHeight*(25/80),"",{ font: '56px Courier', fill: '#ff0000' });
 		
 		this.back.on('pointerdown', function (pointer){
 			this.closeLobby();
@@ -295,6 +298,16 @@ class Login extends Phaser.Scene
 		this.interf.play('bg_estatica_anim');
 		
 		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
+		
+		if (oppDisc == true) {
+			oppDisc = false;
+			this.oppDiscText.setText("El oponente se ha desconectado");
+			this.time.addEvent({ delay: 2000, callback: this.removeDiscText, loop: false, callbackScope: this});
+		}
+	}
+	
+	removeDiscText() {
+		this.oppDiscText.setText("");
 	}
 	
 	update()
