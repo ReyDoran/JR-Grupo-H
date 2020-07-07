@@ -84,7 +84,7 @@ class Menu extends Phaser.Scene {
 		}, this);
 		
 		//Interfaz por encima de casi todo
-		this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+		this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.1);
 		this.anims.create({
 			key: 'bg_estatica_anim',
 			frames: this.anims.generateFrameNumbers('bg_estatica'),

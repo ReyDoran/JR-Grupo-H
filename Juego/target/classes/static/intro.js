@@ -81,7 +81,7 @@ class Intro extends Phaser.Scene {
 		this.title = this.add.image(gameWidth/2, gameHeight/2, 'img_title').setInteractive();
 		this.title.on('pointerdown', function(pointer){ this.scene.start('menu'); }, this);
 		
-		this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+		this.bg_estatica = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.1);
 		this.anims.create({
 			key: 'bg_estatica_anim',
 			frames: this.anims.generateFrameNumbers('bg_estatica'),

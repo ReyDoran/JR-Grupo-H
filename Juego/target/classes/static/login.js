@@ -285,7 +285,7 @@ class Login extends Phaser.Scene
 		this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
 		
 		//Interfaz por encima de casi todo
-		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.1);
 		this.anims.create({
 			key: 'bg_estatica_anim',
 			frames: this.anims.generateFrameNumbers('bg_estatica'),
