@@ -9,10 +9,7 @@
 	<configs>
 	</configs>
 	<autoconfigs>
-<<<<<<< HEAD
-=======
 		<config>java:es.urjc.code.juegosenred.Rest</config>
->>>>>>> developing
 	</autoconfigs>
 	<configSets>
 	</configSets>
