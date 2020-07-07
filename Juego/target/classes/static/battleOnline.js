@@ -414,7 +414,7 @@ class BattleOnline extends Phaser.Scene
 	
 	// Calcula la dirección a la que debe apuntar el sprite
 	calculateRotation(player, vector2D){
-		let angulo = 0;
+		let angulo;
 		if (vector2D[0]>0 && vector2D[1]>0){
 			angulo = 135;
 		} else if(vector2D[0]<0 && vector2D[1]>0){
@@ -432,7 +432,9 @@ class BattleOnline extends Phaser.Scene
 		} else if(vector2D[0]==0 && vector2D[1]<0){
 			angulo = 0;
 		}
-		player.setAngle(angulo);
+		if (angulo != null) { 
+			player.setAngle(angulo);
+		}
 	}
 	
 	// Da fuerza al jugador dependiendo de las teclas que pulsa y de los efectos de habilidades y llama a calculateRotation()
