@@ -29,13 +29,58 @@ var us2;
 var us;
 
 var backMenu = false;
+<<<<<<< HEAD
 var serverOffline = false;
+=======
+>>>>>>> developing
 
 //variable para simular cambio de escena
 var failedAttempts = 0;
 var loggedIn = false;
 var registered = false;
 
+<<<<<<< HEAD
+=======
+//Variables websockets
+var oppDisc = false;	// Avisa de que el oponente se ha desconectado (solo para avisar en texto)
+var serverFull = false;	// Avisa de que el servidor está completo
+var newMsg = false;	// Indica si el mensaje del oponente ya se ha aplicado en battleOnline
+var sincroRound = false;
+var roundFinished = false;
+var msg;
+var match=false;
+var playerj;
+var matchIndex;
+var t;
+var x;
+var y;
+var angle;
+var h;
+var p;
+var h1;
+var h2;
+var h3;
+
+
+var characters = [9];
+var correctTombstones = [3];
+var roundQuestions = [3];
+
+var ax;
+var ay;
+var xAcceleration;
+var yAcceleration;
+var roundTime = 20;
+
+var colisionForceX = 0;
+var colisionForceY = 0;
+var colisionApplied = true;
+
+
+var sincro=0;
+var escapar = false;
+
+>>>>>>> developing
 var chatFeed = document.getElementById('chatfeed');
 var nam = document.getElementById('name');
 var pass = document.getElementById('pass');
@@ -50,6 +95,147 @@ logIn.style.display = 'none';
 signUp.style.display = 'none';
 chat.style.display = 'none';
 send.style.display = 'none';
+<<<<<<< HEAD
+=======
+
+//Iniciamos sesion websockets
+var connection;
+function startConnection() {
+	connection = new WebSocket('ws://'+URLdomain+'/juego');
+	connection.onopen = function()
+	{
+		console.log("WS abierto");	
+	}
+	connection.onerror = function(e)
+	{
+		console.log("WS error: " + e);
+	}
+	connection.onmessage = function(msg)
+	{
+		//console.log("WS message: " + msg.data);
+		var info = JSON.parse(msg.data);
+		switch(info.code)
+		{
+			case 0:
+			{
+				//Emparejamiento
+				playerj = info.player;
+				match = true;
+				matchIndex = info.match;
+				conectado = true;
+				break;
+			}
+			case 1:
+			{
+				//Generacion de la partida
+				p = info.p;
+				h1 = info.h1;
+				h2 = info.h2;
+				h3 = info.h3;
+				characters[0] = info.ch1;
+				characters[1] = info.ch2;
+				characters[2] = info.ch3;
+				characters[3] = info.ch4;
+				characters[4] = info.ch5;
+				characters[5] = info.ch6;
+				characters[6] = info.ch7;
+				characters[7] = info.ch8;
+				characters[8] = info.ch9;
+				roundQuestions[0] = info.rQ1;
+				roundQuestions[1] = info.rQ2;
+				roundQuestions[2] = info.rQ3;
+				correctTombstones[0] = info.cT1;
+				correctTombstones[1] = info.cT2;
+				correctTombstones[2] = info.cT3;
+				break;
+			}
+			case 2:
+			{
+				//Se llegan los datos del contrario
+				x = info.x;
+				y = info.y;
+				ax = info.ax;
+				ay = info.ay;
+				angle = info.rotation;
+				h = info.hability;
+				roundTime = info.time;
+				newMsg = true;
+				break;
+			}
+			case 3:
+			{
+				console.log("ready to start");
+				sincroRound = true;
+				break;
+			}
+			case 4:
+			{
+				sincro = 2;
+				break;
+			}
+			case 5:
+			{
+				escapar = true;
+				oppDisc = true;
+				break;
+			}
+			case 6:	// Se acabó el tiempo de ronda
+			{
+				roundFinished = true;
+				roundTime = 0;
+				break;
+			}
+			case 7:
+			{
+				console.log("me ha llegado mensaje de chocarme");
+				colisionForceX = info.forceX;
+				colisionForceY = info.forceY;
+				colisionApplied = false;
+				break;
+			}
+			case 8:
+			{
+				console.log("points antes = " + points[info.playerIndex]);
+				if (info.pointAcquired == 1) {
+					points[info.playerIndex] ++;				
+				}
+				console.log("points despues = " + points[info.playerIndex]);
+				break;
+			}
+			case 9:
+			{
+				serverFull = true;
+				break;
+			}
+			case 10:	// Ping
+			{
+				break;
+			}
+		
+			default:
+			{
+				console.log("default");
+			}
+			break;
+		}
+	}
+	connection.onclose = function()
+	{
+		console.log("Closing socket");
+		conectado = false;
+	}	
+}
+
+//setInterval(ping, 9000);
+
+function ping() {
+	if (match == true) {
+		var pingMsg = { code: "10", match: matchIndex }
+		connection.send(JSON.stringify(pingMsg));		
+	}
+}
+
+>>>>>>> developing
 class Login extends Phaser.Scene
 {
 	constructor()
@@ -90,6 +276,7 @@ class Login extends Phaser.Scene
 		this.userCreatedText = 	this.add.text(gameWidth*(25/100), gameHeight*(30/80),"",{ font: '32px Courier', fill: '#00ff00'});
 		this.chatmes = 			this.add.text(gameWidth*(15/100), gameHeight*(15/80),"",{ font: '16px Courier', fill: '#ffffff' });
 		this.conected = 		this.add.text(gameWidth*(38/50), gameHeight*(15/80),"",{ font: '18px Courier', fill: '#ffffff' });
+<<<<<<< HEAD
 		this.log = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.reg = 				this.add.text(gameWidth*(35/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
@@ -101,12 +288,42 @@ class Login extends Phaser.Scene
 			this.scene.start('menu');
 		}, this);
 	
+=======
+		this.waiting = 			this.add.text(gameWidth*(14/50), gameHeight*(1/2),"",{ font: '40px Courier', fill: '#ffffff' });
+		this.log = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.reg = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
+		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
+		this.online = 			this.add.image(gameWidth*35/50, gameHeight*35/50, 'bt_play').setAlpha(0).setScale(0.5).setInteractive();
+		this.oppDiscText = this.add.text(gameWidth*(10/100), gameHeight*(25/80),"",{ font: '56px Courier', fill: '#ff0000' });
+		this.serverFullText = this.add.text(gameWidth*(15/100), gameHeight*(25/80),"",{ font: '56px Courier', fill: '#ff0000' });
+		
+		this.back.on('pointerdown', function (pointer){
+			this.closeLobby();
+			if (connection != null) {
+				connection.close();				
+			}
+			this.scene.start('menu');
+		}, this);
+	
+		// Partida online
+		this.online.on('pointerdown', function (pointer){
+			this.closeLobby();
+			msg = { code: "0" }
+			connection.send(JSON.stringify(msg));
+			this.waiting.setText("Esperando al contrincante");
+		}, this);
+>>>>>>> developing
 		
 		this.chatmes.mask = new Phaser.Display.Masks.BitmapMask(this, this.square1);
 		this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
 		
 		//Interfaz por encima de casi todo
+<<<<<<< HEAD
 		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+=======
+		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.1);
+>>>>>>> developing
 		this.anims.create({
 			key: 'bg_estatica_anim',
 			frames: this.anims.generateFrameNumbers('bg_estatica'),
@@ -116,6 +333,20 @@ class Login extends Phaser.Scene
 		this.interf.play('bg_estatica_anim');
 		
 		this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, 'bg_frame');
+<<<<<<< HEAD
+=======
+		
+		if (oppDisc == true) {
+			connection.close();
+			oppDisc = false;
+			this.oppDiscText.setText("El oponente se ha desconectado");
+			this.time.addEvent({ delay: 2000, callback: this.removeDiscText, loop: false, callbackScope: this});
+		}
+	}
+	
+	removeDiscText() {
+		this.oppDiscText.setText("");
+>>>>>>> developing
 	}
 	
 	update()
@@ -123,6 +354,11 @@ class Login extends Phaser.Scene
 		// Muestra al jugador que inició sesión y activa el HUD de lobby
 		if (loggedIn)
 		{
+<<<<<<< HEAD
+=======
+			this.waiting.setText("");
+			this.serverFullText.setText("");
+>>>>>>> developing
 			chatFeed.style.display = 'initial';
 			this.log.setText("");
 			this.reg.setText("");
@@ -149,7 +385,11 @@ class Login extends Phaser.Scene
 		// Muestra al jugador el error al conectarse
 		if(errorlogin)
 		{
+<<<<<<< HEAD
 			this.log.setText("Usuario o contraseña incorrecta");
+=======
+			this.log.setText("Error, usuario o contraseña incorrecta");
+>>>>>>> developing
 			this.reg.setText("");
 			this.userCreatedText.setText("");
 			errorlogin = false;
@@ -159,7 +399,11 @@ class Login extends Phaser.Scene
 		{
 			this.userCreatedText.setText("");
 			this.log.setText("");
+<<<<<<< HEAD
 			this.reg.setText("Usuario ya conectado");
+=======
+			this.reg.setText("Error usuario ya conectado");
+>>>>>>> developing
 			errorconnected = false;
 		}
 		// Muestra al jugador el error al registrarse
@@ -167,7 +411,11 @@ class Login extends Phaser.Scene
 		{
 			this.userCreatedText.setText("");
 			this.log.setText("");
+<<<<<<< HEAD
 			this.reg.setText("Nombre de usuario ya en uso");
+=======
+			this.reg.setText("Error nombre de usuario ya en uso");
+>>>>>>> developing
 			errorregister = false;
 		}
 		// Cambia de escena para menú
@@ -177,7 +425,23 @@ class Login extends Phaser.Scene
 			this.fall.setText("El servidor se ha caido");
 			this.backMenuFuncTimer = this.time.addEvent({ delay: 4000, callback: this.backMenuFunc, loop: false, callbackScope: this});
 		}
+<<<<<<< HEAD
 		
+=======
+
+		// Cambia de escena para online
+		if(match)
+		{
+			this.scene.start("seleccionpjh");
+			match = false;
+		}
+		
+		if (serverFull == true) {
+			serverFull = false;
+			this.serverFullText.setText("El servidor está completo");
+			this.time.addEvent({ delay: 4000, callback: this.openLobby, loop: false, callbackScope: this});
+		}
+>>>>>>> developing
 	}
 	
 	loggedInToTrue() {
@@ -194,6 +458,13 @@ class Login extends Phaser.Scene
 		this.time.removeAllEvents();
 	}
 	
+<<<<<<< HEAD
+=======
+	openLobby() {
+		loggedIn = true;
+	}
+	
+>>>>>>> developing
 	backMenuFunc() {
 		this.chatmes.setText("");
 		this.conected.setText("");
@@ -292,14 +563,27 @@ class Login extends Phaser.Scene
 	// Activa los elementos de HTML para el lobby online
 	enableOnlineMenu()
 	{
+<<<<<<< HEAD
 		chat.style.display = "inline-block";
 		send.style.display = "inline-block";
+=======
+		startConnection();
+		chat.style.display = "inline-block";
+		send.style.display = "inline-block";
+		this.online.setInteractive();
+		this.online.setAlpha(1);
+>>>>>>> developing
 	}
 	// Oculta los elementos de HTML para el lobby online
 	disableOnlineMenu()
 	{
 		chat.style.display = "inline-block";
 		send.style.display = "inline-block";
+<<<<<<< HEAD
+=======
+		this.online.disableInteractive();
+		this.online.setAlpha(0);
+>>>>>>> developing
 	}
 }
 
@@ -399,13 +683,20 @@ function register()
 		user.id = id;
 	}).fail(function (data) {
 		//console.log("Nombre de usuario ya en uso");
+<<<<<<< HEAD
+=======
+		errorregister = true;
+>>>>>>> developing
 		
 		if (data.status == 0)
 		{
 			backMenu = true;
 		}
+<<<<<<< HEAD
 		else {
 			errorregister = true;
 		}
+=======
+>>>>>>> developing
 	});
 }

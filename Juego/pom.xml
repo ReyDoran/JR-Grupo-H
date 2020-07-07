@@ -8,7 +8,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+<<<<<<< HEAD
 	<name>rest_ejer1_con_ui</name>
+=======
+	<name>rest</name>
+>>>>>>> developing
 	<description>Backend y frontend para el ejercicio de gesti�n de items</description>
 
 	<parent>
@@ -35,6 +39,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
+=======
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-websocket</artifactId>
+		</dependency>
+>>>>>>> developing
 	</dependencies>
 
 	<build>

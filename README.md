@@ -1,5 +1,8 @@
-# ------------------------ Fase 4 ------------------------
+# ------------------------ Fase 4 -----------------------
+
 ![Documento de diseño de juego](https://github.com/ReyDoran/JR-Grupo-H/blob/master/Documento%20de%20dise%C3%B1o%20GDD.docx)
+![Vídeo de youtube presentación]( https://www.youtube.com/watch?v=eWXWKvPaR8s)   
+
 ## ¿Te acuerdas de...?
 Es un juego de agudeza visual y memoria al estilo mario party en 2 dimensiones, vista cenital y con temática de cazafantasmas.  
 
@@ -69,7 +72,7 @@ Por último, tendremos que mover a nuestro personaje a la tumba en la que creamo
 
 ### REST
 
-Diagrama de clases:
+Diagrama de clases (Rest + WebSockets):
 
 ![](https://i.imgur.com/ZLetP0O.png)
 
@@ -80,6 +83,46 @@ Métodos REST:
 - LOGIN (/users): inicia sesión con un usuario si las credenciales son las correctas y si no está ya conectado, en otro caso devuelve error.
 - GET (/chat): devuelve los mensajes del chat.
 - POST (/chat): añade un nuevo mensaje al chat.
+
+### WebSockets
+El servidor se encarga de hostear partidas. Tiene un sistema de salas que permite un número determinado de salas y que las libera cuando los jugadores se marchan. Las partidas sincronizan la información vital: personajes y habilidades seleccionadas por cada jugador; datos de las cinemáticas y soluciones; y el estado de los personajes durante la batalla. El cliente implementa client side prediction usando la velocidad del oponente. Mientras no llega un nuevo mensaje del contrincante, continúa calculando su posición en función de la velocidad que tenía. Sincroniza los inicios de las batallas y los puntos conseguidos (para evitar casos en los que un cliente cuenta diferente debido a que no entró el último mensaje de posición).
+
+El servidor almacena un número N de salas (clase Match en diagrama). Estas salas contienen toda la información necesaria para administrar una partida: las variables aleatorias que deben ser sincronizadas (nº personajes, preguntas...); la configuración de cada jugador (personaje, habilidades); y las posiciones y velocidades de los jugadores.
+El servidor actúa siempre en respuesta a mensajes de los jugadores. En función del código del mensaje (campo code) los procesa de una manera diferente. A continuación una breve explicación de los tipos de mensajes para el servidor:
+
+- code 0 (emparejamiento): intenta unir a una conexión WebSocket a una sala. Comienza buscando salas con un jugador ya dentro, y después salas vacías. Cuando encuentra una sala le devuelve al cliente el código de sala para agilizar las futuras operaciones. Si no quedan salas disponibles devuelve un mensaje con code 9.
+
+- code 1 (envío información partida): reenvía la información de un jugador (personaje y habilidades seleccionadas) a el oponente. Además le envía la información generada aleatoriamente de la partida (nº personajes, preguntas y respuestas). Si los dos jugadores de la sala ya han recibido este mensaje, envía a ambos un mensaje con code 4 para que comiencen la partida.
+
+- code 2 (información durante la partida): reenvía los datos de un cliente a su oponente (posición, velocidad, rotación, habilidad pulsada) y le añade un campo tiempo restante. Si se ha terminado el tiempo les envía un mensaje con code 6. Además, calcula a través de sus posiciones si ha habido colisión, y en ese caso les envía a cada jugador la fuerza de la colisión con un código 7.
+
+- code 3 (comienzo de partida sincronizada): una vez recibe un mensaje con código 3 de ambos jugadores les permite comenzar partida reenviando el mensaje a ambos con code 3.
+
+- code 8 (sincronización de puntos): para evitar que los jugadores cuenten diferente en local los puntos se reenvía los puntos que ha conseguido cada jugador a su oponente. Cada cliente tiene autoridad sobre si él ha conseguido punto o no. Esto se debe a que puede haber una pequeña diferencia en la posición final de los personajes al final de la ronda.
+
+- afterConnectionClosed(): avisa al oponente de que su compañero ha dejado la sala y reinicia la sala para que esté disponible de nuevo.
+
+Finalmente los tipos de mensajes para el cliente:
+- code 0 (emparejamiento): almacena el índice de sala asignada para reenviarlo y facilitar la comunicación.
+
+- code 1 (información de partida): almacena la información del oponente y de la partida.
+
+- code 2 (información de batalla): almacena la información del oponente.
+
+- code 3 (sincronización): sincroniza el inicio de la batalla.
+
+- code 4 (sincronización): sincroniza el inicio de la cinemática.
+
+- code 5 (aviso): avisa al jugador de que su oponente ha abandonado la partida.
+
+- code 6 (sincronización): sincroniza el final de la batalla.
+
+- code 7 (choque en batalla): almacena información de un choque entre los jugadores.
+
+- code 8 (sincronización): actualiza los puntos conseguidos por el oponente.
+
+- code 9 (aviso): avisa al jugador de que no quedan salas disponibles para jugar.
+
 
 
 ### Instrucciones ejecución

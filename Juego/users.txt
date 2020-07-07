@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 asd
 asd
 1
@@ -7,3 +8,35 @@ qwe
 dfgdfg
 dfg
 3
+=======
+tovilu
+1234
+1
+tovilu2
+1234
+2
+asd
+asd
+3
+qwe
+qwe
+4
+dsgfds
+sdfs
+5
+asdf
+asdf
+6
+fdsa
+fdsa
+7
+qwer
+qwer
+8
+rewq
+rewq
+9
+qwecvads
+qwecvqwd
+10
+>>>>>>> developing

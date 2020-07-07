@@ -23,6 +23,10 @@ public class ChatController {
 	public ChatController() {
 		chatLog = new ArrayList<>();
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> developing
 	/**
 	 * Get del chat. Devuelve todo el log
 	 */
