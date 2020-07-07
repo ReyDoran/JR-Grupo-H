@@ -68,7 +68,7 @@ class BattleOnline extends Phaser.Scene
 		this.player2.setFrictionAir(0.05);
 		
 		// Iniciar escenario
-		this.matter.world.setBounds(20, 0, 1227, 690);
+		this.matter.world.setBounds(25, 160, 1223, 530);
 	}
 	
 	//Función que añade al mapa tumbas con numeros diferentes, asignando la correcta a base buena
