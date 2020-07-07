@@ -1,7 +1,5 @@
 package es.urjc.code.juegosenred;
 
-<<<<<<< HEAD
-=======
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +14,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
->>>>>>> developing
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,29 +23,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-<<<<<<< HEAD
-public class Rest {
-
-	public static void main(String[] args) {
-		SpringApplication.run(Rest.class, args);
-	}
-}
-
-/*
-package es.urjc.code.juegosenred;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class RestEjer1ConUiApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(RestEjer1ConUiApplication.class, args);
-	}
-}
-*/
-=======
 @EnableWebSocket
 public class Rest implements WebSocketConfigurer {
 
@@ -65,4 +40,3 @@ public class Rest implements WebSocketConfigurer {
 		SpringApplication.run(Rest.class, args);
 	}
 }
->>>>>>> developing

@@ -11,14 +11,7 @@ public class User {
 	private Date lastOnline;
 
 	public User() {
-<<<<<<< HEAD
-		this.id = -1;
-		this.name = "";
-		this.pass = "";
-		this.score = 0;
-		this.lastOnline = new Date();
-=======
->>>>>>> developing
+
 	}
 
 	public long getId() {
@@ -52,11 +45,7 @@ public class User {
 	public int getScore() {
 		return score;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> developing
 	public Date getLastOnline() {
 		return lastOnline;
 	}
@@ -64,16 +53,10 @@ public class User {
 	public void setLastOnline(Date lastOnline) {
 		this.lastOnline = lastOnline;
 	}
-<<<<<<< HEAD
-	
-	public String toString() {
-		//return "User [id:" + id + ", name:" + name + ", score:" + score + ", date:" + online + "]";
-=======
 
 	public String toString() {
 		// return "User [id:" + id + ", name:" + name + ", score:" + score + ", date:" +
 		// online + "]";
->>>>>>> developing
 		return name;
 	}
 }
