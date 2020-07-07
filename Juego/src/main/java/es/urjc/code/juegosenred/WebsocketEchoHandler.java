@@ -66,13 +66,28 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			case "0": 
 			{
 				semJoinMatch.acquire();
-					// Comprueba la disponibilidad de todas las salas. Si queda hueco lo asigna. Si no devuelve code 9
+					
 					int avaliableMatchIndex = -1;
-					for (int i = 0; i < MAX_MATCHES; i++) {
-						if (matchesFull[i] == false) {	// Si encuentra sitio se sale y se queda con el indice
-							avaliableMatchIndex = i;
-							break;
+
+					// Comprueba si hay alguna sala medio llena
+					for ( int i = 0; i < MAX_MATCHES; i++) {
+						if (matchesFull[i] == false) {
+							if (matches.get(i).numPlayers == 1) {
+								avaliableMatchIndex = i;
+								break;
+							}
 						}
+					}
+				
+					// en caso de no haber encontrado medio llena busca vacía
+					// Comprueba la disponibilidad de todas las salas. Si queda hueco lo asigna. Si no devuelve code 9
+					if (avaliableMatchIndex == -1) {
+						for (int i = 0; i < MAX_MATCHES; i++) {
+							if (matchesFull[i] == false) {	// Si encuentra sitio se sale y se queda con el indice
+								avaliableMatchIndex = i;
+								break;
+							}
+						}						
 					}
 					// Si no queda hueco devuelve code 9 y break
 					if (avaliableMatchIndex == -1) {
