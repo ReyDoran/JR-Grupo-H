@@ -18,10 +18,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler 
 {
-	final int MAX_MATCHES = 2;
+	final int MAX_MATCHES = 3;
 	private ObjectMapper mapper = new ObjectMapper();
-	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
-	//ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
 	ConcurrentHashMap<Integer, Match> matches = new ConcurrentHashMap<>(MAX_MATCHES);
 	boolean[] matchesFull = new boolean[MAX_MATCHES];
 
@@ -96,7 +94,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					matchSem[avaliableMatchIndex].release();		// Libera la sala sobre la que operó
 				semJoinMatch.release();
 				
-				System.out.println("Jugadores: " + matches.get(avaliableMatchIndex).GetNumPlayers());
+				//System.out.println("Jugadores: " + matches.get(avaliableMatchIndex).GetNumPlayers());
 				// si está lleno comenzamos partida
 				if (matches.get(avaliableMatchIndex).GetNumPlayers() == 2) {
 					matches.get(avaliableMatchIndex).GenerateValues();
@@ -451,33 +449,47 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		users.remove(session.getId());
-		
-		WebSocketSession enemigo = null;
+		try {
+		System.out.println(session.getId());
+		WebSocketSession opponent = null;
+		semJoinMatch.acquire();
+		for(int i = 0; i < MAX_MATCHES; i++) {	// recorre las salas en busca del desconectado
+			Match iterationMatch = matches.get(i);
+			if (iterationMatch.numPlayers == 0)	// si no hay jugadores pasa
+				continue;
+			if (iterationMatch.numPlayers == 1 && iterationMatch.player1.getId() == session.getId()) {	// si estaba solo en la sala resetea la sala
+				matches.remove(i);
+				matches.put(i,  new Match());
+				matchesFull[i] = false;
+				break;
+			}
+			// Otros dos casos es uno de los dos jugadores de una sala llena. Se queda con la sesión del enemigo y resetea la sala
+			if (iterationMatch.numPlayers == 2 && iterationMatch.player1.getId() == session.getId()) {
+				opponent = iterationMatch.player2;
+				matches.remove(i);
+				matches.put(i,  new Match());
+				matchesFull[i] = false;
+				break;
+			}
+			if (iterationMatch.numPlayers == 2 && iterationMatch.player2.getId() == session.getId()) {
+				opponent = iterationMatch.player1;
+				matches.remove(i);
+				matches.put(i,  new Match());
+				matchesFull[i] = false;
+				break;
+			}
+		} 
+		semJoinMatch.release();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", 5);
-		int i = 0;
-		boolean encontrado = false;
-		while (!encontrado && i < matches.size())
-		{
-			if(matches.get(i).player1 == session)
-			{
-				enemigo = matches.get(i).player2;
-				matches.remove(i);
-				encontrado = true;
-				matches.put(i, new Match());
-			}
-			else if(matches.get(i).player2 == session)
-			{
-				enemigo = matches.get(i).player1;
-				matches.remove(i);
-				encontrado = true;
-				matches.put(i, new Match());
-			}
-			i++;
+		if (opponent != null) {
+			opponent.sendMessage(new TextMessage(responseNode.toString()));			
 		}
-		if (enemigo != null) {
-			enemigo.sendMessage(new TextMessage(responseNode.toString()));			
+			
+		PrintAllMatches();
+		}
+		catch(Exception ex) {
+			System.out.println(ex.toString());
 		}
 	}
 
