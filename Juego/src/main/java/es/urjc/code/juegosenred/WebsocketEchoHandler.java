@@ -45,7 +45,7 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception 
 	{
-		System.out.println("Message recibido: " + message.getPayload());
+		//System.out.println("Message recibido: " + message.getPayload());
 		// Leemos mensaje
 		JsonNode node = mapper.readTree(message.getPayload());
 		String code = node.get("code").asText();

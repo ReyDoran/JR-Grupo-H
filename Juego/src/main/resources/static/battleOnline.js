@@ -128,7 +128,10 @@ class BattleOnline extends Phaser.Scene
 		}
 	}
 	
-	create(){		
+	create(){	
+		this.forceModifier1 = 0.0001;
+		this.forceModifier2 = 0.0001;
+		
 		this.previousPoints = [0, 0];
 		this.previousPoints[0] = points[0];
 		this.previousPoints[1] = points[1];
@@ -337,12 +340,16 @@ class BattleOnline extends Phaser.Scene
 	// Resetea el multiplicador y el rebote del j1
 	restartEffect1(){
 		this.effect2 = 1;
+		this.forceModifier1 = 0.0001;
+		this.forceModifier2 = 0.0001;
 		this.player2.setBounce(0.9);
 	}
 	
 	// Resetea el multiplicador y el rebote del j2
 	restartEffect2(){
 		this.effect1 = 1;
+		this.forceModifier1 = 0.0001;
+		this.forceModifier2 = 0.0001
 		this.player1.setBounce(0.9);
 	}
 	
@@ -382,7 +389,13 @@ class BattleOnline extends Phaser.Scene
 		if(habil == 0){
 			this.slow(j);
 		} else if(habil == 1){
-            player.setBounce(4.0);
+            //player.setBounce(4.0);
+			if (playerj == 1){
+				this.forceModifier1 = 0.0002;				
+			} else {
+				this.forceModifier2 = 0.0002;
+			}
+			
 		} else if(habil == 2){
 			this.reverse(j);
 		} else if(habil == 3){
@@ -596,7 +609,7 @@ class BattleOnline extends Phaser.Scene
 					{
 						console.log("PJ1 " + this.used1)
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
-						this.ability(this.ability1, 1, this.player1);
+						//this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
 						
 						switch (round){
@@ -635,10 +648,9 @@ class BattleOnline extends Phaser.Scene
 					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 					
 					if (colisionApplied == false) {
-						console.log("chocamos");
-						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX) * 0.0001, parseFloat(colisionForceY) * 0.0001);
-						console.log(colisionForceX + ", " + colisionForceY);
-						console.log(forceToApply[0] + ", " + forceToApply[1]);
+						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX) * this.forceModifier1, parseFloat(colisionForceY) * this.forceModifier1);
+						//console.log(colisionForceX + ", " + colisionForceY);
+						//console.log(forceToApply[0] + ", " + forceToApply[1]);
 						this.player1.applyForce(forceToApply);
 						//this.player1.x = 150;
 						//this.player1.y = 150;
@@ -681,7 +693,7 @@ class BattleOnline extends Phaser.Scene
 					if(this.used2==false && this.moveKeys.esp.isDown)
 					{
 						console.log("PJ2 " + this.used2)
-						this.ability(this.ability2, 2, this.player2);
+						//this.ability(this.ability2, 2, this.player2);
 						this.used2=true;
 						
 						switch (round){
@@ -702,7 +714,7 @@ class BattleOnline extends Phaser.Scene
 					
 					if (colisionApplied == false) {
 						console.log("chocamos");
-						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX)* 0.0001, parseFloat(colisionForceY) * 0.0001);
+						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX)* this.forceModifier2, parseFloat(colisionForceY) * this.forceModifier2);
 						this.player2.applyForce(forceToApply);
 						console.log(colisionForceX + ", " + colisionForceY);
 						console.log(forceToApply[0] + ", " + forceToApply[1]);
