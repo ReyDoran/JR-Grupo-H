@@ -68,7 +68,7 @@ class BattleOnline extends Phaser.Scene
 		this.player2.setFrictionAir(0.05);
 		
 		// Iniciar escenario
-		this.matter.world.setBounds(20, 0, 1227, 690);
+		this.matter.world.setBounds(25, 160, 1223, 530);
 	}
 	
 	//Función que añade al mapa tumbas con numeros diferentes, asignando la correcta a base buena
@@ -649,6 +649,7 @@ class BattleOnline extends Phaser.Scene
 					this.dist = [this.player1.x - this.player2.x, this.player1.y - this.player2.y];
 					this.calculateForces(this.player1, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect1, this.dist);
 					this.player2.setAngularVelocity(0);
+					this.player1.setAngularVelocity(0);
 					
 					if (colisionApplied == false) {
 						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX) * this.forceModifier1, parseFloat(colisionForceY) * this.forceModifier1);
@@ -715,6 +716,7 @@ class BattleOnline extends Phaser.Scene
 					this.dist = [-(this.player1.x - this.player2.x),-(this.player1.y - this.player2.y)];
 					this.calculateForces(this.player2, this.moveKeys.w, this.moveKeys.a, this.moveKeys.s, this.moveKeys.d, this.effect2, this.dist);
 					this.player1.setAngularVelocity(0);
+					this.player2.setAngularVelocity(0);
 					
 					if (colisionApplied == false) {
 						console.log("chocamos");

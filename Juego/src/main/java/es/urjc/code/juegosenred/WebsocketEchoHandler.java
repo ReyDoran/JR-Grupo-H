@@ -18,17 +18,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler 
 {
-	final int MAX_MATCHES = 10;
+	final int MAX_MATCHES = 2;
 	private ObjectMapper mapper = new ObjectMapper();
 	ConcurrentHashMap<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
 	//ArrayList<Match> matches = new ArrayList<Match>(MAX_MATCHES);
 	ConcurrentHashMap<Integer, Match> matches = new ConcurrentHashMap<>(MAX_MATCHES);
-	int matchesIndex = 0;
-	private Semaphore sem = new Semaphore(1);
+	boolean[] matchesFull = new boolean[MAX_MATCHES];
+
 	// Semaforo para envío de mensajes a cada usuario (da error si se envian dos a la vez)
 	private Semaphore[] playerSem = new Semaphore[MAX_MATCHES*2];
 	private Semaphore[] matchSem = new Semaphore[MAX_MATCHES];
 	private Semaphore semRound = new Semaphore(1);
+	private Semaphore semJoinMatch = new Semaphore(1);	// Semaforo para buscar sala
 
 	public WebsocketEchoHandler() 
 	{
@@ -36,9 +37,17 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 		{
 			matches.put(i, new Match());
 			matchSem[i] = new Semaphore(1);
+			matchesFull[i] = false;
 		}
 		for (int i = 0; i < MAX_MATCHES * 2; i++) {
 			playerSem[i] = new Semaphore(1);
+		}
+	}
+	
+	private void PrintAllMatches() {
+		System.out.println("nº total de salas: " + MAX_MATCHES);
+		for (int i = 0; i < MAX_MATCHES; i++) {
+			System.out.println("Sala: " + i + " - nº jugadores: " + matches.get(i).numPlayers);
 		}
 	}
 	
@@ -58,50 +67,60 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 			// Buscar Partida
 			case "0": 
 			{
-				// EM para la sala. Si está llena lo libera y coge turno para la siguiente sala.
-				matchSem[matchesIndex].acquire();
-				// metemos al nuevo jugador en la sala
-				if (matches.get(matchesIndex).GetNumPlayers() == 2)
-				{
-					matchSem[matchesIndex].release();
-					matchesIndex++;
-					if (matchesIndex == MAX_MATCHES) // Caso no quedan salas libres
-					{	
-						// Envía mensaje 9 y se sale del switch
+				semJoinMatch.acquire();
+					// Comprueba la disponibilidad de todas las salas. Si queda hueco lo asigna. Si no devuelve code 9
+					int avaliableMatchIndex = -1;
+					for (int i = 0; i < MAX_MATCHES; i++) {
+						if (matchesFull[i] == false) {	// Si encuentra sitio se sale y se queda con el indice
+							avaliableMatchIndex = i;
+							break;
+						}
+					}
+					// Si no queda hueco devuelve code 9 y break
+					if (avaliableMatchIndex == -1) {
 						ObjectNode response = mapper.createObjectNode();
 						response.put("code", 9);
 						System.out.println("Message sent: " + response.toString());
 						session.sendMessage(new TextMessage(response.toString()));
+						semJoinMatch.release();
 						break;
 					}
-					matchSem[matchesIndex].acquire();
-				}
-				matches.get(matchesIndex).AddPlayer(session);	// Añade el jugador
-				matchSem[matchesIndex].release();		// Libera sea cual sea la sala sobre la que operó			
-				// FIN BAJO EM
+					
+					// Pide permiso para modificarla
+					matchSem[avaliableMatchIndex].acquire();
+						// metemos al nuevo jugador en la sala
+						Match joinedMatch = matches.get(avaliableMatchIndex); 
+						joinedMatch.AddPlayer(session);
+						if (joinedMatch.numPlayers == 2) 
+							matchesFull[avaliableMatchIndex] = true;
+					matchSem[avaliableMatchIndex].release();		// Libera la sala sobre la que operó
+				semJoinMatch.release();
 				
-				System.out.println("Jugadores: " + matches.get(matchesIndex).GetNumPlayers());
+				System.out.println("Jugadores: " + matches.get(avaliableMatchIndex).GetNumPlayers());
 				// si está lleno comenzamos partida
-				if (matches.get(matchesIndex).GetNumPlayers() == 2) {
-					matches.get(matchesIndex).GenerateValues();
+				if (matches.get(avaliableMatchIndex).GetNumPlayers() == 2) {
+					matches.get(avaliableMatchIndex).GenerateValues();
 					ObjectNode response1 = mapper.createObjectNode();
 					response1.put("code", 0);
 					response1.put("player", 1);
-					response1.put("match", matchesIndex);
-					playerSem[matchesIndex * 2].acquire();					// EM para enviar el mensaje
-					matches.get(matchesIndex).player1.sendMessage(new TextMessage(response1.toString()));
-					playerSem[matchesIndex * 2].release();
+					response1.put("match", avaliableMatchIndex);
+					playerSem[avaliableMatchIndex * 2].acquire();					// EM para enviar el mensaje
+					matches.get(avaliableMatchIndex).player1.sendMessage(new TextMessage(response1.toString()));
+					playerSem[avaliableMatchIndex * 2].release();
 					System.out.println("Message sent: " + response1.toString());
 					
 					ObjectNode response2 = mapper.createObjectNode();
 					response2.put("code", 0);
 					response2.put("player", 2);
-					response2.put("match", matchesIndex);
-					playerSem[matchesIndex * 2 + 1].acquire();					// EM para enviar el mensaje
-					matches.get(matchesIndex).player2.sendMessage(new TextMessage(response2.toString()));
-					playerSem[matchesIndex * 2 + 1].release();
+					response2.put("match", avaliableMatchIndex);
+					playerSem[avaliableMatchIndex * 2 + 1].acquire();					// EM para enviar el mensaje
+					matches.get(avaliableMatchIndex).player2.sendMessage(new TextMessage(response2.toString()));
+					playerSem[avaliableMatchIndex * 2 + 1].release();
 					System.out.println("Message sent: " + response2.toString());
 				}
+				
+				PrintAllMatches();
+				
 				break;
 			}
 			
