@@ -31,42 +31,41 @@ Al iniciar el juego tendremos 3 opciones a disposición: Jugar, Online y Tutoria
 
 Las escenas son las siguientes:
 
-![](https://i.imgur.com/KiMUU1x.png)
 Pantalla de título.
+![](https://i.imgur.com/KiMUU1x.png)
 
-
-![](https://i.imgur.com/JmvY2cE.png)
 Menu principal en el que se puede escoger entre jugar local, jugar online o leer el tutorial.
+![](https://i.imgur.com/JmvY2cE.png)
 
 
-![](https://i.imgur.com/RVaUCxv.png)
 En el tutorial se puede ver el funcionamiento y las mecanicas del juego. 
+![](https://i.imgur.com/RVaUCxv.png)
 
 
-![](https://i.imgur.com/yr2Ydil.png)
 Al pulsar Online pasaremos a la pantalla de login.
+![](https://i.imgur.com/yr2Ydil.png)
 
 
-![](https://i.imgur.com/YIF7XjX.png)
 Una vez logeados o registrados veremos el chat, los usuarios y la opción de jugar online.
+![](https://i.imgur.com/YIF7XjX.png)
 
 
-![](https://i.imgur.com/HJstNZ7.png)
 Si escogemos jugar deberemos primero elegir personaje.
+![](https://i.imgur.com/HJstNZ7.png)
 
 
+También deberemos elegir las habilidades.
 ![](https://i.imgur.com/DjaVPuP.png)
 ![](https://i.imgur.com/fv1AJB7.png)
-También deberemos elegir las habilidades.
 
 
+Después, aparecerá el vídeo en el cuál deberemos memorizar bien los personajes que pasan porque nos harán una pregunta sobre ello.
 ![](https://i.imgur.com/LAyV9Gb.png)
 ![](https://i.imgur.com/NSi3uRb.png)
-Después, aparecerá el vídeo en el cuál deberemos memorizar bien los personajes que pasan porque nos harán una pregunta sobre ello.
 
 
-![](https://i.imgur.com/qkUednw.png)
 Por último, tendremos que mover a nuestro personaje a la tumba en la que creamos que esté la respuesta y expulsar al otro jugador con las habilidades y choques.
+![](https://i.imgur.com/qkUednw.png)
 
 ### REST
 
