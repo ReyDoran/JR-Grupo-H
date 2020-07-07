@@ -1,4 +1,4 @@
-# ----------------------------- Fase 1 -----------------------------
+# ------------------------ Fase 4 ------------------------
 ![Documento de diseño de juego](https://github.com/ReyDoran/JR-Grupo-H/blob/master/Documento%20de%20dise%C3%B1o%20GDD.docx)
 ## ¿Te acuerdas de...?
 Es un juego de agudeza visual y memoria al estilo mario party en 2 dimensiones, vista cenital y con temática de cazafantasmas.  
@@ -8,85 +8,86 @@ El juego consta de tres partes:
  - Visionado del video.
  - Competición y elección de respuesta.
 
-El juego está pensado para jugar en grupo y para toda la familia, ya que pese a la mecánica simple y la apariencia infantil, tiene una cierta dificultad para los mayores.
+El juego está pensado para jugar en grupo y para toda la familia, ya que pese a la mecánica simple y la apariencia infantil, tiene una cierta dificultad para que sea un reto.
 
 ### Temática
 
-Se basa en cazafantasmas, con estilo visual cartoon. El escenario será el patio de una casa encantada, con tumbas y cipreses. 
+Se basa en cazafantasmas y un minijuego de Mario Party, con estilo visual cartoon. El escenario será el patio trasero de una casa encantada, con tumbas y cipreses. 
   
 ![](https://cdn.wallpapersafari.com/9/44/to1XbJ.jpg)
 ![](https://art.ngfiles.com/images/654000/654628_frybrix_dark-graveyard.jpg?f1540491044)
+![](https://i.ytimg.com/vi/E1wNFj1l7kk/maxresdefault.jpg)
   
 ### Mecánicas 
 
-Las posibilidades comienzan en la selección de personaje, ya que hay dos equipos con 3 habilidades compartidas y otras 2 propias de cada uno, de las cuales se podrán escoger 3 en total. Tras ver el video del inicio, se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la plataforma de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta. Cada pregunta acertada concede puntos y cuando acaben ganará el que más tenga.
+Las posibilidades comienzan en la selección de personaje, ya que hay 4 personajes diferentes y 3 habilidades. Se ha de escoger un personaje y las tres habilidades en el orden que se desee. A continuación verán una serie de personajes pasar por pantalla y tendrán que recurdar algunos detalles que luego se preguntarán. Una vez sabida la pregunta se econtrarán los jugadores en el escenario con movimiento libre. Han de posicionarse en la tumba que tenga el número de la respuesta que crean correcta. A su vez, los jugadores podrán empujarse y usar las habilidades para alejar o imposibilitar que entren a la zona de la respuesta. Cada pregunta acertada concede un punto y cuando acabe ganará el que más tenga.
 
-![](https://i.ytimg.com/vi/E1wNFj1l7kk/maxresdefault.jpg)  
 
 ### Flujo 
 
-Al iniciar el juego podramos elegir entre jugar online y local. Tras esto, cogeremos bando y personaje, con sus respectivas posibles habilidades, habiendo tres comunes y dos únicas de cada equipo. Al acabar la selección, pasaremos a ver el video e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza.  
+Al iniciar el juego tendremos 3 opciones a disposición: Jugar, Online y Tutorial. El tutorial nos enseñará los controloes y las mecánicas. Si pulsamos Online accederemos al Login, en el que deberemos registrarnos con un apodo si es la primera vez que jugamos. Una vez dentro podrás comunicarte con el resto de jugadores conectados y darle nuevamente al botón de Online para emparejarte con otro jugador e iniciar la partida. Tras esto, escogeremos personaje y orden de habilidades. Al acabar la selección, pasaremos a ver la secuencia e intentar recordar todo lo posible. Una vez acabado, podremos movernos a la casilla que creamos correcta y combatir con el otro jugador por la plaza. Al finalizar la partida se nos llevará de vuelta al login.
   
-![](https://imgur.com/n2GgkOC.png)  
+![](https://i.imgur.com/LYzDigW.png)  
 
-# ----------------------------- Fase 2 -----------------------------
+Las escenas son las siguientes:
 
-![](https://imgur.com/gPbqT3C.jpeg)
+Pantalla de título.
+![](https://i.imgur.com/KiMUU1x.png)
 
-Menu principal en el que se puede escoger entre jugar o leer el manual.
+Menu principal en el que se puede escoger entre jugar local, jugar online o leer el tutorial.
+![](https://i.imgur.com/JmvY2cE.png)
 
-![](https://imgur.com/QmrAiac.jpeg)
 
-En el manual se puede ver el funcionamiento y las mecanicas del juego. 
+En el tutorial se puede ver el funcionamiento y las mecanicas del juego. 
+![](https://i.imgur.com/RVaUCxv.png)
 
-![](https://imgur.com/YIodtMt.jpeg)
+
+Al pulsar Online pasaremos a la pantalla de login.
+![](https://i.imgur.com/yr2Ydil.png)
+
+
+Una vez logeados o registrados veremos el chat, los usuarios y la opción de jugar online.
+![](https://i.imgur.com/YIF7XjX.png)
+
 
 Si escogemos jugar deberemos primero elegir personaje.
-
-![](https://imgur.com/R3s066c.jpeg)
-
-Tambien deberemos elegir las habilidades que tendra este.
-
-![](https://imgur.com/0Tv4DHE)
-
-Despues de lo anterior aparecera el video en el cual deberemos memorizar bien los personajes que pasan porque no harán una pregunta.
-
-![](https://imgur.com/iCOjhpE.jpeg)
-
-Por ultimo tendremos que mover a nuestro personaje a la respuesta que se no habrá formulado intentando a su vez que el otro jugador no lo consiga.
-
-![](https://imgur.com/rmsEi1W.png)
-
-# ----------------------------- Fase 3 -----------------------------
-
-En esta tercera fase hemos cambiado muchas cosas en el apartado estético, hemos cambiado toda la interfaz por completo, tanto la de in-game como la de los distintos menús, hemos aprovechado la televisión que hay en el juego, para aprovecharla como nexo principal entre las distintas pantallas.
-Nada más empezar hemos implementado un vídeo a modo de introducción del juego que de pie a la pantalla con el título, a continuación,
-la pantalla .
-
-![](https://i.imgur.com/Mz7RBgp.png)
-
-Una vez avanzas la pantalla, accedes al nuevo menú principal con las opciones de jugar, on line y tutorial. 
-
-![](https://i.imgur.com/a9vqgm9.png)
-
-En esta tercera fase hemos cambiado por completo el tutorial, siguiendo las sugerencias recibidas tras la presentación de la anterior fase.
-![](https://i.imgur.com/byDtPdc.png)
-
-Una vez le damos a jugar, en la nueva pantalla de selección de personaje aparecen los 4 personajes disponibles, además hemos mejorado la parte de respuestas visuales para la parte de usuario.
-![](https://i.imgur.com/QBTqkMe.png)
-
-Tras esto, la pantalla de selección de habilidades es bastante parecida a la anterior, aún así hemos cambiado algo el diseño de las cartas.
-![](https://i.imgur.com/0Tv4DHE.png)
-
-En la parte de la cinemática hemos cambiado el tipo de fuente y el tamaño de las preguntas, para hacer más visible estas.
-![](https://i.imgur.com/bb3vPbb.png)
-
-Finalmente la nueva pantalla de juego, que ha sufrido múltiples cambios para mejorar su aspecto y funcionalidad.
-
-![](https://i.imgur.com/zoeGQvD.png)
+![](https://i.imgur.com/HJstNZ7.png)
 
 
+También deberemos elegir las habilidades.
+![](https://i.imgur.com/DjaVPuP.png)
+![](https://i.imgur.com/fv1AJB7.png)
 
+
+Después, aparecerá el vídeo en el cuál deberemos memorizar bien los personajes que pasan porque nos harán una pregunta sobre ello.
+![](https://i.imgur.com/LAyV9Gb.png)
+![](https://i.imgur.com/NSi3uRb.png)
+
+
+Por último, tendremos que mover a nuestro personaje a la tumba en la que creamos que esté la respuesta y expulsar al otro jugador con las habilidades y choques.
+![](https://i.imgur.com/qkUednw.png)
+
+### REST
+
+Diagrama de clases:
+
+![](https://i.imgur.com/ZLetP0O.png)
+
+Métodos REST:
+- GET (/users): devuelve la lista de los usuarios conectados y de los usuarios desconectados.
+- GET (/users/{id}): actualiza la hora de última conexión del usuario identificado con el valor id.
+- POST (/users): registra a un nuevo usuario con las credenciales recibidas siempre que el nombre no esté ya en uso. En este caso devuelve error.
+- LOGIN (/users): inicia sesión con un usuario si las credenciales son las correctas y si no está ya conectado, en otro caso devuelve error.
+- GET (/chat): devuelve los mensajes del chat.
+- POST (/chat): añade un nuevo mensaje al chat.
+
+
+### Instrucciones ejecución
+
+Para iniciar el servidor ejecutar el archivo tad.jar mediante el comando de cmd "java -jar tad.jar". Para ejecutarlo como cliente introducir en el navegador "localhost:8080/"
+
+
+### Equipo
 
 Jesús de Pando Galán - jesusdessbb@gmail.com - j.depando.2016@alumnos.urjc.es - Pandouman   
 Tomás Pérez Martínez - tomas22tomas@gmail.com - t.perez.2016@alumnos.urjc.es - Tovilu  
