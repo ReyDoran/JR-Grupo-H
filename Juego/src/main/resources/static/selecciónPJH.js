@@ -167,10 +167,6 @@ class SeleccionPJH extends Phaser.Scene {
 		}, this);
 		
 		this.returnMenu.on('pointerdown', function (pointer){
-			msg = {
-					code: "5"
-			}
-			connection.send(JSON.stringify(msg));
 			this.scene.start('menu');
 			console.log("pal menu");
 		}, this);
@@ -458,8 +454,8 @@ class SeleccionPJH extends Phaser.Scene {
 			points[0] = 0;
 			points[1] = 0;
 			roundFinished = false;
-			escapar = false;
 			this.scene.start("login");
+			escapar = false;
 		}
 		//Cuando está seleccionada, una carta se tiñe de rojo
 		if (this.abilities[0] == true) this.ability0.setTint(0xCD0000);

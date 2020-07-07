@@ -426,51 +426,6 @@ public class WebsocketEchoHandler extends TextWebSocketHandler
 					playerSem[Integer.valueOf(matchIndex)].release();
 				}
 			}
-			case "5":
-			{
-				try {
-					System.out.println(session.getId());
-					WebSocketSession opponent = null;
-					semJoinMatch.acquire();
-					for(int i = 0; i < MAX_MATCHES; i++) {	// recorre las salas en busca del desconectado
-						Match iterationMatch = matches.get(i);
-						if (iterationMatch.numPlayers == 0)	// si no hay jugadores pasa
-							continue;
-						if (iterationMatch.numPlayers == 1 && iterationMatch.player1.getId() == session.getId()) {	// si estaba solo en la sala resetea la sala
-							matches.remove(i);
-							matches.put(i,  new Match());
-							matchesFull[i] = false;
-							break;
-						}
-						// Otros dos casos es uno de los dos jugadores de una sala llena. Se queda con la sesión del enemigo y resetea la sala
-						if (iterationMatch.numPlayers == 2 && iterationMatch.player1.getId() == session.getId()) {
-							opponent = iterationMatch.player2;
-							matches.remove(i);
-							matches.put(i,  new Match());
-							matchesFull[i] = false;
-							break;
-						}
-						if (iterationMatch.numPlayers == 2 && iterationMatch.player2.getId() == session.getId()) {
-							opponent = iterationMatch.player1;
-							matches.remove(i);
-							matches.put(i,  new Match());
-							matchesFull[i] = false;
-							break;
-						}
-					} 
-					semJoinMatch.release();
-					ObjectNode responseNode = mapper.createObjectNode();
-					responseNode.put("code", 5);
-					if (opponent != null) {
-						opponent.sendMessage(new TextMessage(responseNode.toString()));			
-					}
-						
-					PrintAllMatches();
-					}
-					catch(Exception ex) {
-						System.out.println(ex.toString());
-					}
-			}
 			/*
 			case "10":	//ping
 			{
