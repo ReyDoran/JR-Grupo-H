@@ -120,14 +120,12 @@ class Cutscene extends Phaser.Scene {
 	// Enseña la pregunta
 	showQuestion() {
 		this.add.text(gameWidth*3/20, gameHeight/2, this.questions[this.questionIndex], { font: '64px Caveat Brush', fill: '#ffffff' });
-		console.log(this.answers[this.questionIndex]);
 	}
 
 	// Cambia la escena y acutaliza el valor de la variable global round con la
 	// respuesta
 	changeScene() {
 		answer = this.answers[this.questionIndex];
-		console.log(this.answers[this.questionIndex] + ' = ' + answer);
 		this.scene.start("battle");
 	}
 

@@ -169,7 +169,6 @@ class SeleccionPJH extends Phaser.Scene {
 		this.returnMenu.on('pointerdown', function (pointer){
 			connection.close();
 			this.scene.start('menu');
-			console.log("pal menu");
 		}, this);
 		
 		//SELECCION DE HABILIDADES
@@ -338,9 +337,6 @@ class SeleccionPJH extends Phaser.Scene {
 						this.showCharSelectMenu();
 					}
 				}
-				//Imprime por pantalla la configuración de cada jugador DEBUG
-				//console.log('P1 ' + player1Config);
-				//console.log('P2 ' + player2Config);
 				this.disableAbilitiesSelectMenu();
 			}
 		}, this);
@@ -359,8 +355,6 @@ class SeleccionPJH extends Phaser.Scene {
 	}
 
 	showCharSelectMenu() {
-		console.log("Estoy en equipos");
-		console.log(this.iter);
 		this.teamSelect.setAlpha(1);
 		this.ghostbusterM.setAlpha(1);
 		this.ghostbusterM.setInteractive();
@@ -383,8 +377,6 @@ class SeleccionPJH extends Phaser.Scene {
 	}
 	
 	disableCharSelectMenu() {
-		console.log("Salgo de equipos");
-		console.log(this.iter);
 		this.teamSelect.setAlpha(0);
 		this.ghostbusterM.setAlpha(0);
 		this.ghostbusterM.disableInteractive();
@@ -403,8 +395,6 @@ class SeleccionPJH extends Phaser.Scene {
 	}
 
 	showAbilitiesSelectMenu() {
-		console.log("Entro en habilidades");
-		console.log(this.iter);
 		//Reinicia las variables auxiliares
 		this.abilitiesSelected = 0;
 		this.abilities = [false, false, false];
@@ -424,8 +414,6 @@ class SeleccionPJH extends Phaser.Scene {
 	}
 
 	disableAbilitiesSelectMenu() {
-		console.log("Salgo de habilidades");
-		console.log(this.iter);
 		this.abilitiesMenu = false;
 		this.abilitySelect.setAlpha(0);
 		this.ability0.setAlpha(0);

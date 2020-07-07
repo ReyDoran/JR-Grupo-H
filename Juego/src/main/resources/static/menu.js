@@ -97,8 +97,6 @@ class Menu extends Phaser.Scene {
 	}
 
 	showMainMenu() {
-		//console.log("Estoy en el menu");
-		//console.log(this.iter);
 		this.bt_play.setAlpha(1);
 		this.bt_online.setAlpha(1);
 		this.bt_tutorial.setAlpha(1);

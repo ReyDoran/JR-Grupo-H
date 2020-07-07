@@ -609,7 +609,6 @@ class BattleOnline extends Phaser.Scene
 				{
 					if(this.used1==false && this.moveKeys.esp.isDown)
 					{
-						console.log("PJ1 " + this.used1)
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						//this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
@@ -629,7 +628,6 @@ class BattleOnline extends Phaser.Scene
 					}
 					if(h=="true" && !this.used2)
 					{
-						console.log("J2 a J1");
 						this.used2=true;
 						this.ability(this.ability2, 2, this.player2);
 						
@@ -653,8 +651,6 @@ class BattleOnline extends Phaser.Scene
 					
 					if (colisionApplied == false) {
 						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX) * this.forceModifier1, parseFloat(colisionForceY) * this.forceModifier1);
-						//console.log(colisionForceX + ", " + colisionForceY);
-						//console.log(forceToApply[0] + ", " + forceToApply[1]);
 						this.player1.applyForce(forceToApply);
 						//this.player1.x = 150;
 						//this.player1.y = 150;
@@ -676,7 +672,6 @@ class BattleOnline extends Phaser.Scene
 				{
 					if(h=="true" && !this.used1)
 					{
-						console.log("J1 a J2");
 						// Se llama a la fucnión habilidad con el identificador de habilidad, el número de jugador y el jugador
 						this.ability(this.ability1, 1, this.player1);
 						this.used1=true;   // Actualiza la variable que almacena si la habilidad ha sido usada
@@ -696,7 +691,6 @@ class BattleOnline extends Phaser.Scene
 					}
 					if(this.used2==false && this.moveKeys.esp.isDown)
 					{
-						console.log("PJ2 " + this.used2)
 						//this.ability(this.ability2, 2, this.player2);
 						this.used2=true;
 						
@@ -719,11 +713,8 @@ class BattleOnline extends Phaser.Scene
 					this.player2.setAngularVelocity(0);
 					
 					if (colisionApplied == false) {
-						console.log("chocamos");
 						let forceToApply = new Phaser.Math.Vector2(parseFloat(colisionForceX)* this.forceModifier2, parseFloat(colisionForceY) * this.forceModifier2);
 						this.player2.applyForce(forceToApply);
-						console.log(colisionForceX + ", " + colisionForceY);
-						console.log(forceToApply[0] + ", " + forceToApply[1]);
 						//this.player2.x = 400;
 						//this.player2.y = 400;
 						colisionApplied = true;
