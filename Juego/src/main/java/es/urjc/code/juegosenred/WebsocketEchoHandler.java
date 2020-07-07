@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WebsocketEchoHandler extends TextWebSocketHandler 
 {
-	final int MAX_MATCHES = 3;
+	final int MAX_MATCHES = 2;
 	private ObjectMapper mapper = new ObjectMapper();
 	ConcurrentHashMap<Integer, Match> matches = new ConcurrentHashMap<>(MAX_MATCHES);
 	boolean[] matchesFull = new boolean[MAX_MATCHES];

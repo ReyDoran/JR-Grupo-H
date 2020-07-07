@@ -36,7 +36,8 @@ var loggedIn = false;
 var registered = false;
 
 //Variables websockets
-var oppDisc = false;
+var oppDisc = false;	// Avisa de que el oponente se ha desconectado (solo para avisar en texto)
+var serverFull = false;	// Avisa de que el servidor está completo
 var newMsg = false;	// Indica si el mensaje del oponente ya se ha aplicado en battleOnline
 var sincroRound = false;
 var roundFinished = false;
@@ -192,6 +193,11 @@ function startConnection() {
 				console.log("points despues = " + points[info.playerIndex]);
 				break;
 			}
+			case 9:
+			{
+				serverFull = true;
+				break;
+			}
 			case 10:	// Ping
 			{
 				break;
@@ -267,6 +273,7 @@ class Login extends Phaser.Scene
 		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
 		this.online = 			this.add.image(gameWidth*35/50, gameHeight*35/50, 'bt_play').setAlpha(0).setScale(0.5).setInteractive();
 		this.oppDiscText = this.add.text(gameWidth*(10/100), gameHeight*(25/80),"",{ font: '56px Courier', fill: '#ff0000' });
+		this.serverFullText = this.add.text(gameWidth*(15/100), gameHeight*(25/80),"",{ font: '56px Courier', fill: '#ff0000' });
 		
 		this.back.on('pointerdown', function (pointer){
 			this.closeLobby();
@@ -315,6 +322,8 @@ class Login extends Phaser.Scene
 		// Muestra al jugador que inició sesión y activa el HUD de lobby
 		if (loggedIn)
 		{
+			this.waiting.setText("");
+			this.serverFullText.setText("");
 			chatFeed.style.display = 'initial';
 			this.log.setText("");
 			this.reg.setText("");
@@ -377,6 +386,11 @@ class Login extends Phaser.Scene
 			match = false;
 		}
 		
+		if (serverFull == true) {
+			serverFull = false;
+			this.serverFullText.setText("El servidor está completo");
+			this.time.addEvent({ delay: 4000, callback: this.openLobby, loop: false, callbackScope: this});
+		}
 	}
 	
 	loggedInToTrue() {
@@ -391,6 +405,10 @@ class Login extends Phaser.Scene
 		this.chatmes.setText("");
 		this.conected.setText("");
 		this.time.removeAllEvents();
+	}
+	
+	openLobby() {
+		loggedIn = true;
 	}
 	
 	backMenuFunc() {
