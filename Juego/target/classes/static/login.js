@@ -263,7 +263,7 @@ class Login extends Phaser.Scene
 		this.reg = 				this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.fall = 			this.add.text(gameWidth*(25/100), gameHeight*(25/80),"",{ font: '32px Courier', fill: '#ff0000' });
 		this.back = 			this.add.image(gameWidth*7/50, gameHeight*9/50, 'bt_return').setAlpha(1).setScale(0.7).setInteractive();
-		this.online = 			this.add.image(gameWidth*35/50, gameHeight*35/50, 'online').setAlpha(0).setScale(0.5).setInteractive();
+		this.online = 			this.add.image(gameWidth*35/50, gameHeight*35/50, 'bt_play').setAlpha(0).setScale(0.5).setInteractive();
 		
 		this.back.on('pointerdown', function (pointer){
 			this.closeLobby();
@@ -285,7 +285,7 @@ class Login extends Phaser.Scene
 		this.conected.mask = new Phaser.Display.Masks.BitmapMask(this, this.square2);
 		
 		//Interfaz por encima de casi todo
-		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.05);
+		this.interf = this.add.sprite(gameWidth*11/20,gameHeight/2,'bg_estatica').setAlpha(0.1);
 		this.anims.create({
 			key: 'bg_estatica_anim',
 			frames: this.anims.generateFrameNumbers('bg_estatica'),
