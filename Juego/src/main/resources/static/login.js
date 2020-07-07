@@ -88,122 +88,125 @@ chat.style.display = 'none';
 send.style.display = 'none';
 
 //Iniciamos sesion websockets
-var connection = new WebSocket('ws://'+URLdomain+'/juego');
-connection.onopen = function()
-{
-	console.log("WS abierto");	
-}
-connection.onerror = function(e)
-{
-	console.log("WS error: " + e);
-}
-connection.onmessage = function(msg)
-{
-	//console.log("WS message: " + msg.data);
-	var info = JSON.parse(msg.data);
-	switch(info.code)
+var connection;
+function startConnection() {
+	connection = new WebSocket('ws://'+URLdomain+'/juego');
+	connection.onopen = function()
 	{
-		case 0:
-		{
-			//Emparejamiento
-			playerj = info.player;
-			match = true;
-			matchIndex = info.match;
-			conectado = true;
-			break;
-		}
-		case 1:
-		{
-			//Generacion de la partida
-			p = info.p;
-			h1 = info.h1;
-			h2 = info.h2;
-			h3 = info.h3;
-			characters[0] = info.ch1;
-			characters[1] = info.ch2;
-			characters[2] = info.ch3;
-			characters[3] = info.ch4;
-			characters[4] = info.ch5;
-			characters[5] = info.ch6;
-			characters[6] = info.ch7;
-			characters[7] = info.ch8;
-			characters[8] = info.ch9;
-			roundQuestions[0] = info.rQ1;
-			roundQuestions[1] = info.rQ2;
-			roundQuestions[2] = info.rQ3;
-			correctTombstones[0] = info.cT1;
-			correctTombstones[1] = info.cT2;
-			correctTombstones[2] = info.cT3;
-			break;
-		}
-		case 2:
-		{
-			//Se llegan los datos del contrario
-			x = info.x;
-			y = info.y;
-			ax = info.ax;
-			ay = info.ay;
-			angle = info.rotation;
-			h = info.hability;
-			roundTime = info.time;
-			newMsg = true;
-			break;
-		}
-		case 3:
-		{
-			console.log("ready to start");
-			sincroRound = true;
-			break;
-		}
-		case 4:
-		{
-			sincro = 2;
-			break;
-		}
-		case 5:
-		{
-			escapar = true;
-			break;
-		}
-		case 6:	// Se acabó el tiempo de ronda
-		{
-			roundFinished = true;
-			roundTime = 0;
-			break;
-		}
-		case 7:
-		{
-			console.log("me ha llegado mensaje de chocarme");
-			colisionForceX = info.forceX;
-			colisionForceY = info.forceY;
-			colisionApplied = false;
-			break;
-		}
-		case 8:
-		{
-			console.log("points antes = " + points[info.playerIndex]);
-			if (info.pointAcquired == 1) {
-				points[info.playerIndex] ++;				
-			}
-			console.log("points despues = " + points[info.playerIndex]);
-			break;
-		}
-		case 10:	// Ping
-		{
-			break;
-		}
-	
-		default:
-		{
-			console.log("default");
-		}
-		break;
+		console.log("WS abierto");	
 	}
-}
-connection.onclose = function()
-{
-	console.log("Closing socket");
-	conectado = false;
+	connection.onerror = function(e)
+	{
+		console.log("WS error: " + e);
+	}
+	connection.onmessage = function(msg)
+	{
+		//console.log("WS message: " + msg.data);
+		var info = JSON.parse(msg.data);
+		switch(info.code)
+		{
+			case 0:
+			{
+				//Emparejamiento
+				playerj = info.player;
+				match = true;
+				matchIndex = info.match;
+				conectado = true;
+				break;
+			}
+			case 1:
+			{
+				//Generacion de la partida
+				p = info.p;
+				h1 = info.h1;
+				h2 = info.h2;
+				h3 = info.h3;
+				characters[0] = info.ch1;
+				characters[1] = info.ch2;
+				characters[2] = info.ch3;
+				characters[3] = info.ch4;
+				characters[4] = info.ch5;
+				characters[5] = info.ch6;
+				characters[6] = info.ch7;
+				characters[7] = info.ch8;
+				characters[8] = info.ch9;
+				roundQuestions[0] = info.rQ1;
+				roundQuestions[1] = info.rQ2;
+				roundQuestions[2] = info.rQ3;
+				correctTombstones[0] = info.cT1;
+				correctTombstones[1] = info.cT2;
+				correctTombstones[2] = info.cT3;
+				break;
+			}
+			case 2:
+			{
+				//Se llegan los datos del contrario
+				x = info.x;
+				y = info.y;
+				ax = info.ax;
+				ay = info.ay;
+				angle = info.rotation;
+				h = info.hability;
+				roundTime = info.time;
+				newMsg = true;
+				break;
+			}
+			case 3:
+			{
+				console.log("ready to start");
+				sincroRound = true;
+				break;
+			}
+			case 4:
+			{
+				sincro = 2;
+				break;
+			}
+			case 5:
+			{
+				escapar = true;
+				break;
+			}
+			case 6:	// Se acabó el tiempo de ronda
+			{
+				roundFinished = true;
+				roundTime = 0;
+				break;
+			}
+			case 7:
+			{
+				console.log("me ha llegado mensaje de chocarme");
+				colisionForceX = info.forceX;
+				colisionForceY = info.forceY;
+				colisionApplied = false;
+				break;
+			}
+			case 8:
+			{
+				console.log("points antes = " + points[info.playerIndex]);
+				if (info.pointAcquired == 1) {
+					points[info.playerIndex] ++;				
+				}
+				console.log("points despues = " + points[info.playerIndex]);
+				break;
+			}
+			case 10:	// Ping
+			{
+				break;
+			}
+		
+			default:
+			{
+				console.log("default");
+			}
+			break;
+		}
+	}
+	connection.onclose = function()
+	{
+		console.log("Closing socket");
+		conectado = false;
+	}	
 }
 
 //setInterval(ping, 9000);
@@ -264,7 +267,9 @@ class Login extends Phaser.Scene
 		
 		this.back.on('pointerdown', function (pointer){
 			this.closeLobby();
-			connection.close();
+			if (connection != null) {
+				connection.close();				
+			}
 			this.scene.start('menu');
 		}, this);
 	
@@ -473,6 +478,7 @@ class Login extends Phaser.Scene
 	// Activa los elementos de HTML para el lobby online
 	enableOnlineMenu()
 	{
+		startConnection();
 		chat.style.display = "inline-block";
 		send.style.display = "inline-block";
 		this.online.setInteractive();
