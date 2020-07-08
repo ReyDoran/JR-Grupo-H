@@ -213,6 +213,8 @@ function startConnection() {
 	connection.onclose = function()
 	{
 		console.log("Closing socket");
+		escapar = true;
+		oppDisc = false;
 		conectado = false;
 	}	
 }
